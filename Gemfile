@@ -21,6 +21,7 @@ gem 'pg', '~> 1.1', '>= 1.1.4'
 gem 'puma', '~> 5.3'
 gem 'pundit', '~> 2.1'
 gem 'rack-cors', '~> 1.0', '>= 1.0.6'
+gem 'rubocop-rails', '~> 2.3', '>= 2.3.2'
 gem 'sendgrid', '~> 1.2.4'
 gem 'sprockets', '~> 3.7.2'
 gem 'webpacker', '~> 5.1', '>= 5.1.1'
@@ -53,8 +54,6 @@ group :development do
   gem 'listen', '~> 3.2'
   gem 'rails_best_practices', '~> 1.20'
   gem 'reek', '~> 5.5'
-  gem 'rubocop-rails', '~> 2.3', '>= 2.3.2', require: false
-  gem 'rubocop-rootstrap', '~> 1.2'
   gem 'spring', '~> 2.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 end
