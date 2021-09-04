@@ -15,7 +15,6 @@
 #  last_sign_in_ip        :inet
 #  first_name             :string           default("")
 #  last_name              :string           default("")
-#  username               :string           default("")
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  provider               :string           default("email"), not null
@@ -38,15 +37,6 @@ describe User do
       subject { build :user }
       it { is_expected.to validate_uniqueness_of(:email).case_insensitive.scoped_to(:provider) }
       it { is_expected.to validate_presence_of(:email) }
-    end
-  end
-
-  context 'when was created with regular login' do
-    let!(:user) { create(:user, first_name: nil, last_name: nil) }
-    let(:full_name) { user.full_name }
-
-    it 'returns the correct name' do
-      expect(full_name).to eq(user.username)
     end
   end
 
