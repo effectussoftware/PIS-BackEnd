@@ -36,16 +36,4 @@ resource 'Users' do
       end
     end
   end
-
-  route 'api/v1/user', 'Update User' do
-    let(:request) { { user: { username: 'new username' } } }
-
-    put 'Update' do
-      example 'Ok' do
-        do_request(request)
-
-        expect(status).to eq 200
-      end
-    end
-  end
 end

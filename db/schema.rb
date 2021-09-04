@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_16_171441) do
+ActiveRecord::Schema.define(version: 2021_09_04_180819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -115,7 +115,6 @@ ActiveRecord::Schema.define(version: 2020_07_16_171441) do
     t.inet "last_sign_in_ip"
     t.string "first_name", default: ""
     t.string "last_name", default: ""
-    t.string "username", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "provider", default: "email", null: false

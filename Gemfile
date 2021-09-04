@@ -55,6 +55,7 @@ group :development do
   gem 'reek', '~> 5.5'
   gem 'rubocop-rails', '~> 2.3', '>= 2.3.2', require: false
   gem 'rubocop-rootstrap', '~> 1.2'
+  gem 'rubocop-rspec', require: false
   gem 'spring', '~> 2.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 end

@@ -15,7 +15,6 @@
 #  last_sign_in_ip        :inet
 #  first_name             :string           default("")
 #  last_name              :string           default("")
-#  username               :string           default("")
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  provider               :string           default("email"), not null
@@ -41,8 +40,6 @@ class User < ApplicationRecord
   before_validation :init_uid
 
   def full_name
-    return username if first_name.blank?
-
     "#{first_name} #{last_name}"
   end
 
