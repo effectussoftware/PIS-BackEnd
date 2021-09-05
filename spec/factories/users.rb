@@ -15,7 +15,6 @@
 #  last_sign_in_ip        :inet
 #  first_name             :string           default("")
 #  last_name              :string           default("")
-#  username               :string           default("")
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  provider               :string           default("email"), not null
@@ -33,7 +32,6 @@ FactoryBot.define do
   factory :user do
     email      { Faker::Internet.unique.email }
     password   { Faker::Internet.password(min_length: 8) }
-    username   { Faker::Internet.unique.user_name }
     first_name { Faker::Name.unique.name }
     last_name  { Faker::Name.unique.last_name }
     uid        { Faker::Internet.uuid }
