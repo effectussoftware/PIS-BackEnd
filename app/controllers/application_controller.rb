@@ -8,7 +8,12 @@ class ApplicationController < ActionController::Base
                only: :index,
                unless: -> { :devise_controller? || :active_admin_controller? }
   # Prevent CSRF attacks by raising an exception.
-  protect_from_forgery with: :null_session
+  # protect_from_forgery with: :exception
+  skip_before_action :verify_authenticity_token, if: :json_request?
+
+  def json_request?
+    request.format.json?
+  end
 
   def active_admin_controller?
     is_a?(ActiveAdmin::BaseController)
