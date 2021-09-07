@@ -8,7 +8,7 @@ module Api
         current_version = Gem::Version.new(params[:device_version])
         min_version = version ? Gem::Version.new(version) : Gem::Version.new('0.0.0')
         must_update = min_version > current_version
-        render json: { 'must_update': must_update }
+        render json: { must_update: must_update }
       end
 
       private
