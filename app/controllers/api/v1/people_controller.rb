@@ -5,11 +5,17 @@ module Api
         # Render persons list
       end
 
-      def show; end
+      def show
+        # show
+      end
 
-      def update; end
+      def update
+        # update
+      end
 
-      def destroy; end
+      def destroy
+        # destroy
+      end
 
       private
 
