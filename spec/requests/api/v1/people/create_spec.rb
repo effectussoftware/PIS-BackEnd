@@ -21,8 +21,10 @@ describe 'POST api/v1/people', type: :request do
     subject
     person_response = person.slice(:first_name, :last_name, :hourly_load, :hourly_load_hours,
                                    :email)
-    person_response.merge!(id: Person.maximum(:id),
-                           full_name: "#{person_response[:first_name]} #{person_response[:last_name]}")
+    person_response.merge!(id: Person.maximum(:id))
+    full_name = "#{person_response[:first_name]} #{person_response[:last_name]}"
+    person_response.merge!(full_name: full_name)
+
     expect(json[:person]).to eq(person_response)
   end
 end
