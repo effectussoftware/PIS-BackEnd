@@ -6,7 +6,7 @@
 #  first_name        :string           not null
 #  last_name         :string           not null
 #  email             :string
-#  hourly_load       :integer
+#  hourly_load       :string
 #  hourly_load_hours :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -20,7 +20,7 @@ FactoryBot.define do
     first_name { Faker::Name.unique.name }
     last_name { Faker::Name.unique.last_name }
     email { Faker::Internet.unique.email }
-    hourly_load { Person.hourly_load_types[:weekely] }
+    hourly_load { 'weekely' }
     hourly_load_hours { 36 }
   end
 end

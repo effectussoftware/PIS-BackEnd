@@ -6,7 +6,7 @@
 #  first_name        :string           not null
 #  last_name         :string           not null
 #  email             :string
-#  hourly_load       :integer
+#  hourly_load       :string
 #  hourly_load_hours :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -20,6 +20,8 @@ require 'rails_helper'
 RSpec.describe Person, type: :model do
   describe 'validations' do
     let(:person) { build(:person) }
+    let(:weekely) { 'weekely' }
+    let(:daily) { 'daily' }
 
     it 'test that factory is valid' do
       expect(person).to be_valid
@@ -44,6 +46,11 @@ RSpec.describe Person, type: :model do
         expect(person.errors[:email]).to include("can't be blank")
       end
 
+      it 'has invalid hourly load' do
+        person.hourly_load = 'invalid'
+        expect(person).not_to be_valid
+      end
+
       it 'validate the uniqueness of email' do
         person1 = create(:person)
         expect(person1).to be_valid
@@ -54,7 +61,7 @@ RSpec.describe Person, type: :model do
 
       it 'has invalid weekely' do
         person1 = build(:person,
-                        hourly_load: Person.hourly_load_types[:weekely],
+                        hourly_load: weekely,
                         hourly_load_hours: 19)
         expect(person1).not_to be_valid
         person1.hourly_load_hours = 46
@@ -63,7 +70,7 @@ RSpec.describe Person, type: :model do
 
       it 'has invalid daily' do
         person1 = build(:person,
-                        hourly_load: Person.hourly_load_types[:daily],
+                        hourly_load: daily,
                         hourly_load_hours: 3)
         expect(person1).not_to be_valid
         person1.hourly_load_hours = 10
@@ -74,7 +81,7 @@ RSpec.describe Person, type: :model do
     context 'when fields are valid' do
       it 'has valid weekely' do
         person1 = build(:person,
-                        hourly_load: Person.hourly_load_types[:weekely],
+                        hourly_load: weekely,
                         hourly_load_hours: 20)
         expect(person1).to be_valid
         person1.hourly_load_hours = 45
@@ -83,7 +90,7 @@ RSpec.describe Person, type: :model do
 
       it 'has valid daily' do
         person1 = build(:person,
-                        hourly_load: Person.hourly_load_types[:daily],
+                        hourly_load: daily,
                         hourly_load_hours: 4)
         expect(person1).to be_valid
         person1.hourly_load_hours = 9
