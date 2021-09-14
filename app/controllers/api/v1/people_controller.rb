@@ -3,15 +3,12 @@ module Api
     class PeopleController < Api::V1::ApiController
       def create
         @person = Person.create!(person_params)
+        render :show
       end
 
       def index
         @people = Person.all
         # Render persons list
-      end
-
-      def show
-        # show
       end
 
       def update
