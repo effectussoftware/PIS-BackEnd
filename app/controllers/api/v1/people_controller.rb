@@ -1,7 +1,12 @@
 module Api
   module V1
     class PeopleController < Api::V1::ApiController
+      def create
+        @person = Person.create!(person_params)
+      end
+
       def index
+        @people = Person.all
         # Render persons list
       end
 
