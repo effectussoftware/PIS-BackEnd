@@ -18,7 +18,11 @@ module Api
       end
 
       def update
-        # update
+        @person = Person.find(params[:id])
+        @person.update!(person_params)
+        render :show
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: I18n.t('api.errors.person.not_found') }, status: :not_found
       end
 
       def destroy

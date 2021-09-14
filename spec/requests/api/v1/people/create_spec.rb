@@ -17,7 +17,7 @@ describe 'POST api/v1/people', type: :request do
     expect { subject }.to change { Person.count }.by 1
   end
 
-  it 'should response proper a person as JSON' do
+  it 'should respond proper person as JSON' do
     subject
     person_response = person.slice(:first_name, :last_name, :hourly_load, :hourly_load_hours,
                                    :email)

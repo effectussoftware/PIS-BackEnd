@@ -1,4 +1,4 @@
-describe 'POST api/v1/people', type: :request do
+describe 'GET api/v1/people/:id', type: :request do
   # Needed to get auth_headers
   let!(:user) { create(:user) }
   let!(:person) { create(:person) }
@@ -10,7 +10,7 @@ describe 'POST api/v1/people', type: :request do
     expect(response).to have_http_status(:success)
   end
 
-  it 'should response proper a person as JSON' do
+  it 'should respond proper person as JSON' do
     subject
     created_person = person.slice(:id, :first_name, :last_name, :email, :hourly_load,
                                   :hourly_load_hours)
