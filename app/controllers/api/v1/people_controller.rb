@@ -11,6 +11,12 @@ module Api
         # Render persons list
       end
 
+      def show
+        @person = Person.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: I18n.t('api.errors.person.not_found') }, status: :not_found
+      end
+
       def update
         # update
       end
