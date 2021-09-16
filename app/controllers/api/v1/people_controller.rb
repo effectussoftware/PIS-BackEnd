@@ -8,7 +8,6 @@ module Api
 
       def index
         @people = Person.all
-        # Render persons list
       end
 
       def show
@@ -26,7 +25,11 @@ module Api
       end
 
       def destroy
-        # destroy
+        user = Person.find(params[:id])
+        user.destroy!
+        render json: { message: I18n.t('api.success.record_delete', { name: user.first_name }) }
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: I18n.t('api.errors.person.not_found') }, status: :not_found
       end
 
       private
