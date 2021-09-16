@@ -13,10 +13,10 @@
 #
 FactoryBot.define do
   factory :project do
-    name { "MyString" }
-    description { "MyString" }
-    start_date { "2021-09-11" }
-    end_date { "2021-09-11" }
+    name { 'Proyecto 1' }
+    description { 'Desc. generica' }
+    start_date { '2021-09-11' }
+    end_date { '2021-09-11' }
     budget { 1 }
   end
 end
