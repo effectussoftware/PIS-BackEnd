@@ -6,11 +6,11 @@ en:
       call_to_action: Actions
       welcome: Welcome to your first admin
   api:
-    success:
-      record_delete: The person '%{name}' was deleted
     errors:
       invalid_content_type: Invalid content type header
       missing_param: A required param is missing
       not_found: Couldn't find the record
       person:
         not_found: Couldn't find the person
+    success:
+      record_delete: The person '%{name}' was deleted
