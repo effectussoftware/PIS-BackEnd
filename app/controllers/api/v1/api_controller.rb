@@ -5,11 +5,9 @@ module Api
       include Pundit
       include DeviseTokenAuth::Concerns::SetUserByToken
 
-      after_action :verify_authorized, except: :index
-      after_action :verify_policy_scoped, only: :index
-
       before_action :authenticate_user!, except: :status
-      skip_after_action :verify_authorized, only: :status
+
+      respond_to :json
 
       rescue_from ActiveRecord::RecordNotFound,        with: :render_not_found
       rescue_from ActiveRecord::RecordInvalid,         with: :render_record_invalid
