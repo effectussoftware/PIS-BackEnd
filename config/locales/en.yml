@@ -10,6 +10,7 @@ en:
       invalid_content_type: Invalid content type header
       missing_param: A required param is missing
       not_found: Couldn't find the record
+      needs_password_reset: You need to reset your password before continue
       person:
         not_found: Couldn't find the person
     success:

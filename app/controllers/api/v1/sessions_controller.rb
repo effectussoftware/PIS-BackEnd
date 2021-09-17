@@ -4,6 +4,12 @@ module Api
       protect_from_forgery with: :null_session
       include Api::Concerns::ActAsApiRequest
 
+      def create
+        super do |resource|
+          return send_reset_password if resource.needs_password_reset?
+        end
+      end
+
       private
 
       def resource_params
@@ -12,6 +18,14 @@ module Api
 
       def render_create_success
         render :create
+      end
+
+      def send_reset_password
+        token = @resource.first_login_generate_token
+        response.headers['access_token'] = token
+        render json: { needs_password_reset: true,
+                       error: I18n.t('api.errors.needs_password_reset') },
+               status: :unauthorized
       end
     end
   end
