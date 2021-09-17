@@ -44,6 +44,10 @@ class User < ApplicationRecord
     self.needs_password_reset = true
   end
 
+  before_update do
+    self.needs_password_reset = false if will_save_change_to_attribute?(:encrypted_password)
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end
