@@ -2,6 +2,8 @@ module Api
   module V1
     class SessionsController < DeviseTokenAuth::SessionsController
       protect_from_forgery with: :null_session
+      before_action :update_auth_header, only: :send_reset_password
+
       include Api::Concerns::ActAsApiRequest
 
       def create
@@ -21,8 +23,6 @@ module Api
       end
 
       def send_reset_password
-        token = @resource.first_login_generate_token
-        response.headers['access_token'] = token
         render json: { needs_password_reset: true,
                        error: I18n.t('api.errors.needs_password_reset') },
                status: :unauthorized

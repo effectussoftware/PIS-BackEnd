@@ -51,14 +51,6 @@ class User < ApplicationRecord
     end
   end
 
-  def first_login_generate_token
-    raw, enc = Devise.token_generator.generate(User, :reset_password_token)
-    self.reset_password_token = enc
-    self.reset_password_sent_at = Time.now.utc
-    save!(validate: false)
-    raw
-  end
-
   private
 
   def init_uid
