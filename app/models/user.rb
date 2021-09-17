@@ -40,6 +40,10 @@ class User < ApplicationRecord
 
   before_validation :init_uid
 
+  before_create do
+    self.needs_password_reset = true
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end
