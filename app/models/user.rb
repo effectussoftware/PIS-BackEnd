@@ -20,6 +20,7 @@
 #  provider               :string           default("email"), not null
 #  uid                    :string           default(""), not null
 #  tokens                 :json
+#  needs_password_reset   :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -48,6 +49,14 @@ class User < ApplicationRecord
       user.password = Devise.friendly_token[0, 20]
       user.assign_attributes user_params.except('id')
     end
+  end
+
+  def first_login_generate_token
+    raw, enc = Devise.token_generator.generate(User, :reset_password_token)
+    self.reset_password_token = enc
+    self.reset_password_sent_at = Time.now.utc
+    save!(validate: false)
+    raw
   end
 
   private
