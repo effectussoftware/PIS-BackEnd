@@ -105,6 +105,16 @@ ActiveRecord::Schema.define(version: 2021_09_14_004834) do
     t.index ["email"], name: "index_people_on_email", unique: true
   end
 
+  create_table "projects", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.integer "budget"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "settings", force: :cascade do |t|
     t.string "key", null: false
     t.string "value"
