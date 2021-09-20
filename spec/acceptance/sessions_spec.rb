@@ -29,8 +29,8 @@ resource 'Sessions' do
 
       example 'Bad' do
         user.needs_password_reset = false
+        user.save!
         request[:user][:password] = 'wrong-password'
-
         do_request(request)
         expect(status).to eq 401
       end
