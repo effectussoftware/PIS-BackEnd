@@ -20,6 +20,7 @@
 #  provider               :string           default("email"), not null
 #  uid                    :string           default(""), not null
 #  tokens                 :json
+#  needs_password_reset   :boolean          default(TRUE)
 #
 # Indexes
 #

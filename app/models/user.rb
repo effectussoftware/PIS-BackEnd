@@ -20,6 +20,7 @@
 #  provider               :string           default("email"), not null
 #  uid                    :string           default(""), not null
 #  tokens                 :json
+#  needs_password_reset   :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -38,6 +39,14 @@ class User < ApplicationRecord
   validates :uid, uniqueness: { scope: :provider }
 
   before_validation :init_uid
+
+  before_create do
+    self.needs_password_reset = true
+  end
+
+  before_update do
+    self.needs_password_reset = false if will_save_change_to_attribute?(:encrypted_password)
+  end
 
   def full_name
     "#{first_name} #{last_name}"

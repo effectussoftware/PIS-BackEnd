@@ -21,17 +21,25 @@ resource 'Sessions' do
     end
 
     post 'Create' do
-      example 'Ok' do
-        do_request(request)
-
-        expect(status).to eq 200
-      end
-
-      example 'Bad' do
-        request[:user][:password] = 'wrong-password'
+      example 'Bad, can log in before password changed' do
         do_request(request)
 
         expect(status).to eq 401
+      end
+
+      example 'Bad' do
+        user.needs_password_reset = false
+        user.save!
+        request[:user][:password] = 'wrong-password'
+        do_request(request)
+        expect(status).to eq 401
+      end
+
+      example 'Ok' do
+        user.needs_password_reset = false
+
+        do_request(request)
+        expect(status).to eq 200
       end
     end
   end
