@@ -18,12 +18,12 @@
 class Person < ApplicationRecord
   validates :first_name, :last_name, :hourly_load, :hourly_load_hours, presence: true
   validates :email, presence: true, uniqueness: true
-  validates :hourly_load, inclusion: { in: %w[weekely daily] }
-  validates :hourly_load_hours, inclusion: 20..45, if: :weekely?
+  validates :hourly_load, inclusion: { in: %w[weekly daily] }
+  validates :hourly_load_hours, inclusion: 20..45, if: :weekly?
   validates :hourly_load_hours, inclusion: 4..9, if: :daily?
 
-  def weekely?
-    hourly_load == 'weekely'
+  def weekly?
+    hourly_load == 'weekly'
   end
 
   def daily?

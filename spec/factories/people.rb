@@ -20,7 +20,7 @@ FactoryBot.define do
     first_name { Faker::Name.unique.name }
     last_name { Faker::Name.unique.last_name }
     email { Faker::Internet.unique.email }
-    hourly_load { 'weekely' }
+    hourly_load { 'weekly' }
     hourly_load_hours { 36 }
   end
 end

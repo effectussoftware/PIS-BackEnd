@@ -20,7 +20,7 @@ require 'rails_helper'
 RSpec.describe Person, type: :model do
   describe 'validations' do
     let(:person) { build(:person) }
-    let(:weekely) { 'weekely' }
+    let(:weekly) { 'weekly' }
     let(:daily) { 'daily' }
 
     it 'test that factory is valid' do
@@ -59,9 +59,9 @@ RSpec.describe Person, type: :model do
         expect(person2.errors[:email]).to include('has already been taken')
       end
 
-      it 'has invalid weekely' do
+      it 'has invalid weekly' do
         person1 = build(:person,
-                        hourly_load: weekely,
+                        hourly_load: weekly,
                         hourly_load_hours: 19)
         expect(person1).not_to be_valid
         person1.hourly_load_hours = 46
@@ -79,9 +79,9 @@ RSpec.describe Person, type: :model do
     end
 
     context 'when fields are valid' do
-      it 'has valid weekely' do
+      it 'has valid weekly' do
         person1 = build(:person,
-                        hourly_load: weekely,
+                        hourly_load: weekly,
                         hourly_load_hours: 20)
         expect(person1).to be_valid
         person1.hourly_load_hours = 45
