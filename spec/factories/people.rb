@@ -2,14 +2,13 @@
 #
 # Table name: people
 #
-#  id                :bigint           not null, primary key
-#  first_name        :string           not null
-#  last_name         :string           not null
-#  email             :string
-#  hourly_load       :string
-#  hourly_load_hours :integer
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
+#  id            :bigint           not null, primary key
+#  first_name    :string           not null
+#  last_name     :string           not null
+#  email         :string
+#  working_hours :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 # Indexes
 #
@@ -20,7 +19,6 @@ FactoryBot.define do
     first_name { Faker::Name.unique.name }
     last_name { Faker::Name.unique.last_name }
     email { Faker::Internet.unique.email }
-    hourly_load { 'weekely' }
-    hourly_load_hours { 36 }
+    working_hours { 36 }
   end
 end
