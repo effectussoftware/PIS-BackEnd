@@ -17,5 +17,4 @@
 class Person < ApplicationRecord
   validates :first_name, :last_name, :working_hours, presence: true
   validates :email, presence: true, uniqueness: true
-  validates :working_hours, inclusion: 20..45
 end

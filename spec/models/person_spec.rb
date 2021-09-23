@@ -55,24 +55,6 @@ RSpec.describe Person, type: :model do
         expect(person2).not_to be_valid
         expect(person2.errors[:email]).to include('has already been taken')
       end
-
-      it 'has invalid working_hours' do
-        person1 = build(:person,
-                        working_hours: 19)
-        expect(person1).not_to be_valid
-        person1.working_hours = 46
-        expect(person1).not_to be_valid
-      end
-    end
-
-    context 'when fields are valid' do
-      it 'has valid weekly' do
-        person1 = build(:person,
-                        working_hours: 20)
-        expect(person1).to be_valid
-        person1.working_hours = 45
-        expect(person1).to be_valid
-      end
     end
   end
 end
