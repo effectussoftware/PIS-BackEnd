@@ -1,4 +1,18 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      get 'projects/create'
+      get 'projects/index'
+      get 'projects/show'
+      get 'projects/update'
+      get 'projects/destroy'
+    end
+  end
+  get 'projects/create'
+  get 'projects/index'
+  get 'projects/show'
+  get 'projects/update'
+  get 'projects/destroy'
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   ExceptionHunter.routes(self)

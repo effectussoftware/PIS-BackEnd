@@ -2,14 +2,16 @@
 #
 # Table name: projects
 #
-#  id          :bigint           not null, primary key
-#  name        :string           not null
-#  description :string
-#  start_date  :date             not null
-#  end_date    :date             not null
-#  budget      :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id            :bigint           not null, primary key
+#  name          :string           not null
+#  description   :string           not null
+#  start_date    :date             not null
+#  end_date      :date
+#  budget        :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  project_state :string           not null
+#  project_type  :string           not null
 #
 require 'rails_helper'
 

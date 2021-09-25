@@ -2,21 +2,25 @@
 #
 # Table name: projects
 #
-#  id          :bigint           not null, primary key
-#  name        :string           not null
-#  description :string
-#  start_date  :date             not null
-#  end_date    :date             not null
-#  budget      :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id            :bigint           not null, primary key
+#  name          :string           not null
+#  description   :string           not null
+#  start_date    :date             not null
+#  end_date      :date
+#  budget        :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  project_state :string           not null
+#  project_type  :string           not null
 #
 FactoryBot.define do
   factory :project do
-    name { 'Proyecto 1' }
-    description { 'Desc. generica' }
-    start_date { '2021-09-11' }
-    end_date { '2021-09-11' }
+    name { Faker::Name.unique.name }
+    description { Faker::Lorem.sentence(word_count: 3)}
+    start_date { Faker::Date.between(from: '2025-09-23', to: '2025-09-25') }
+    end_date { Faker::Date.between(from: '2030-10-23', to: '2030-10-25') }
     budget { 1 }
+    project_type  { }
+    project_state {}
   end
 end
