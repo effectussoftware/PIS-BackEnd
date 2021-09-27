@@ -16,11 +16,11 @@
 FactoryBot.define do
   factory :project do
     name { Faker::Name.unique.name }
-    description { Faker::Lorem.sentence(word_count: 3)}
-    start_date { Faker::Date.between(from: '2025-09-23', to: '2025-09-25') }
-    end_date { Faker::Date.between(from: '2030-10-23', to: '2030-10-25') }
-    budget { 1 }
-    project_type  { }
-    project_state {}
+    description { Faker::Lorem.sentence(word_count: 5)}
+    start_date { Faker::Date.between(from: '2025-01-01', to: '2025-12-31') }
+    end_date { Faker::Date.between(from: '2030-01-01', to: '2030-12-31') }
+    budget { rand(0..3000) }
+    project_type  { PROJECT_TYPES[rand(0..2)] }
+    project_state { PROJECT_STATES[rand(0..3)] }
   end
 end

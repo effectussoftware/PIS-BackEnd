@@ -1,18 +1,4 @@
 Rails.application.routes.draw do
-  namespace :api do
-    namespace :v1 do
-      get 'projects/create'
-      get 'projects/index'
-      get 'projects/show'
-      get 'projects/update'
-      get 'projects/destroy'
-    end
-  end
-  get 'projects/create'
-  get 'projects/index'
-  get 'projects/show'
-  get 'projects/update'
-  get 'projects/destroy'
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   ExceptionHunter.routes(self)
@@ -33,6 +19,8 @@ Rails.application.routes.draw do
         get :must_update, on: :collection
       end
       resources :people, only: %i[create index show update destroy]
+      resources :projects, only: %i[create index show update destroy]
+      #      resources :projects, path: '/projects'
     end
   end
 end

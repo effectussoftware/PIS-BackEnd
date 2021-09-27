@@ -18,7 +18,8 @@ class Project < ApplicationRecord
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
   validates :project_type, inclusion: { in: Project::PROJECT_TYPES }
   validates :project_state, inclusion: { in: Project::PROJECT_STATES }
-  validates :name, :description, :start_date, project_type, project_state, presence: { message: "Mandatory field missing" }
+  validates :name, :description, :start_date, presence: { message: "Mandatory field missing" }
+  #validates_uniqueness_of :name.trim, :case_sensitive => false
   #validate :name_is_valid
   validate :name_validation
   validate :budget_is_valid
@@ -26,9 +27,10 @@ class Project < ApplicationRecord
   validate :end_date_cannot_be_in_the_past
 
   private
-
   def name_validation
-    name.downcase.gsub(/\s+/, "") != Project.find(:conditions => ['name LIKE ?', name]).downcase.gsub(/\s+/, "")
+    return if name.blank?
+
+    return unless name.downcase.gsub(/\s+/, "") != Project.find(:conditions => ['name LIKE ?', name]).downcase.gsub(/\s+/, "")
   end
 
 =begin
