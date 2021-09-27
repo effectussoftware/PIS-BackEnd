@@ -37,6 +37,17 @@ RSpec.describe Project, type: :model do
         project1.end_date = '2021-09-11'
         expect(project1).to be_valid
       end
+
+      it 'already exists' do
+        project1.name = 'Proyecto 1'
+        expect(project1).to be_valid
+        project1.save
+
+        project2 = build(:project)
+        project2.name = 'Proyecto 1'
+        expect(project2).not_to be_valid
+
+      end
     end
   end
 end

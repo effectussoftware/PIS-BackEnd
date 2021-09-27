@@ -1,7 +1,9 @@
 class Api::V1::ProjectsController < ApplicationController
   def create
-    @project = Project.create!(Project_params.merge(project_state: PROJECT_STATES[3])) #por defecto el proyecto empieza en estado "verde"
+    @project = Project.create!(project_params)
     render :show
+  rescue ActiveRecord::RecordInvalid
+    render json: { error: I18n.t('api.errors.project.invalid', {params: project_params}) }, status: :not_acceptable
   end
 
   def index
@@ -25,14 +27,14 @@ class Api::V1::ProjectsController < ApplicationController
   def destroy
     project = Project.find(params[:id])
     project.destroy!
-    render json: { message: I18n.t('api.success.record_delete', { name: project.first_name }) }
+    render json: { message: I18n.t('api.success.project.record_delete', { name: project.first_name }) }
   rescue ActiveRecord::RecordNotFound
-    render json: { error: I18n.t('api.errors.person.not_found') }, status: :not_found
+    render json: { error: I18n.t('api.errors.project.not_found') }, status: :not_found
   end
 
   private
 
-  def Project_params
-    params.require(:project).permit(:name, :description, :start_date, :project_type)
+  def project_params
+    params.require(:project).permit(:name, :description, :start_date, :project_type, :project_state)
   end
 end

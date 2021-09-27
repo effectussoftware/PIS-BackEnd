@@ -20,7 +20,7 @@ FactoryBot.define do
     start_date { Faker::Date.between(from: '2025-09-23', to: '2025-09-25') }
     end_date { Faker::Date.between(from: '2030-10-23', to: '2030-10-25') }
     budget { 1 }
-    project_type  { }
-    project_state {}
+    project_type  { Project::PROJECT_TYPES.sample }
+    project_state { Project::PROJECT_STATES.sample }
   end
 end

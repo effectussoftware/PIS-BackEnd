@@ -16,36 +16,19 @@
 class Project < ApplicationRecord
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
+  validates :name, :description, :start_date, :project_type, :project_state, presence: { message: "Mandatory field missing" }
   validates :project_type, inclusion: { in: Project::PROJECT_TYPES }
   validates :project_state, inclusion: { in: Project::PROJECT_STATES }
-  validates :name, :description, :start_date, project_type, project_state, presence: { message: "Mandatory field missing" }
-  #validate :name_is_valid
   validate :name_validation
   validate :budget_is_valid
   validate :end_date_is_after_start_date
-  validate :end_date_cannot_be_in_the_past
 
   private
 
   def name_validation
-    name.downcase.gsub(/\s+/, "") != Project.find(:conditions => ['name LIKE ?', name]).downcase.gsub(/\s+/, "")
+    return if Project.where("replace(lower(name), ' ', '') like ?", name.downcase.gsub(/\s+/, "")).blank?
+    errors.add(:name, "already exists")
   end
-
-=begin
-  def name_is_valid
-    :name, uniqueness: {
-      case_sensitive: true,
-      # object = project object being validated
-      # data = { model: "Project", attribute: "Name", value: <name> }
-      message: ->(data) do
-        "A project with name: \"#{data[:value]}\" already exist. Please choose other."
-      end
-    }
-    # habra que chequear que no tenga espacios o caracteres raros? Mas que anda para el uniqueness , que no sea
-    # lo mismo "proyecto" que "proyecto "
-
-  end
-=end
 
   def budget_is_valid
     return if budget.blank?
@@ -63,10 +46,14 @@ class Project < ApplicationRecord
     errors.add(:end_date, 'cannot be before the start time')
   end
 
+=begin
+  TODO Revisar - creo que la fecha de end puede ser en el pasado
+  validate :end_date_cannot_be_in_the_past
   def end_date_cannot_be_in_the_past
     if end_date.present? && end_date < Date.today
       errors.add(:end_date, "can't be in the past")
     end
   end
+=end
 end
 
