@@ -32,6 +32,7 @@ Metrics/BlockLength:
     - spec/**/*
     - config/**/*
     - app/admin/**/*
+    - db/schema.rb
 
 Metrics/BlockNesting:
   Max: 4
@@ -101,7 +102,6 @@ AllCops:
     - config/initializers/pagy.rb
     - bin/bundle
     - bin/yarn
-    - db/schema.rb
     - node_modules/**/*
 
 Lint/UnusedMethodArgument:
