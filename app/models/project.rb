@@ -21,6 +21,8 @@
 class Project < ApplicationRecord
   has_many :project_technologies, dependent: :destroy
   has_many :technologies, through: :project_technologies
+  has_many :person_project, dependent: :destroy
+  has_many :people, through: :person_project
 
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
