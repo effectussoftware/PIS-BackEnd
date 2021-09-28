@@ -27,9 +27,10 @@ class Project < ApplicationRecord
   private
 
   def name_validation
+    return if Project.find(id).name == name
+
     return if Project.where("replace(lower(name), ' ', '') like ?",
                             name.downcase.gsub(/\s+/, '')).blank?
-
     errors.add(:name, 'already exists')
   end
 

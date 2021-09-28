@@ -1,12 +1,9 @@
 module Api
   module V1
-    class ProjectsController < ApplicationController
+    class ProjectsController < Api::V1::ApiController
       def create
         @project = Project.create!(project_params)
         render :show
-      rescue ActiveRecord::RecordInvalid
-        render json: { error: I18n.t('api.errors.project.invalid', { params: project_params }) },
-               status: :not_acceptable
       end
 
       def index
