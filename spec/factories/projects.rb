@@ -13,6 +13,10 @@
 #  project_state :string           not null
 #  project_type  :string           not null
 #
+# Indexes
+#
+#  index_projects_on_name  (name) UNIQUE
+#
 FactoryBot.define do
   factory :project do
     name { Faker::Name.unique.name }

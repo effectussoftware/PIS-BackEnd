@@ -13,6 +13,10 @@
 #  project_state :string           not null
 #  project_type  :string           not null
 #
+# Indexes
+#
+#  index_projects_on_name  (name) UNIQUE
+#
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
@@ -48,7 +52,6 @@ RSpec.describe Project, type: :model do
         expect(project2.errors[:name]).to include('has already been taken')
       end
     end
-
 
     context 'when fields are valid' do
       it 'has valid dates' do

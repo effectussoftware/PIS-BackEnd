@@ -1,4 +1,4 @@
-#require 'date'
+# require 'date'
 
 describe 'POST api/v1/projects', type: :request do
   # Needed to get auth_headers
@@ -28,5 +28,4 @@ describe 'POST api/v1/projects', type: :request do
     expect(json[:project][:project_type]).to eq(project.project_type)
     expect(json[:project][:project_state]).to eq(project.project_state)
   end
-
 end

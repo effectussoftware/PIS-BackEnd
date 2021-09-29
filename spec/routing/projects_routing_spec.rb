@@ -13,6 +13,10 @@
 #  project_state :string           not null
 #  project_type  :string           not null
 #
+# Indexes
+#
+#  index_projects_on_name  (name) UNIQUE
+#
 describe Api::V1::ProjectsController, type: :routing do
   describe 'routing' do
     it 'routes to #index' do
@@ -24,13 +28,13 @@ describe Api::V1::ProjectsController, type: :routing do
     end
 
     it 'routes to #update' do
-      expect(put: 'api/v1/projects/25').to route_to('api/v1/projects#update', format: :json, id: '25')
+      expect(put: 'api/v1/projects/25').to route_to('api/v1/projects#update', format: :json,
+                                                                              id: '25')
     end
 
     it 'routes to #delete' do
       expect(delete: 'api/v1/projects/11').to route_to('api/v1/projects#destroy', format: :json,
-                                                                              id: '11')
+                                                                                  id: '11')
     end
-
   end
 end

@@ -22,6 +22,5 @@ describe 'PUT api/v1/projects', type: :request do
     expect(json[:project][:start_date]).to eq('2025-09-23')
     expect(json[:project][:project_type]).to eq(project_update.project_type)
     expect(json[:project][:project_state]).to eq(project_update.project_state)
-
   end
 end

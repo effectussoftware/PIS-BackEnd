@@ -13,6 +13,10 @@
 #  project_state :string           not null
 #  project_type  :string           not null
 #
+# Indexes
+#
+#  index_projects_on_name  (name) UNIQUE
+#
 class Project < ApplicationRecord
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
@@ -20,7 +24,7 @@ class Project < ApplicationRecord
             presence: { message: 'Mandatory field missing' }
   validates :project_type, inclusion: { in: Project::PROJECT_TYPES }
   validates :project_state, inclusion: { in: Project::PROJECT_STATES }
-  validates :name, :uniqueness => true
+  validates :name, uniqueness: true
   validate :budget_is_valid
   validate :end_date_is_after_start_date
 
@@ -41,12 +45,4 @@ class Project < ApplicationRecord
 
     errors.add(:end_date, 'cannot be before the start time')
   end
-
-  #   TODO Revisar - creo que la fecha de end puede ser en el pasado
-  #   validate :end_date_cannot_be_in_the_past
-  #   def end_date_cannot_be_in_the_past
-  #     if end_date.present? && end_date < Date.today
-  #       errors.add(:end_date, "can't be in the past")
-  #     end
-  #   end
 end

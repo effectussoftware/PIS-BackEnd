@@ -1,15 +1,12 @@
 class ProjectChange < ActiveRecord::Migration[6.0]
-  def up
-    change_column_null :projects, :end_date, true
+  def change
     change_column_null :projects, :description, false
-    add_column :projects, :project_state, :string, null: false
-    add_column :projects, :project_type, :string, null: false
-  end
+    change_column_null :projects, :end_date, true
 
-  def down
-    remove_column :projects, :end_date, :date
-    remove_column :projects, :description, :string
-    remove_column :projects, :project_state, :string
-    remove_column :projects, :project_type, :string
+    change_table :projects, bulk: true do |t|
+      t.string :project_state, null: false
+      t.string :project_type, null: false
+      t.index :name, unique: true
+    end
   end
 end

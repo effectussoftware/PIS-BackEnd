@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(version: 2021_09_25_141229) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "project_state", null: false
     t.string "project_type", null: false
+    t.index ["name"], name: "index_projects_on_name", unique: true
   end
 
   create_table "settings", force: :cascade do |t|
