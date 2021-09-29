@@ -37,7 +37,7 @@ module Api
 
       def project_params
         params.require(:project).permit(:name, :description, :start_date,
-                                        :project_type, :project_state)
+                                        :project_type, :project_state, :budget, :end_date)
       end
     end
   end
