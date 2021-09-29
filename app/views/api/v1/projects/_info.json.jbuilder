@@ -5,4 +5,5 @@ json.extract! project,
               :start_date,
               :end_date,
               :project_state,
-              :project_type
+              :project_type,
+              :budget
