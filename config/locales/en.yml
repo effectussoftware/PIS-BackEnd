@@ -15,7 +15,6 @@ en:
         not_found: Couldn't find the person
       project:
         not_found: Couldn't find the project
-        invalid: Project parameters are invalid -> '%{params}'
     success:
       record_delete: The person '%{name}' was deleted
       project:
