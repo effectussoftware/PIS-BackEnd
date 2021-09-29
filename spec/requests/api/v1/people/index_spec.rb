@@ -5,7 +5,7 @@ describe 'GET api/v1/people', type: :request do
 
   subject { get api_v1_people_path, headers: auth_headers, as: :json }
 
-  it 'should return sucess' do
+  it 'should return success' do
     subject
     expect(response).to have_http_status(:success)
   end

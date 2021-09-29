@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_22_235331) do
+ActiveRecord::Schema.define(version: 2021_09_25_141229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -106,12 +106,15 @@ ActiveRecord::Schema.define(version: 2021_09_22_235331) do
 
   create_table "projects", force: :cascade do |t|
     t.string "name", null: false
-    t.string "description"
+    t.string "description", null: false
     t.date "start_date", null: false
-    t.date "end_date", null: false
+    t.date "end_date"
     t.integer "budget"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "project_state", null: false
+    t.string "project_type", null: false
+    t.index ["name"], name: "index_projects_on_name", unique: true
   end
 
   create_table "settings", force: :cascade do |t|

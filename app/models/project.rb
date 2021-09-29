@@ -2,25 +2,41 @@
 #
 # Table name: projects
 #
-#  id          :bigint           not null, primary key
-#  name        :string           not null
-#  description :string
-#  start_date  :date             not null
-#  end_date    :date             not null
-#  budget      :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id            :bigint           not null, primary key
+#  name          :string           not null
+#  description   :string           not null
+#  start_date    :date             not null
+#  end_date      :date
+#  budget        :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  project_state :string           not null
+#  project_type  :string           not null
+#
+# Indexes
+#
+#  index_projects_on_name  (name) UNIQUE
 #
 class Project < ApplicationRecord
-  enum project_type: { staff_augmentation: 0, end_to_end: 1, tercerizado: 2 }
-  enum project_state: { rojo: 0, amarillo: 1, verde: 2, upcomping: 3 }
-
-  validates :name, :start_date, presence: true
-  # validates :project_type, inclusion: {in: Project.project_types.values}
-  # validates :project_state, inclusion: {in: Project.project_states.values}
+  PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
+  PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
+  validates :name, :description, :start_date, :project_type, :project_state,
+            presence: { message: 'Mandatory field missing' }
+  validates :project_type, inclusion: { in: Project::PROJECT_TYPES }
+  validates :project_state, inclusion: { in: Project::PROJECT_STATES }
+  validates :name, uniqueness: true
+  validate :budget_is_valid
   validate :end_date_is_after_start_date
 
   private
+
+  def budget_is_valid
+    return if budget.blank?
+
+    return unless budget.negative?
+
+    errors.add(:budget, 'cannot be a negative value')
+  end
 
   def end_date_is_after_start_date
     return if end_date.blank? || start_date.blank?

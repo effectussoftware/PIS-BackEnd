@@ -8,7 +8,7 @@ describe 'POST api/v1/people', type: :request do
 
   subject { post api_v1_people_path, params: params, headers: auth_headers, as: :json }
 
-  it 'should return sucess' do
+  it 'should return success' do
     subject
     expect(response).to have_http_status(:success)
   end
@@ -24,7 +24,6 @@ describe 'POST api/v1/people', type: :request do
     person_response.merge!(id: Person.maximum(:id))
     full_name = "#{person_response[:first_name]} #{person_response[:last_name]}"
     person_response.merge!(full_name: full_name)
-
     expect(json[:person]).to eq(person_response)
   end
 end

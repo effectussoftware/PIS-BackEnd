@@ -19,6 +19,8 @@ Rails.application.routes.draw do
         get :must_update, on: :collection
       end
       resources :people, only: %i[create index show update destroy]
+      resources :projects, only: %i[create index show update destroy]
+      #      resources :projects, path: '/projects'
     end
   end
 end
