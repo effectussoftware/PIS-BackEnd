@@ -9,7 +9,7 @@ describe 'PUT api/v1/people', type: :request do
 
   subject { put api_v1_person_path(person.id), params: params, headers: auth_headers, as: :json }
 
-  it 'should return sucess' do
+  it 'should return success' do
     subject
     expect(response).to have_http_status(:success)
   end

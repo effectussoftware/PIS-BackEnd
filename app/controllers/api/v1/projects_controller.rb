@@ -7,7 +7,7 @@ module Api
       end
 
       def index
-        @project = Project.all
+        @projects = Project.all
       end
 
       def show

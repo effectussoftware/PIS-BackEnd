@@ -20,19 +20,11 @@ class Project < ApplicationRecord
             presence: { message: 'Mandatory field missing' }
   validates :project_type, inclusion: { in: Project::PROJECT_TYPES }
   validates :project_state, inclusion: { in: Project::PROJECT_STATES }
-  validate :name_validation
+  validates :name, :uniqueness => true
   validate :budget_is_valid
   validate :end_date_is_after_start_date
 
   private
-
-  def name_validation
-    return if Project.find(id).name == name
-
-    return if Project.where("replace(lower(name), ' ', '') like ?",
-                            name.downcase.gsub(/\s+/, '')).blank?
-    errors.add(:name, 'already exists')
-  end
 
   def budget_is_valid
     return if budget.blank?
