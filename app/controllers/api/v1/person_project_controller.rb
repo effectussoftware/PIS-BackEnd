@@ -3,13 +3,11 @@ module Api
     class PersonProjectController < Api::V1::ApiController
       def create
         @person_project = Person.find(params[:person_id]).person_project.create!(person_project_params)
-        # render :show
-        render json: {}
-        # create
+        render :show
       end
 
       def index
-        # index
+        @person = Person.find(params[:person_id])
       end
 
       def person_project_params

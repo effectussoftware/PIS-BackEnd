@@ -21,4 +21,12 @@
 class PersonProject < ApplicationRecord
   belongs_to :person
   belongs_to :project
+
+  ROL_TYPES = %w[developer pm tester architect analyst designer].freeze
+
+  validates :person_id, :project_id, :rol, :working_hours, :working_hours_type,
+            :start_date, :end_date, presence: true
+
+  validates_uniqueness_of :person_id, scope: %i[project_id rol start_date end_date]
+  validates :rol, inclusion: { in: PersonProject::ROL_TYPES }
 end
