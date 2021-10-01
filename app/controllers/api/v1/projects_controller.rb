@@ -28,17 +28,22 @@ module Api
       end
 
       def destroy
+        destroy_alerts_from_project
         project = Project.find(params[:id])
         project.destroy!
 
         render json: { message: I18n.t('api.success.project.record_delete',
-                                       { name: project.name }) }
+        { name: project.name }) }
 
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.project.not_found') }, status: :not_found
       end
 
       private
+
+      def destroy_alerts_from_project
+        UserProject.where(project_id: params[:id]).delete_all
+      end
 
       def project_params
         params.require(:project).permit(:name, :description, :start_date,
@@ -51,10 +56,8 @@ module Api
         params[:project][:technologies]
       end
 
-      def update_alerts(a_date)
-
+      def update_alerts_from_project(a_date)
         return if a_date.blank?
-
         if (Date.parse(a_date) - Date.parse(Time.now.strftime("%Y-%m-%d"))).to_i > 7
           UserProject.where(project_id: @project.id).update_all(notify: false, isvalid: true)
         else
@@ -62,15 +65,13 @@ module Api
         end
       end
 
-      def create_alerts
-        #byebug
+      def create_alerts_from_project
         @users = User.all
         @users.each { |elem|
           UserProject.create(project_id: @project.id, user_id: elem[:id])
         }
         return if @project.end_date.blank?
-        update_alerts(@project.end_date.strftime("%Y-%m-%d"))
-
+        update_alerts_from_project(@project.end_date.strftime("%Y-%m-%d"))
       end
 
 
