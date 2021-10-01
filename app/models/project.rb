@@ -19,8 +19,12 @@
 #  index_projects_on_name  (name) UNIQUE
 #
 class Project < ApplicationRecord
+  has_many :user_projects
+  has_many :users, :through => :user_projects
+
   has_many :project_technologies, dependent: :destroy
   has_many :technologies, through: :project_technologies
+
   has_many :person_project, dependent: :destroy
   has_many :people, through: :person_project
 
