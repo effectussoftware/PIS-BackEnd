@@ -10,6 +10,7 @@ module Api
         render :show
       end
 
+
       private
 
       def auth_user
