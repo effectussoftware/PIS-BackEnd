@@ -163,6 +163,15 @@ ActiveRecord::Schema.define(version: 2021_10_16_213447) do
     t.index ["key"], name: "index_settings_on_key", unique: true
   end
 
+  create_table "user_projects", force: :cascade do |t|
+    t.boolean "notify", default: false
+    t.boolean "isvalid", default: true
+    t.integer "user_id"
+    t.integer "project_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "technologies", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
