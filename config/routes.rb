@@ -26,4 +26,9 @@ Rails.application.routes.draw do
       resources :technologies, only: %i[index show]
     end
   end
+
+  resources :messages, only: [:index, :create]
+  mount ActionCable.server => '/cable'
+
+
 end
