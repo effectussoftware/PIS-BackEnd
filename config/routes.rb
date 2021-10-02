@@ -23,4 +23,9 @@ Rails.application.routes.draw do
       #      resources :projects, path: '/projects'
     end
   end
+
+  resources :messages, only: [:index, :create]
+  mount ActionCable.server => '/cable'
+
+
 end

@@ -16,6 +16,8 @@ module App
 
     config.add_autoload_paths_to_load_path = false
 
+    config.active_record.observers = :project_observer
+
     ActionMailer::Base.smtp_settings = {
       address: 'smtp.sendgrid.net',
       authentication: :plain,
