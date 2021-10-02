@@ -12,6 +12,9 @@
 #  index_technologies_on_name  (name) UNIQUE
 #
 class Technology < ApplicationRecord
+  has_many :person_technology, dependent: :destroy
+  has_many :people, through: :person_technology
+
   validates :name, presence: true
   validates :name, uniqueness: true
   validate :name_is_downcase_and_stripped

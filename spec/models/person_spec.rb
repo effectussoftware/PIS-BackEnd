@@ -55,6 +55,44 @@ RSpec.describe Person, type: :model do
         expect(person2).not_to be_valid
         expect(person2.errors[:email]).to include('has already been taken')
       end
+
+      it 'adds new technologies' do
+        person1 = create(:person)
+        technology = Technology.find_or_create_single("Java")
+        person_technology = person1.add_technology(technology, "Senior")
+
+        expect(person_technology).not_to be_falsey
+        expect(person_technology).to be_valid
+      end
+
+      it 'updates old technologies' do
+        person = create(:person)
+        technology = Technology.find_or_create_single("Java")
+        person_technology = person.add_technology(technology, "Senior")
+
+        expect(person_technology).not_to be_falsey
+        expect(person_technology).to be_valid
+
+        person_technology = person.add_technology(technology, "Junior")
+        expect(person_technology.seniority == "Junior").to be_truthy
+
+      end
+
+      it 'has many technologies' do
+
+        person = create(:person)
+        technology1 = Technology.find_or_create_single("Java")
+        technology2 = Technology.find_or_create_single("Ruby")
+
+        person.add_technology(technology1, "Senior")
+        person.add_technology(technology2, "Senior")
+
+        expect(person.technologies.size == 2).to be_truthy
+
+        puts person.person_technology.collect.each do |p_t|
+          [p_t.technology, p_t.seniority]
+        end
+      end
     end
   end
 end

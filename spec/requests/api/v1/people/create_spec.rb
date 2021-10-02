@@ -26,4 +26,15 @@ describe 'POST api/v1/people', type: :request do
     person_response.merge!(full_name: full_name)
     expect(json[:person]).to eq(person_response)
   end
+  context 'when adding technologies' do
+    it 'correctly adds technologies' do
+      post api_v1_people_path,
+           params: params.merge!(technologies: [%w[Java senior],%w[ruby  junior], %w[python 2.0 senior]]),
+           headers: auth_headers, as: :json
+
+      expect(@response).to have_http_status :success
+      expect(json[:technologies].size).eql? 3
+    end
+
+  end
 end
