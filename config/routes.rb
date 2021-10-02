@@ -34,4 +34,9 @@ Rails.application.routes.draw do
       resources :notifications, only: %i[index update]
     end
   end
+
+  resources :messages, only: [:index, :create]
+  mount ActionCable.server => '/cable'
+
+
 end
