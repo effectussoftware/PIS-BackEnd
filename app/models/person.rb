@@ -16,6 +16,8 @@
 #  index_people_on_email  (email) UNIQUE
 #
 class Person < ApplicationRecord
+  has_many :user_person
+  has_many :people, :through => :user_people
   ROL_TYPES = %w[developer pm tester architect analyst designer].freeze
   has_many :person_technologies, dependent: :destroy
   has_many :technologies, through: :person_technologies
