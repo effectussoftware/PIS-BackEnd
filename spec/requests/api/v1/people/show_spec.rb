@@ -13,7 +13,7 @@ describe 'GET api/v1/people/:id', type: :request do
   it 'should respond proper person as JSON' do
     subject
     created_person = person.slice(:id, :first_name, :last_name, :email,
-                                  :working_hours)
+                                  :working_hours, :technologies)
     full_name = "#{created_person[:first_name]} #{created_person[:last_name]}"
     created_person.merge!(full_name: full_name)
     expect(json[:person]).to eq(created_person)

@@ -58,40 +58,31 @@ RSpec.describe Person, type: :model do
 
       it 'adds new technologies' do
         person1 = create(:person)
-        technology = Technology.find_or_create_single("Java")
-        person_technology = person1.add_technology(technology, "Senior")
+        person_technologies = person1.add_person_technologies([%w[Java senior]])
 
-        expect(person_technology).not_to be_falsey
-        expect(person_technology).to be_valid
+        expect(person_technologies).not_to be_falsey
+        person_technologies.each { |person_technology| expect(person_technology).to be_valid }
       end
 
       it 'updates old technologies' do
         person = create(:person)
-        technology = Technology.find_or_create_single("Java")
-        person_technology = person.add_technology(technology, "Senior")
+        person_technologies = person.add_person_technologies([%w[Java senior]])
 
-        expect(person_technology).not_to be_falsey
-        expect(person_technology).to be_valid
+        expect(person_technologies).not_to be_falsey
+        expect(person_technologies[0]).to be_valid
 
-        person_technology = person.add_technology(technology, "Junior")
-        expect(person_technology.seniority == "Junior").to be_truthy
+        person_technologies = person.add_person_technologies([%w[Java junior]])
+        expect(person_technologies[0].seniority == "junior").to be_truthy
 
       end
 
       it 'has many technologies' do
 
         person = create(:person)
-        technology1 = Technology.find_or_create_single("Java")
-        technology2 = Technology.find_or_create_single("Ruby")
 
-        person.add_technology(technology1, "Senior")
-        person.add_technology(technology2, "Senior")
+        person.add_person_technologies([%w[Java senior], %w[Ruby senior]])
 
         expect(person.technologies.size == 2).to be_truthy
-
-        puts person.person_technology.collect.each do |p_t|
-          [p_t.technology, p_t.seniority]
-        end
       end
     end
   end

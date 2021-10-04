@@ -21,6 +21,18 @@ class Person < ApplicationRecord
   validates :first_name, :last_name, :working_hours, presence: true
   validates :email, presence: true, uniqueness: true
 
+  def add_person_technologies(technologies)
+    return if technologies.blank? || !technologies.kind_of?(Array)
+    res = []
+    technologies.each do |tech| # tech = [nombre_tecnologia, seniority]
+      technology = Technology.find_or_create_single(tech[0])
+      res.push add_technology(technology, tech[1])
+    end
+    res
+  end
+
+  private
+
   def add_technology(technology, seniority)
     person_technology = PersonTechnology.find_by(person_id: id, technology_id: technology.id)
     if person_technology.blank?
@@ -33,4 +45,6 @@ class Person < ApplicationRecord
     end
     person_technology
   end
+
+
 end

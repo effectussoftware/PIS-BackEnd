@@ -21,7 +21,7 @@ describe 'PUT api/v1/people', type: :request do
     full_name = "#{person_update[:first_name]} #{person_update[:last_name]}"
 
     person_update_reduced = person_update.slice(:first_name, :last_name,
-                                                :working_hours, :email)
+                                                :working_hours, :email, :technologies)
     person_update_reduced.merge!(id: id, full_name: full_name)
     expect(json[:person]).to eq(person_update_reduced)
   end

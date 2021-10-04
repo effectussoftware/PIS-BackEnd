@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_02_184055) do
+ActiveRecord::Schema.define(version: 2021_10_03_220039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -115,6 +115,16 @@ ActiveRecord::Schema.define(version: 2021_10_02_184055) do
     t.index ["technology_id"], name: "index_person_technologies_on_technology_id"
   end
 
+  create_table "project_technologies", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "technology_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id", "technology_id"], name: "index_project_technologies_on_project_id_and_technology_id", unique: true
+    t.index ["project_id"], name: "index_project_technologies_on_project_id"
+    t.index ["technology_id"], name: "index_project_technologies_on_technology_id"
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string "name", null: false
     t.string "description", null: false
@@ -170,4 +180,6 @@ ActiveRecord::Schema.define(version: 2021_10_02_184055) do
   add_foreign_key "exception_hunter_errors", "exception_hunter_error_groups", column: "error_group_id"
   add_foreign_key "person_technologies", "people"
   add_foreign_key "person_technologies", "technologies"
+  add_foreign_key "project_technologies", "projects"
+  add_foreign_key "project_technologies", "technologies"
 end

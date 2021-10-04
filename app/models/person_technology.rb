@@ -19,5 +19,10 @@ class PersonTechnology < ApplicationRecord
   belongs_to :person
   belongs_to :technology
 
+  SONORITIES = %w[junior senior semi-senior].freeze
+
   validates :person_id, uniqueness: { scope: [:technology_id] }
+  validates :seniority, inclusion: { in: PersonTechnology::SONORITIES }
+
+
 end

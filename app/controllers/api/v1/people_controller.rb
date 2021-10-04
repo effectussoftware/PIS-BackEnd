@@ -2,9 +2,8 @@ module Api
   module V1
     class PeopleController < Api::V1::ApiController
       def create
-
-        @person = Person.create!(person_params)
-        add_person_technologies(@person,params[:technologies])
+        @person = Person.create(person_params)
+        @person.add_person_technologies(technologies_params)
         render :show
       end
 
@@ -20,8 +19,8 @@ module Api
 
       def update
         @person = Person.find(params[:id])
-        add_person_technologies(@person,params[:technologies])
-        @person = @person.update(person_params)
+        @person.update(person_params)
+        @person.add_person_technologies(technologies_params)
         render :show
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.person.not_found') }, status: :not_found
@@ -37,28 +36,23 @@ module Api
 
       private
 
-      def add_person_technologies(person,technologies)
-        return person if technologies.blank? || technologies.kind_of?(Array)
-        technologies.each do |tech| # tech = [nombre_tecnologia, seniority]
-          technology = Technology.find_or_create_single(tech[0])
-          person.add_technology(technology, tech[1])
-        end
-      end
-
       def person_params
         params.require(:person).permit(:first_name, :last_name, :email,
-                                       :working_hours, :technologies)
+                                       :working_hours)
+      end
+      def technologies_params
+        params.require(:person)[:technologies]
+      end
 =begin
         person: {
           ...
             "technologies":[
-                            {"technology":"Java", "seniority":"senior"},
-                            {"technology":"ruby", "seniority":"junior"}
+                            [Java", "senior"],
+                            ["ruby", "junior"]
             ]
           ...
         }
 =end
-      end
     end
   end
 end

@@ -18,6 +18,9 @@
 #  index_projects_on_name  (name) UNIQUE
 #
 class Project < ApplicationRecord
+  has_many :project_technologies, dependent: :destroy
+  has_many :technologies, through: :project_technologies
+
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
   validates :name, :description, :start_date, :project_type, :project_state,
@@ -44,5 +47,14 @@ class Project < ApplicationRecord
     return unless end_date < start_date
 
     errors.add(:end_date, 'cannot be before the start time')
+  end
+
+
+  def add_technology(technology)
+    project_technology = self.project_technologies.find_by technology_id: technology.id
+    if project_technology.blank?
+      project_technology = self.project_technologies.create(person_id: id, technology_id: technology.id)
+    end
+    project_technology
   end
 end
