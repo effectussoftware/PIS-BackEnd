@@ -2,7 +2,7 @@ module Api
   module V1
     class PeopleController < Api::V1::ApiController
       def create
-        @person = Person.create(person_params)
+        @person = Person.create!(person_params)
         @person.add_person_technologies(technologies_params)
         render :show
       end
@@ -19,7 +19,7 @@ module Api
 
       def update
         @person = Person.find(params[:id])
-        @person.update(person_params)
+        @person.update!(person_params)
         @person.add_person_technologies(technologies_params)
         render :show
       rescue ActiveRecord::RecordNotFound
@@ -40,19 +40,18 @@ module Api
         params.require(:person).permit(:first_name, :last_name, :email,
                                        :working_hours)
       end
+
       def technologies_params
         params.require(:person)[:technologies]
       end
-=begin
-        person: {
-          ...
-            "technologies":[
-                            [Java", "senior"],
-                            ["ruby", "junior"]
-            ]
-          ...
-        }
-=end
+      #         person: {
+      #           ...
+      #             "technologies":[
+      #                             [Java", "senior"],
+      #                             ["ruby", "junior"]
+      #             ]
+      #           ...
+      #         }
     end
   end
 end

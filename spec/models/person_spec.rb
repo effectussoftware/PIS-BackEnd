@@ -72,12 +72,10 @@ RSpec.describe Person, type: :model do
         expect(person_technologies[0]).to be_valid
 
         person_technologies = person.add_person_technologies([%w[Java junior]])
-        expect(person_technologies[0].seniority == "junior").to be_truthy
-
+        expect(person_technologies[0].seniority == 'junior').to be_truthy
       end
 
       it 'has many technologies' do
-
         person = create(:person)
 
         person.add_person_technologies([%w[Java senior], %w[Ruby senior]])

@@ -31,6 +31,23 @@ class Project < ApplicationRecord
   validate :budget_is_valid
   validate :end_date_is_after_start_date
 
+  def add_project_technologies(technologies)
+    return if technologies.nil? || !technologies.is_a?(Array)
+
+    res = []
+    technologies.each do |tech| # tech = [nombre_tecnologia, seniority]
+      project_technology = add_technology(self, tech)
+      project_technologies << project_technology
+      res.push project_technology
+    end
+    res
+  end
+
+  def rebuild_project_technologies(technologies)
+    project_technologies.destroy_all
+    add_project_technologies(technologies)
+  end
+
   private
 
   def budget_is_valid
@@ -47,14 +64,5 @@ class Project < ApplicationRecord
     return unless end_date < start_date
 
     errors.add(:end_date, 'cannot be before the start time')
-  end
-
-
-  def add_technology(technology)
-    project_technology = self.project_technologies.find_by technology_id: technology.id
-    if project_technology.blank?
-      project_technology = self.project_technologies.create(person_id: id, technology_id: technology.id)
-    end
-    project_technology
   end
 end

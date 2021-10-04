@@ -25,4 +25,13 @@ describe 'PUT api/v1/people', type: :request do
     person_update_reduced.merge!(id: id, full_name: full_name)
     expect(json[:person]).to eq(person_update_reduced)
   end
+
+  context 'when updating technologies' do
+    #     TODO: Pasar el test de proyecto update aca
+    #
+  end
+
+  context 'when patching technologies' do
+    #     TODO: Pasar el test de proyecto update aca
+  end
 end

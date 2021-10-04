@@ -15,36 +15,21 @@
 #  index_people_on_email  (email) UNIQUE
 #
 class Person < ApplicationRecord
-  has_many :person_technology, dependent: :destroy
-  has_many :technologies, through: :person_technology
+  has_many :person_technologies, dependent: :destroy
+  has_many :technologies, through: :person_technologies
 
   validates :first_name, :last_name, :working_hours, presence: true
   validates :email, presence: true, uniqueness: true
 
   def add_person_technologies(technologies)
-    return if technologies.blank? || !technologies.kind_of?(Array)
+    return if technologies.blank? || !technologies.is_a?(Array)
+
     res = []
     technologies.each do |tech| # tech = [nombre_tecnologia, seniority]
-      technology = Technology.find_or_create_single(tech[0])
-      res.push add_technology(technology, tech[1])
+      person_technology = add_technology(id, tech[0], tech[1])
+      person_technologies << person_technology
+      res.push person_technology
     end
     res
   end
-
-  private
-
-  def add_technology(technology, seniority)
-    person_technology = PersonTechnology.find_by(person_id: id, technology_id: technology.id)
-    if person_technology.blank?
-      person_technology = PersonTechnology.create(person_id: id, technology_id: technology.id, seniority: seniority)
-    else
-      person_technology.update(seniority: seniority)
-      # person_technology.seniority = seniority
-      # person_technology.save
-      # PersonTechnology.update(id: person_technology.id, seniority: seniority)
-    end
-    person_technology
-  end
-
-
 end

@@ -19,4 +19,16 @@ class ProjectTechnology < ApplicationRecord
   belongs_to :technology
 
   validates :project_id, uniqueness: { scope: [:technology_id] }
+
+  def self.add_technology(project_id, technology_name)
+    technology = Technology.find_or_create_single(technology_name)
+    technology_id = technology.id
+    project_technology = ProjectTechnology.find_by project_id: project_id,
+                                                   technology_id: technology_id
+    if project_technology.blank?
+      project_technology = ProjectTechnology.create!(project_id: project_id,
+                                                     technology_id: technology_id)
+    end
+    project_technology
+  end
 end

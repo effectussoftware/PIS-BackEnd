@@ -28,4 +28,16 @@ describe 'POST api/v1/projects', type: :request do
     expect(json[:project][:project_type]).to eq(project.project_type)
     expect(json[:project][:project_state]).to eq(project.project_state)
   end
+  context 'when adding technologies' do
+    it 'correctly adds technologies' do
+      post api_v1_projects_path,
+           params: { project:
+                       (params[:project].as_json.merge! technologies:
+                                                          ['Java', 'ruby', 'python 2.0', 'psql']) },
+           headers: auth_headers, as: :json
+
+      expect(@response).to have_http_status :success
+      expect(json[:project][:technologies].size).to eq 4
+    end
+  end
 end

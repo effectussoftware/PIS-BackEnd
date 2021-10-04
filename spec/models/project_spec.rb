@@ -60,5 +60,15 @@ RSpec.describe Project, type: :model do
         expect(project).to be_valid
       end
     end
+
+    context 'when a project is created' do
+      it 'correctly adds technologies' do
+        project = create(:project)
+        project_technologies = project.add_project_technologies(%w[ruby rails psql])
+
+        expect(project_technologies).not_to be_falsey
+        expect(project_technologies.size).eql? 3
+      end
+    end
   end
 end
