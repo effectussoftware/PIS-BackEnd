@@ -31,4 +31,12 @@ class ProjectTechnology < ApplicationRecord
     end
     project_technology
   end
+
+  def self.add_project_technologies(project_id, technologies)
+    res = []
+    technologies.each do |tech|
+      res.push ProjectTechnology.add_technology(project_id, tech)
+    end
+    res
+  end
 end

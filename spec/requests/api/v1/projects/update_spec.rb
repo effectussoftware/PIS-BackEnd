@@ -61,7 +61,7 @@ describe 'PUT api/v1/projects', type: :request do
 
       latter_technologies = %w[ruby react psql]
       patch api_v1_project_path(project[:id]),
-            params: { project: { technologies: latter_technologies } },
+            params: { project: project_update.as_json.merge!(technologies: latter_technologies) },
             headers: auth_headers, as: :json
       expect(json[:project][:technologies].size).to eq 3
       json[:project][:technologies].each do |tech|

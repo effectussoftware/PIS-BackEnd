@@ -24,18 +24,26 @@ class PersonTechnology < ApplicationRecord
   validates :person_id, uniqueness: { scope: [:technology_id] }
   validates :seniority, inclusion: { in: PersonTechnology::SONORITIES }
 
-  def add_technology(person_id, technology_name, seniority)
+  def self.add_technology(person_id, technology_name, seniority)
     technology = Technology.find_or_create_single(technology_name)
     technology_id = technology.id
-    person_technology = person_technologies.find_by(person_id: person_id,
-                                                    technology_id: technology_id)
+    person_technology = find_by(person_id: person_id,
+                                technology_id: technology_id)
     if person_technology.blank?
-      person_technology = person_technologies.create!(person_id: person_id,
-                                                      technology_id: technology_id,
-                                                      seniority: seniority)
+      person_technology = create!(person_id: person_id,
+                                  technology_id: technology_id,
+                                  seniority: seniority)
     else
       person_technology.update!(seniority: seniority)
     end
     person_technology
+  end
+
+  def self.add_person_technologies(id_person, technologies)
+    res = []
+    technologies.each do |tech| # tech = [nombre_tecnologia, seniority]
+      res.push PersonTechnology.add_technology(id_person, tech[0], tech[1])
+    end
+    res
   end
 end

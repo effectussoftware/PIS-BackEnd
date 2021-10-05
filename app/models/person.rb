@@ -24,12 +24,13 @@ class Person < ApplicationRecord
   def add_person_technologies(technologies)
     return if technologies.blank? || !technologies.is_a?(Array)
 
-    res = []
-    technologies.each do |tech| # tech = [nombre_tecnologia, seniority]
-      person_technology = add_technology(id, tech[0], tech[1])
-      person_technologies << person_technology
-      res.push person_technology
-    end
+    res = PersonTechnology.add_person_technologies(id, technologies)
+    res.each { |p_t| person_technologies << p_t }
     res
+  end
+
+  def rebuild_person_technologies(technologies)
+    person_technologies.destroy_all
+    add_person_technologies(technologies)
   end
 end

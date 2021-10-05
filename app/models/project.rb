@@ -32,14 +32,10 @@ class Project < ApplicationRecord
   validate :end_date_is_after_start_date
 
   def add_project_technologies(technologies)
-    return if technologies.nil? || !technologies.is_a?(Array)
+    return if technologies.blank? || !technologies.is_a?(Array)
 
-    res = []
-    technologies.each do |tech| # tech = [nombre_tecnologia, seniority]
-      project_technology = add_technology(self, tech)
-      project_technologies << project_technology
-      res.push project_technology
-    end
+    res = ProjectTechnology.add_project_technologies(id, technologies)
+    res.each { |p_t| project_technologies << p_t }
     res
   end
 

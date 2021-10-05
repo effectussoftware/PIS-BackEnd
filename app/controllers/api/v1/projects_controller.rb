@@ -20,7 +20,7 @@ module Api
       def update
         @project = Project.find(params[:id])
         @project.update!(project_params)
-
+        update_technologies
         render :show
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.project.not_found') }, status: :not_found
