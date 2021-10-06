@@ -12,6 +12,7 @@
 #  updated_at    :datetime         not null
 #  project_state :string           not null
 #  project_type  :string           not null
+#  organization  :string
 #
 # Indexes
 #
@@ -26,5 +27,6 @@ FactoryBot.define do
     budget { 1 }
     project_type  { Project::PROJECT_TYPES.sample }
     project_state { Project::PROJECT_STATES.sample }
+    organization { 'FING' }
   end
 end

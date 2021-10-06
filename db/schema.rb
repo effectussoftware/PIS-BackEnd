@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_03_220039) do
+ActiveRecord::Schema.define(version: 2021_10_06_035031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(version: 2021_10_03_220039) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "project_state", null: false
     t.string "project_type", null: false
+    t.string "organization"
     t.index ["name"], name: "index_projects_on_name", unique: true
   end
 

@@ -12,6 +12,7 @@
 #  updated_at    :datetime         not null
 #  project_state :string           not null
 #  project_type  :string           not null
+#  organization  :string
 #
 # Indexes
 #
@@ -23,7 +24,7 @@ class Project < ApplicationRecord
 
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
-  validates :name, :description, :start_date, :project_type, :project_state,
+  validates :name, :description, :start_date, :project_type, :project_state, :organization,
             presence: { message: 'Mandatory field missing' }
   validates :project_type, inclusion: { in: Project::PROJECT_TYPES }
   validates :project_state, inclusion: { in: Project::PROJECT_STATES }
