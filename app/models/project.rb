@@ -24,8 +24,8 @@ class Project < ApplicationRecord
 
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
-  validates :name, :description, :start_date, :project_type, :project_state, :organization,
-            presence: { message: 'Mandatory field missing' }
+  validates :name, :description, :start_date, :project_type, :project_state,
+            presence: { message: I18n.t('api.errors.project.missing_param', {value}) }
   validates :project_type, inclusion: { in: Project::PROJECT_TYPES }
   validates :project_state, inclusion: { in: Project::PROJECT_STATES }
   validates :name, uniqueness: true
