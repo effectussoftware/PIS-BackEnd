@@ -33,16 +33,18 @@ class PersonTechnology < ApplicationRecord
       person_technology = create!(person_id: person_id,
                                   technology_id: technology_id,
                                   seniority: seniority)
+      return person_technology
     else
       person_technology.update!(seniority: seniority)
     end
-    person_technology
+    nil
   end
 
   def self.add_person_technologies(id_person, technologies)
     res = []
     technologies.each do |tech| # tech = [nombre_tecnologia, seniority]
-      res.push PersonTechnology.add_technology(id_person, tech[0], tech[1])
+      new_tech = PersonTechnology.add_technology(id_person, tech[0], tech[1])
+      res.push new_tech unless new_tech.nil?
     end
     res
   end

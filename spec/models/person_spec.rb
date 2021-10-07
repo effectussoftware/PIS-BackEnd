@@ -55,7 +55,9 @@ RSpec.describe Person, type: :model do
         expect(person2).not_to be_valid
         expect(person2.errors[:email]).to include('has already been taken')
       end
+    end
 
+    context 'when adding technologies' do
       it 'adds new technologies' do
         person1 = create(:person)
         person_technologies = person1.add_person_technologies([%w[Java senior]])
@@ -71,8 +73,11 @@ RSpec.describe Person, type: :model do
         expect(person_technologies).not_to be_falsey
         expect(person_technologies[0]).to be_valid
 
-        person_technologies = person.add_person_technologies([%w[Java junior]])
-        expect(person_technologies[0].seniority == 'junior').to be_truthy
+        person.add_person_technologies([%w[Java junior]])
+        java = Technology.find_by name: 'java'
+        expect(person.person_technologies.find_by(
+          technology_id: java.id
+        ).seniority == 'junior').to be_truthy
       end
 
       it 'has many technologies' do
@@ -81,6 +86,19 @@ RSpec.describe Person, type: :model do
         person.add_person_technologies([%w[Java senior], %w[Ruby senior]])
 
         expect(person.technologies.size == 2).to be_truthy
+      end
+
+      it 'it destroys its technologies' do
+        person = create(:person)
+
+        person.add_person_technologies([%w[Java senior], %w[Ruby senior]])
+        expect(person.technologies.size == 2).to be_truthy
+
+        person_id = person.id
+
+        person.destroy!
+
+        expect(PersonTechnology.find_by(person_id: person_id)).to be_nil
       end
     end
   end

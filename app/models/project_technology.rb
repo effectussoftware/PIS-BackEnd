@@ -28,14 +28,17 @@ class ProjectTechnology < ApplicationRecord
     if project_technology.blank?
       project_technology = ProjectTechnology.create!(project_id: project_id,
                                                      technology_id: technology_id)
+      return project_technology
     end
-    project_technology
+    nil
   end
 
+  # Retorna solo las nuevas
   def self.add_project_technologies(project_id, technologies)
     res = []
     technologies.each do |tech|
-      res.push ProjectTechnology.add_technology(project_id, tech)
+      new_tech = ProjectTechnology.add_technology(project_id, tech)
+      res.push new_tech unless new_tech.nil?
     end
     res
   end
