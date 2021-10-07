@@ -94,12 +94,6 @@ ActiveRecord::Schema.define(version: 2021_10_16_213447) do
     t.index ["error_group_id"], name: "index_exception_hunter_errors_on_error_group_id"
   end
 
-  create_table "messages", force: :cascade do |t|
-    t.string "content"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "people", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "last_name", null: false
@@ -180,7 +174,7 @@ ActiveRecord::Schema.define(version: 2021_10_16_213447) do
 
   create_table "user_projects", force: :cascade do |t|
     t.boolean "notify", default: false
-    t.boolean "isvalid", default: true
+    t.boolean "is_valid", default: true
     t.integer "user_id"
     t.integer "project_id"
     t.datetime "created_at", precision: 6, null: false
