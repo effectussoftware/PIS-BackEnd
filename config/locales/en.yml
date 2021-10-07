@@ -15,7 +15,7 @@ en:
         not_found: Couldn't find the person
       project:
         not_found: Couldn't find the project
-        missing_param: '%{value}' is required
+        missing_param: The value '%{value}' is required
     success:
       project:
         record_delete: The project '%{name}' was deleted
