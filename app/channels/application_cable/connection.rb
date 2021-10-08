@@ -13,7 +13,7 @@ module ApplicationCable
       reject_unauthorized_connection unless user&.valid_token?(token, client)
 
       self.current_user = user
-      # params[:current_user] = user
+      # params[:current_user] = user.uid
 
       # TODO: Pasar el mensaje que se envia al i18t
       WebChannel.send_message(user, 'test') if user.check_alerts?
