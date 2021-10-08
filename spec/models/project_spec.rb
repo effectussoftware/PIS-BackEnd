@@ -60,5 +60,67 @@ RSpec.describe Project, type: :model do
         expect(project).to be_valid
       end
     end
+
+    context 'when adding technologies' do
+      it 'correctly adds technologies' do
+        project = create(:project)
+        project_technologies = project.add_project_technologies(%w[ruby rails psql])
+
+        expect(project_technologies).not_to be_falsey
+        expect(project.project_technologies.size).to eq 3
+      end
+
+      it 'adds new technologies' do
+        project = create(:project)
+        project.add_project_technologies(%w[ruby rails])
+
+        project_technologies = project.project_technologies
+        expect(project_technologies).not_to be_falsey
+        expect(project_technologies.size).to eq 2
+        project_technologies.each { |project_technology| expect(project_technology).to be_valid }
+
+        project.add_project_technologies(%w[psql])
+        project_technologies = project.project_technologies
+        expect(project_technologies.size).to eq 3
+
+        expect('psql'.in?(project.technologies.collect(&:name))).to be_truthy
+      end
+
+      it 'wont have repeated technologies' do
+        project = create(:project)
+        project.add_project_technologies(%w[java ruby])
+
+        project_technologies = project.project_technologies
+        expect(project_technologies).not_to be_falsey
+        expect(project_technologies[0]).to be_valid
+        expect(project_technologies.size).to eq 2
+
+        project.add_project_technologies(%w[java])
+        project_technologies = project.project_technologies
+        expect(project_technologies.size).to eq 2
+      end
+
+      it 'has many technologies' do
+        project = create(:project)
+
+        project.add_project_technologies(%w[java ruby])
+
+        expect(project.technologies.size == 2).to be_truthy
+      end
+
+      it 'destroys its technologies' do
+        project = create(:project)
+
+        project.add_project_technologies(%w[java ruby])
+
+        expect(project.technologies.size == 2).to be_truthy
+
+        project_id = project.id
+
+        project.destroy!
+
+        expect(ProjectTechnology.find_by(project_id: project_id)).to be_nil
+      end
+    end
   end
 end

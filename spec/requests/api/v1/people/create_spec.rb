@@ -20,10 +20,25 @@ describe 'POST api/v1/people', type: :request do
   it 'should respond proper person as JSON' do
     subject
     person_response = person.slice(:first_name, :last_name, :working_hours,
-                                   :email)
+                                   :email, :technologies)
     person_response.merge!(id: Person.maximum(:id))
     full_name = "#{person_response[:first_name]} #{person_response[:last_name]}"
     person_response.merge!(full_name: full_name)
     expect(json[:person]).to eq(person_response)
+  end
+
+  context 'when adding technologies' do
+    it 'correctly adds technologies' do
+      post api_v1_people_path,
+           params: { person: params[:person].as_json.merge!(technologies: [
+                                                              %w[Java senior],
+                                                              %w[ruby junior],
+                                                              %w[python\ 2.0 senior]
+                                                            ]) },
+           headers: auth_headers, as: :json
+
+      expect(@response).to have_http_status :success
+      expect(json[:person][:technologies].size).equal? 3
+    end
   end
 end

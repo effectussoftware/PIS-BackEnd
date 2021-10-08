@@ -18,6 +18,9 @@
 #  index_projects_on_name  (name) UNIQUE
 #
 class Project < ApplicationRecord
+  has_many :project_technologies, dependent: :destroy
+  has_many :technologies, through: :project_technologies
+
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
   validates :name, :description, :start_date, :project_type, :project_state,
@@ -27,6 +30,19 @@ class Project < ApplicationRecord
   validates :name, uniqueness: true
   validate :budget_is_valid
   validate :end_date_is_after_start_date
+
+  def add_project_technologies(technologies)
+    return if technologies.blank? || !technologies.is_a?(Array)
+
+    res = ProjectTechnology.add_project_technologies(id, technologies)
+    res.each { |p_t| project_technologies << p_t }
+    res
+  end
+
+  def rebuild_project_technologies(technologies)
+    project_technologies.destroy_all
+    add_project_technologies(technologies)
+  end
 
   private
 

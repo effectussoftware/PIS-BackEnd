@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       resources :people, only: %i[create index show update destroy]
       resources :projects, only: %i[create index show update destroy]
       #      resources :projects, path: '/projects'
+      resources :technologies, only: %i[index show]
     end
   end
 end
