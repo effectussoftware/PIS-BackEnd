@@ -15,10 +15,6 @@ class ProjectObserver < ActiveRecord::Observer
     }
     if update_alerts_from_project(project)
       ActionCable.server.broadcast("web", {'Data' => 'A Project is coming to an end'})
-      #WebChannel.broadcast_to(
-      #  self.current_user,
-      #  'A Project is coming to an end'
-      #)
     end
   end
 
