@@ -15,6 +15,7 @@
 #
 # Indexes
 #
+#  index_person_project                 (person_id,project_id,rol,start_date,end_date) UNIQUE
 #  index_person_projects_on_person_id   (person_id)
 #  index_person_projects_on_project_id  (project_id)
 #

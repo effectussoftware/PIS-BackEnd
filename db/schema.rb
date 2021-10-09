@@ -116,6 +116,8 @@ ActiveRecord::Schema.define(version: 20_211_006_035_031) do
     t.date 'end_date'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.index %w[person_id project_id rol start_date end_date],
+            name: 'index_person_project', unique: true
     t.index ['person_id'], name: 'index_person_projects_on_person_id'
     t.index ['project_id'], name: 'index_person_projects_on_project_id'
   end

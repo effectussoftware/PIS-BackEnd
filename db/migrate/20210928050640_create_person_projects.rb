@@ -10,6 +10,8 @@ class CreatePersonProjects < ActiveRecord::Migration[6.0]
       t.date :end_date
 
       t.timestamps
+      t.index %i[person_id project_id rol start_date end_date], name: :index_person_project,
+                                                                unique: true
     end
   end
 end
