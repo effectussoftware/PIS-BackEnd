@@ -12,6 +12,7 @@
 #  updated_at    :datetime         not null
 #  project_state :string           not null
 #  project_type  :string           not null
+#  organization  :string
 #
 # Indexes
 #

@@ -14,6 +14,7 @@ en:
       person:
         not_found: Couldn't find the person
       project:
+        missing_param: The value '%{value}' is required
         not_found: Couldn't find the project
     success:
       project:
