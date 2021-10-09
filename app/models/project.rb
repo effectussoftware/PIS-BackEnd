@@ -72,6 +72,6 @@ class Project < ApplicationRecord
 
     return unless end_date < start_date
 
-    errors.add(:end_date, 'cannot be before the start time')
+    errors.add(:end_date, I18n.t('api.errors.end_date_before_start_date'))
   end
 end

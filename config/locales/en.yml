@@ -18,6 +18,7 @@ en:
         not_found: Couldn't find the project
       person_project:
         not_found: Couldn't find the person on the project
+      end_date_before_start_date: Cannot be before the start time
     success:
       project:
         record_delete: The project '%{name}' was deleted
