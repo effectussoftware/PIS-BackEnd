@@ -22,10 +22,10 @@ FactoryBot.define do
   factory :person_project do
     person { nil }
     project { nil }
-    rol { "MyString" }
+    rol { 'MyString' }
     working_hours { 1 }
-    working_hours_type { "MyString" }
-    start_date { "2021-09-28" }
-    end_date { "2021-09-28" }
+    working_hours_type { 'MyString' }
+    start_date { '2021-09-28' }
+    end_date { '2021-09-28' }
   end
 end
