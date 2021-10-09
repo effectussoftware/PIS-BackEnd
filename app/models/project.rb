@@ -24,13 +24,20 @@ class Project < ApplicationRecord
 
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
-  validates :name, presence: { message: I18n.t('api.errors.project.missing_param', { value: :name }) }
-  validates :description, presence: { message: I18n.t('api.errors.project.missing_param', { value: :description }) }
-  validates :start_date, presence: { message: I18n.t('api.errors.project.missing_param', { value: :start_date }) }
+  validates :name, presence: { message: I18n.t('api.errors.project.missing_param',
+                                               { value: :name }) }
+  validates :description,
+            presence: { message: I18n.t('api.errors.project.missing_param',
+                                        { value: :description }) }
+  validates :start_date,
+            presence: { message: I18n.t('api.errors.project.missing_param',
+                                        { value: :start_date }) }
   validates :project_type, inclusion: { in: Project::PROJECT_TYPES },
-              presence: { message: I18n.t('api.errors.project.missing_param', { value: :project_type }) }
+                           presence: { message: I18n.t('api.errors.project.missing_param',
+                                                       { value: :project_type }) }
   validates :project_state, inclusion: { in: Project::PROJECT_STATES },
-              presence: { message: I18n.t('api.errors.project.missing_param', { value: :project_state }) }
+                            presence: { message: I18n.t('api.errors.project.missing_param',
+                                                        { value: :project_state }) }
   validates :name, uniqueness: true
   validate :budget_is_valid
   validate :end_date_is_after_start_date
