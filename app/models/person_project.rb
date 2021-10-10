@@ -23,6 +23,9 @@ class PersonProject < ApplicationRecord
   belongs_to :person
   belongs_to :project
 
+  delegate :first_name, to: :person, prefix: true
+  delegate :name, to: :project, prefix: true
+
   ROL_TYPES = %w[developer pm tester architect analyst designer].freeze
 
   validates :person_id, :project_id, :rol, :working_hours, :working_hours_type,

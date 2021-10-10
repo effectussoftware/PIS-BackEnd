@@ -25,12 +25,11 @@ module Api
       end
 
       def destroy
-        person_project = PersonProject.find(params[:id])
-        person_project.destroy!
+        person_project = PersonProject.find(params[:id]).destroy!
         render json: { message: I18n.t('api.success.person_project.record_delete',
                                        { rol: person_project.rol,
-                                         person_name: person_project.person.first_name,
-                                         project_name: person_project.project.name }) }
+                                         person_name: person_project.person_first_name,
+                                         project_name: person_project.project_name }) }
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.person_project.not_found') }, status: :not_found
       end
