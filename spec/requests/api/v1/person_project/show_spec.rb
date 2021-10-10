@@ -25,7 +25,8 @@ describe 'GET api/v1/person_project/:id', type: :request do
     expect(json[:person_project][:person][:last_name]).to eq(person.last_name)
     expect(json[:person_project][:person][:email]).to eq(person.email)
     expect(json[:person_project][:person][:working_hours]).to eq(person.working_hours)
-    expect(json[:person_project][:person][:full_name]).to eq("#{person.first_name} #{person.last_name}")
+    full_name = "#{person.first_name} #{person.last_name}"
+    expect(json[:person_project][:person][:full_name]).to eq(full_name)
     expect(json[:person_project][:project][:id]).to eq(project.id)
     expect(json[:person_project][:project][:name]).to eq(project.name)
     expect(json[:person_project][:project][:description]).to eq(project.description)

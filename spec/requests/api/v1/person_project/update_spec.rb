@@ -39,8 +39,9 @@ describe 'PUT api/v1/person_project', type: :request do
     response_body = person_project_update.attributes.merge(person: person_reduced,
                                                            project: project_reduced)
     # remove created_at, updated_at
-    response_reduced = response_body.symbolize_keys.slice(:id, :rol, :working_hours, :working_hours_type, :start_date, :end_date,
-                                                          :person, :project)
+    response_reduced = response_body.symbolize_keys.slice(:id, :rol, :working_hours,
+                                                          :working_hours_type, :start_date,
+                                                          :end_date, :person, :project)
     # set id
     response_reduced[:id] = person_project.id
     # format dates
