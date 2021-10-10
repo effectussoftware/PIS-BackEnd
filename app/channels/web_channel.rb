@@ -9,15 +9,10 @@ class WebChannel < ApplicationCable::Channel
     stop_all_streams
   end
 
-  def self.send_message(uid)
-
+  def self.send_message(user_stream)
     self.broadcast_to(
-      User.find_by(email: uid),
+      user_stream,
       data: 'A project is coming to an end'
     )
   end
-
 end
-
-
-
