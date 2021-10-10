@@ -104,6 +104,21 @@ ActiveRecord::Schema.define(version: 2021_10_06_035031) do
     t.index ["email"], name: "index_people_on_email", unique: true
   end
 
+  create_table "person_projects", force: :cascade do |t|
+    t.bigint "person_id", null: false
+    t.bigint "project_id", null: false
+    t.string "rol"
+    t.integer "working_hours"
+    t.string "working_hours_type"
+    t.date "start_date"
+    t.date "end_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["person_id", "project_id", "rol", "start_date", "end_date"], name: "index_person_project", unique: true
+    t.index ["person_id"], name: "index_person_projects_on_person_id"
+    t.index ["project_id"], name: "index_person_projects_on_project_id"
+  end
+
   create_table "person_technologies", force: :cascade do |t|
     t.bigint "person_id", null: false
     t.bigint "technology_id", null: false
@@ -179,6 +194,8 @@ ActiveRecord::Schema.define(version: 2021_10_06_035031) do
   end
 
   add_foreign_key "exception_hunter_errors", "exception_hunter_error_groups", column: "error_group_id"
+  add_foreign_key "person_projects", "people"
+  add_foreign_key "person_projects", "projects"
   add_foreign_key "person_technologies", "people"
   add_foreign_key "person_technologies", "technologies"
   add_foreign_key "project_technologies", "projects"

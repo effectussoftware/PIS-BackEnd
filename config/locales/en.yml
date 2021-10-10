@@ -7,16 +7,21 @@ en:
       welcome: Welcome to your first admin
   api:
     errors:
+      end_date_before_start_date: Cannot be before the start time
       invalid_content_type: Invalid content type header
       missing_param: A required param is missing
       needs_password_reset: You need to reset your password before continue
       not_found: Couldn't find the record
       person:
         not_found: Couldn't find the person
+      person_project:
+        not_found: Couldn't find the person on the project
       project:
         missing_param: The value '%{value}' is required
         not_found: Couldn't find the project
     success:
+      person_project:
+        record_delete: The '%{rol}' rol was deleted for '%{person_name}' on the '%{project_name}' project
       project:
         record_delete: The project '%{name}' was deleted
       record_delete: The person '%{name}' was deleted

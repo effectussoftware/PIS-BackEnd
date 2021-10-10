@@ -23,7 +23,7 @@ detectors:
     allow_calls: []
   FeatureEnvy:
     enabled: true
-    exclude: []
+    exclude: ["PersonProjectController#destroy"]
   InstanceVariableAssumption:
     enabled: false
   IrresponsibleModule:
