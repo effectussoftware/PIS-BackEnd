@@ -26,11 +26,15 @@ class PersonProject < ApplicationRecord
   ROL_TYPES = %w[developer pm tester architect analyst designer].freeze
 
   validates :person_id, :project_id, :rol, :working_hours, :working_hours_type,
-            :start_date, :end_date, presence: true
+            :start_date, presence: true
 
   validates :person_id, uniqueness: { scope: %i[project_id rol start_date end_date] }
   validates :rol, inclusion: { in: PersonProject::ROL_TYPES }
   validate :end_date_is_after_start_date
+
+  before_validation :set_end_date
+
+  private
 
   def end_date_is_after_start_date
     return if end_date.blank? || start_date.blank?
@@ -38,5 +42,9 @@ class PersonProject < ApplicationRecord
     return unless end_date < start_date
 
     errors.add(:end_date, I18n.t('api.errors.end_date_before_start_date'))
+  end
+
+  def set_end_date
+    self.end_date = Project.find(project_id).end_date if end_date.blank?
   end
 end
