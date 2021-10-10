@@ -14,7 +14,7 @@ class ProjectObserver < ActiveRecord::Observer
       UserProject.create(project_id: project.id, user_id: elem[:id])
     }
     if update_alerts_from_project(project)
-      ActionCable.server.broadcast("web", {'Data' => 'A Project is coming to an end'})
+      ActionCable.server.broadcast "web_channel", content: 'A Project is coming to an end'
     end
   end
 
