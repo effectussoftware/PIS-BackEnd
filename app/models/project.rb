@@ -18,7 +18,7 @@
 #  index_projects_on_name  (name) UNIQUE
 #
 class Project < ApplicationRecord
-  has_many :user_projects
+  has_many :user_projects, dependent: :destroy
   has_many :users, :through => :user_projects
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
