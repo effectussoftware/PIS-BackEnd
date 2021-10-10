@@ -25,7 +25,7 @@ module Api
       end
 
       def destroy
-        person_project = PersonProject.includes(:person, :project).find(params[:id])
+        person_project = PersonProject.find(params[:id])
         person_project.destroy!
         render json: { message: I18n.t('api.success.person_project.record_delete',
                                        { rol: person_project.rol,
