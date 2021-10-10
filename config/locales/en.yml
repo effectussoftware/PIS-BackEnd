@@ -14,12 +14,10 @@ en:
       not_found: Couldn't find the record
       person:
         not_found: Couldn't find the person
-      project:
-        missing_param: The value '%{value}' is required
-        not_found: Couldn't find the project
       person_project:
         not_found: Couldn't find the person on the project
       project:
+        missing_param: The value '%{value}' is required
         not_found: Couldn't find the project
     success:
       person_project:
