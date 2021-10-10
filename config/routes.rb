@@ -19,8 +19,9 @@ Rails.application.routes.draw do
         get :must_update, on: :collection
       end
       resources :people, only: %i[create index show update destroy] do
-        resources :person_project, shallow: true
+        resources :person_project, shallow: true, only: :create
       end
+      resources :person_project, only: %i[index show update destroy]
       resources :projects, only: %i[create index show update destroy]
       resources :technologies, only: %i[index show]
     end
