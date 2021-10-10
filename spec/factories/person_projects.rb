@@ -21,12 +21,14 @@
 #
 FactoryBot.define do
   factory :person_project do
-    person { nil }
-    project { nil }
+    person { 1 }
+    project { 1 }
     rol { 'developer' }
     working_hours { 3 }
     working_hours_type { 'daily' }
-    start_date { '2021-09-28' }
-    end_date { '2021-09-28' }
+    start_date do
+      Time.now.in_time_zone('America/Montevideo').to_date
+    end
+    end_date { 1.year.after.to_date }
   end
 end
