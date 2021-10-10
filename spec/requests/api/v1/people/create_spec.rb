@@ -33,7 +33,7 @@ describe 'POST api/v1/people', type: :request do
            params: { person: params[:person].as_json.merge!(technologies: [
                                                               %w[Java senior],
                                                               %w[ruby junior],
-                                                              %w[python\ 2.0 senior]
+                                                              ['python 2.0', 'senior']
                                                             ]) },
            headers: auth_headers, as: :json
 

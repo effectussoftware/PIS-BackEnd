@@ -25,8 +25,8 @@ describe 'PUT api/v1/person_project', type: :request do
     # remove created_at, updated_at
     person_reduced = person.slice(:id, :first_name, :last_name, :email, :working_hours)
     # remove created_at, updated_at
-    project_reduced = project.slice(:id, :name, :organization, :description, :start_date, :end_date, :budget,
-                                    :project_state, :project_type)
+    project_reduced = project.slice(:id, :name, :organization, :description, :start_date, :end_date,
+                                    :budget, :project_state, :project_type)
     # format dates
     project_reduced[:start_date] = project[:start_date].strftime('%F')
     project_reduced[:end_date] = project[:end_date].strftime('%F')
