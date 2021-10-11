@@ -1,3 +1,3 @@
-json.people do
-  json.array! @people, partial: 'info', as: :person
+json.notifications do
+  json.array! @notification, partial: 'info', as: :notificaction
 end
