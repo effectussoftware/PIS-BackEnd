@@ -30,10 +30,9 @@
 #
 
 class User < ApplicationRecord
-  has_many :user_projects
-  has_many :projects , :through => :user_projects
-
-  has_many :people , :through => :user_people
+  has_many :alerts
+  # has_many :projects , :through => :user_projects
+  # has_many :people , :through => :user_people
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -62,6 +61,28 @@ class User < ApplicationRecord
       user.password = Devise.friendly_token[0, 20]
       user.assign_attributes user_params.except('id')
     end
+  end
+
+  def get_notifications
+    res = []
+    alerts.each do |a|
+      res.push(a.get_notification) if a.notifies?
+    end
+    res
+    # return User.joins(:user_projects).find_by(email: uid)
+  end
+
+  def update_notification(id,alert_type)
+    if alert_type == 'project'
+      alert = Project.join(:user_project).where(project_id: id).where(user_id: user.id)
+      alert.update_notification(false,false)
+    end
+  end
+
+  # Metodo que corre al conectarse un usuario al channel
+  def check_alerts
+    WebChannel.send_message(self)
+    alerts.each { |a| a.check_alert }
   end
 
   private

@@ -30,6 +30,7 @@ class Project < ApplicationRecord
 
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado hibrido].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
+
   validates :name, presence: { message: I18n.t('api.errors.missing_param') }
   validates :description,
             presence: { message: I18n.t('api.errors.missing_param') }
@@ -82,6 +83,24 @@ class Project < ApplicationRecord
   def rebuild_project_technologies(technologies)
     project_technologies.destroy_all
     add_project_technologies(technologies)
+  end
+
+=begin
+    Para cada alerta hago lo siguiente:
+    Si ya falta menos de 7 dias, la alerta ya esta activa y no se actualiza (solo se notifica si corresponde)
+    Si faltan 7 dias o mas se debe verificar que la alerta este en estado correcto, se ejecuta actualizar_estado
+=end
+  def check_alerts(actual_date)
+    return if end_date.blank?
+    days_difference = (end_date - actual_date)
+    user_projects.each do |up|
+      if days_difference < 7
+        up.check_alert
+      else
+        up.update_alert(days_difference == 7)
+      end
+    end
+
   end
 
   private

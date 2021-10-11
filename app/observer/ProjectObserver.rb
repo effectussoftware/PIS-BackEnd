@@ -22,10 +22,10 @@ class ProjectObserver < ActiveRecord::Observer
 
   def update_alerts_from_project(project)
     if !project.end_date.blank? && (project.end_date - Date.parse(Time.now.strftime("%Y-%m-%d"))).to_i <= 7
-      UserProject.where(project_id: project.id).update_all(notify: true, is_valid: true)
+      UserProject.where(project_id: project.id).update_all(notification_active: true, not_seen: true)
       true
     else
-      UserProject.where(project_id: project.id).update_all(notify: false, is_valid: true)
+      UserProject.where(project_id: project.id).update_all(notification_active: false, not_seen: true)
       false
     end
   end
