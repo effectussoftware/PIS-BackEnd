@@ -22,12 +22,18 @@ gem 'puma', '~> 5.3'
 gem 'pundit', '~> 2.1'
 gem 'rack-cors', '~> 1.0', '>= 1.0.6'
 gem 'rails-observers'
+gem 'redis'
+gem 'redis-rails'
 gem 'sendgrid', '~> 1.2.4'
+gem 'sidekiq'
+gem "sidekiq-cron"
+gem 'sidekiq-scheduler'
 gem 'sprockets', '~> 3.7.2'
 gem 'webpacker', '~> 5.1', '>= 5.1.1'
+#gem 'whenever', require: false
 gem 'yaaf', '~> 0.1'
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
+# gem 'redis', '~> 6.0.2'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
