@@ -13,8 +13,13 @@ class Alert < ApplicationRecord
 
   # Metodo que se llama cuando se actualiza el objeto que alerta
   def update_alert(notifies)
-    # TODO: Revisar que sean distintos antes de cambiar
-    self.update(notification_active: notifies, not_seen: true)
+    if notification_active != notifies
+      self.update(notification_active: notifies, not_seen: true)
+    end
+    check_alert
+  end
+
+  def check_alert
     return unless notifies
     WebChannel.send_message(user)
   end
