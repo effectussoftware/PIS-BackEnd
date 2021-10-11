@@ -22,7 +22,7 @@ class Project < ApplicationRecord
   has_many :user_projects, dependent: :destroy
   has_many :users, through: :user_projects
 
-  has_many :project_technologies, dependent: :destroy
+has_many :project_technologies, dependent: :destroy
   has_many :technologies, through: :project_technologies
 
   has_many :person_project, dependent: :destroy
@@ -187,6 +187,24 @@ class Project < ApplicationRecord
     user_projects.each do |up|
       up.update_alert(notifies)
     end
+  end
+
+=begin
+    Para cada alerta hago lo siguiente:
+    Si ya falta menos de 7 dias, la alerta ya esta activa y no se actualiza (solo se notifica si corresponde)
+    Si faltan 7 dias o mas se debe verificar que la alerta este en estado correcto, se ejecuta actualizar_estado
+=end
+  def check_alerts(actual_date)
+    return if end_date.blank?
+    days_difference = (end_date - actual_date)
+    user_projects.each do |up|
+      if days_difference < 7
+        up.check_alert
+      else
+        up.update_alert(days_difference == 7)
+      end
+    end
+
   end
 
   private

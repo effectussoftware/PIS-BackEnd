@@ -1,3 +1,4 @@
+
 class WebChannel < ApplicationCable::Channel
   # Nota: Aca se pueden implementar metodos o "actions" los cuales
   #   un usuario conectado puede invocar a traves de la conexion, enviando
