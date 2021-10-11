@@ -28,7 +28,6 @@ module Api
       end
 
       def destroy
-        destroy_alerts_from_project
         project = Project.find(params[:id])
         project.destroy!
 
@@ -40,10 +39,6 @@ module Api
       end
 
       private
-
-      def destroy_alerts_from_project
-        UserProject.where(project_id: params[:id]).delete_all
-      end
 
       def project_params
         params.require(:project).permit(:name, :description, :start_date,
