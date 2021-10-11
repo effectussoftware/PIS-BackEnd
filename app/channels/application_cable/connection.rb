@@ -9,9 +9,6 @@ module ApplicationCable
 
       user = find_verified_user token, uid, client
       self.current_user = user
-
-      # Al conectarme verifico no tener notificaciones pendientes
-      user.check_alerts
     end
 
     private
