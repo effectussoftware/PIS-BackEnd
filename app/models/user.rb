@@ -81,8 +81,9 @@ class User < ApplicationRecord
 
   # Metodo que corre al conectarse un usuario al channel
   def check_alerts
-    WebChannel.send_message(self)
-    alerts.each { |a| a.check_alert }
+    active_notification = false
+    alerts.each { |a| active_notification |= a.notifies? }
+    active_notification
   end
 
   private
