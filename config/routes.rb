@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       end
       resources :people, only: %i[create index show update destroy]
       resources :projects, only: %i[create index show update destroy]
-      #      resources :projects, path: '/projects'
+      resources :notifications, only: %i[index update]
     end
   end
 

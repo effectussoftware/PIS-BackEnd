@@ -20,8 +20,10 @@
 class Project < ApplicationRecord
   has_many :user_projects, dependent: :destroy
   has_many :users, :through => :user_projects
+
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
+
   validates :name, :description, :start_date, :project_type, :project_state,
             presence: { message: 'Mandatory field missing' }
   validates :project_type, inclusion: { in: Project::PROJECT_TYPES }
@@ -29,6 +31,24 @@ class Project < ApplicationRecord
   validates :name, uniqueness: true
   validate :budget_is_valid
   validate :end_date_is_after_start_date
+
+=begin
+    Para cada alerta hago lo siguiente:
+    Si ya falta menos de 7 dias, la alerta ya esta activa y no se actualiza (solo se notifica si corresponde)
+    Si faltan 7 dias o mas se debe verificar que la alerta este en estado correcto, se ejecuta actualizar_estado
+=end
+  def check_alerts(actual_date)
+    return if end_date.blank?
+    days_difference = (end_date - actual_date)
+    user_projects.each do |up|
+      if days_difference < 7
+        up.check_alert
+      else
+        up.update_alert(days_difference == 7)
+      end
+    end
+
+  end
 
   private
 

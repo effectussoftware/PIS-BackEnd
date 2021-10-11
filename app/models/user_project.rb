@@ -13,7 +13,11 @@
 class UserProject < Alert
   belongs_to :project
 
-  # def get_notification
-  # puts "metodo de user project"
-  #end
+  def get_notification
+    {id: project.id,name: project.name,end_date: project.end_date, type: 'project'}
+  end
+
+  def update_notification(val1, val2)
+    UserProject.update(notification_update: val1, not_seen: val2)
+  end
 end

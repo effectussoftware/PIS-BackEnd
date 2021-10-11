@@ -1,13 +1,17 @@
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
-    identified_by :current_user, :broadcast_channel
+    identified_by :current_user
 
     def connect
       client = request.params[:client]
       uid = request.params[:uid]
       token = request.params[:token]
 
-      self.current_user = find_verified_user token, uid, client
+      user = find_verified_user token, uid, client
+      self.current_user = user
+
+      # Al conectarme verifico no tener notificaciones pendientes
+      user.check_alerts
     end
 
     private

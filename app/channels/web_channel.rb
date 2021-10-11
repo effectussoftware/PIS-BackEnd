@@ -1,3 +1,4 @@
+
 class WebChannel < ApplicationCable::Channel
 
   def subscribed
@@ -12,7 +13,7 @@ class WebChannel < ApplicationCable::Channel
   def self.send_message(user_stream)
     self.broadcast_to(
       user_stream,
-      data: 'A project is coming to an end'
+      data: 'You have pending notifications'
     )
   end
 end
