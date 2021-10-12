@@ -8,8 +8,7 @@ module Api
       end
 
       def index
-        # FIXME: Arreglar 'eager loading detected' para person_project
-        @people = Person.includes(:projects).references(:projects).group('projects.id', 'people.id')
+        @people = Person.includes(:projects, :person_project)
       end
 
       def show
