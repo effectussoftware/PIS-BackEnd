@@ -13,10 +13,10 @@ class WebChannel < ApplicationCable::Channel
     stop_all_streams
   end
 
-  def self.send_message(user)
+  def self.send_message(user, message)
     self.broadcast_to(
       user,
-      data: 'You have pending notifications'
+      data: message
     )
   end
 end

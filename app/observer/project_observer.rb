@@ -3,7 +3,7 @@ class ProjectObserver < ActiveRecord::Observer
     old_date = Project.find(updated_project.id).end_date
     new_date = updated_project.end_date
     return if old_date == new_date
-    updated_project.check_alerts(DateTime.new.to_date)
+    updated_project.check_alerts
 
     # movi esto para Proyect
     # if update_alerts_from_project(updated_project)

@@ -72,10 +72,13 @@ class User < ApplicationRecord
     # return User.joins(:user_projects).find_by(email: uid)
   end
 
-  def update_notification(id,alert_type)
+  def update_notification(alert_id,alert_type)
     if alert_type == 'project'
-      alert = Project.join(:user_project).where(project_id: id).where(user_id: user.id)
-      alert.update_notification(false,false)
+      #alert = UserProject.where(project_id: id).where(user_id: self.id)
+      byebug
+      alert = alerts.find_by(id: alert_id, alert_type: alert_type)
+
+      alert.see_notification
     end
   end
 
