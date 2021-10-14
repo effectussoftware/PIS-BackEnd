@@ -3,7 +3,7 @@ module Api
     class NotificationsController < Api::V1::ApiController
       def index
         uid = params[:uid]
-        user = User.find_by(email: uid)
+        user = User.find_by(email: uid) #
         @notifications = user.get_notifications
         render :index
       end
