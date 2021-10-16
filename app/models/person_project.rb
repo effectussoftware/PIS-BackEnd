@@ -26,13 +26,11 @@ class PersonProject < ApplicationRecord
   delegate :first_name, to: :person, prefix: true
   delegate :name, to: :project, prefix: true
 
-  ROL_TYPES = %w[developer pm tester architect analyst designer].freeze
-
   validates :person_id, :project_id, :rol, :working_hours, :working_hours_type,
             :start_date, presence: true
 
   validates :person_id, uniqueness: { scope: %i[project_id rol start_date end_date] }
-  validates :rol, inclusion: { in: PersonProject::ROL_TYPES }
+  validates :rol, inclusion: { in: Person::ROL_TYPES }
   validate :end_date_is_after_start_date
 
   before_validation :set_end_date

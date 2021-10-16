@@ -9,6 +9,7 @@
 #  working_hours :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  roles         :text             default([]), is an Array
 #
 # Indexes
 #
@@ -45,6 +46,16 @@ RSpec.describe Person, type: :model do
 
       it 'has invalid working hours' do
         person.working_hours = ''
+        expect(person).not_to be_valid
+      end
+
+      it 'has empty roles' do
+        person.roles = []
+        expect(person).not_to be_valid
+      end
+
+      it 'has invalid roles' do
+        person.roles = ['pepe']
         expect(person).not_to be_valid
       end
 

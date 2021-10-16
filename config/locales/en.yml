@@ -14,6 +14,7 @@ en:
       not_found: Couldn't find the record
       person:
         not_found: Couldn't find the person
+        roles_in_list: Invalid role
       person_project:
         not_found: Couldn't find the person on the project
       project:

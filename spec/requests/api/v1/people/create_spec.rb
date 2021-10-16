@@ -20,7 +20,7 @@ describe 'POST api/v1/people', type: :request do
   it 'should respond proper person as JSON' do
     subject
     person_response = person.slice(:first_name, :last_name, :working_hours,
-                                   :email, :technologies)
+                                   :email, :technologies, :roles)
     person_response.merge!(id: Person.maximum(:id))
     full_name = "#{person_response[:first_name]} #{person_response[:last_name]}"
     person_response.merge!(full_name: full_name)
