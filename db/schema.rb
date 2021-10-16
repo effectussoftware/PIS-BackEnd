@@ -101,10 +101,8 @@ ActiveRecord::Schema.define(version: 2021_10_16_213447) do
     t.integer "working_hours"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "rol_id"
     t.text "roles", default: [], array: true
     t.index ["email"], name: "index_people_on_email", unique: true
-    t.index ["rol_id"], name: "index_people_on_rol_id"
   end
 
   create_table "person_projects", force: :cascade do |t|
@@ -157,14 +155,6 @@ ActiveRecord::Schema.define(version: 2021_10_16_213447) do
     t.index ["name"], name: "index_projects_on_name", unique: true
   end
 
-  create_table "rols", force: :cascade do |t|
-    t.bigint "person_id", null: false
-    t.string "rol"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["person_id"], name: "index_rols_on_person_id"
-  end
-
   create_table "settings", force: :cascade do |t|
     t.string "key", null: false
     t.string "value"
@@ -211,5 +201,4 @@ ActiveRecord::Schema.define(version: 2021_10_16_213447) do
   add_foreign_key "person_technologies", "technologies"
   add_foreign_key "project_technologies", "projects"
   add_foreign_key "project_technologies", "technologies"
-  add_foreign_key "rols", "people"
 end
