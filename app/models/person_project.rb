@@ -5,7 +5,7 @@
 #  id                 :bigint           not null, primary key
 #  person_id          :bigint           not null
 #  project_id         :bigint           not null
-#  rol                :string
+#  role               :string
 #  working_hours      :integer
 #  working_hours_type :string
 #  start_date         :date
@@ -15,7 +15,7 @@
 #
 # Indexes
 #
-#  index_person_project                 (person_id,project_id,rol,start_date,end_date) UNIQUE
+#  index_person_project                 (person_id,project_id,role,start_date,end_date) UNIQUE
 #  index_person_projects_on_person_id   (person_id)
 #  index_person_projects_on_project_id  (project_id)
 #
@@ -26,18 +26,25 @@ class PersonProject < ApplicationRecord
   delegate :first_name, to: :person, prefix: true
   delegate :name, to: :project, prefix: true
 
-  ROL_TYPES = %w[developer pm tester architect analyst designer].freeze
-
-  validates :person_id, :project_id, :rol, :working_hours, :working_hours_type,
+  validates :person_id, :project_id, :role, :working_hours, :working_hours_type,
             :start_date, presence: true
 
-  validates :person_id, uniqueness: { scope: %i[project_id rol start_date end_date] }
-  validates :rol, inclusion: { in: PersonProject::ROL_TYPES }
+  validates :person_id, uniqueness: { scope: %i[project_id role start_date end_date],
+                                      message: I18n.t('api.errors.person_project.already_added') }
+  validates :role, inclusion: { in: Person::ROL_TYPES }
   validate :end_date_is_after_start_date
+  validate :person_have_the_rol
 
   before_validation :set_end_date
 
   private
+
+  def person_have_the_rol
+    person_roles = Person.find(person_id).roles
+    return if person_roles.include?(role)
+
+    errors.add(:role, I18n.t('api.errors.person_project.person_without_rol'))
+  end
 
   def end_date_is_after_start_date
     return if end_date.blank? || start_date.blank?

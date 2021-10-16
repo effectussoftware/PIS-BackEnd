@@ -5,7 +5,7 @@ describe 'PUT api/v1/person_project', type: :request do
   let!(:project) { create(:project) }
   let!(:person_project) { create(:person_project, person: person, project: project) }
   let!(:person_project_update) do
-    build(:person_project, person: person, project: project, rol: 'tester')
+    build(:person_project, person: person, project: project, role: 'developer')
   end
   let!(:params) do
     { person_project: person_project_update }
@@ -23,7 +23,7 @@ describe 'PUT api/v1/person_project', type: :request do
 
   it 'should respond proper person as JSON' do
     # remove created_at, updated_at
-    person_reduced = person.slice(:id, :first_name, :last_name, :email, :working_hours)
+    person_reduced = person.slice(:id, :first_name, :last_name, :email, :working_hours, :roles)
     # remove created_at, updated_at
     project_reduced = project.slice(:id, :name, :organization, :description, :start_date, :end_date,
                                     :budget, :project_state, :project_type)
@@ -39,7 +39,7 @@ describe 'PUT api/v1/person_project', type: :request do
     response_body = person_project_update.attributes.merge(person: person_reduced,
                                                            project: project_reduced)
     # remove created_at, updated_at
-    response_reduced = response_body.symbolize_keys.slice(:id, :rol, :working_hours,
+    response_reduced = response_body.symbolize_keys.slice(:id, :role, :working_hours,
                                                           :working_hours_type, :start_date,
                                                           :end_date, :person, :project)
     # set id

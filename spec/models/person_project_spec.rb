@@ -5,7 +5,7 @@
 #  id                 :bigint           not null, primary key
 #  person_id          :bigint           not null
 #  project_id         :bigint           not null
-#  rol                :string
+#  role               :string
 #  working_hours      :integer
 #  working_hours_type :string
 #  start_date         :date
@@ -15,7 +15,7 @@
 #
 # Indexes
 #
-#  index_person_project                 (person_id,project_id,rol,start_date,end_date) UNIQUE
+#  index_person_project                 (person_id,project_id,role,start_date,end_date) UNIQUE
 #  index_person_projects_on_person_id   (person_id)
 #  index_person_projects_on_project_id  (project_id)
 #
@@ -38,8 +38,8 @@ RSpec.describe PersonProject, type: :model do
         expect(person_project).not_to be_valid
       end
 
-      it 'has invalid rol' do
-        person_project.rol = ''
+      it 'has invalid role' do
+        person_project.role = ''
         expect(person_project).not_to be_valid
       end
 
@@ -58,11 +58,11 @@ RSpec.describe PersonProject, type: :model do
         expect(person_project).not_to be_valid
       end
 
-      it 'validate the uniqueness of rol, project_id, person_id, start_date, end_date' do
+      it 'validate the uniqueness of role, project_id, person_id, start_date, end_date' do
         person_project1 = create(:person_project, person: person, project: project)
         expect(person_project1).to be_valid
         person_project2 = build(:person_project, person: person, project: project,
-                                                 rol: person_project1.rol)
+                                                 role: person_project1.role)
         expect(person_project2).not_to be_valid
         person_project2 = build(:person_project, person: person, project: project,
                                                  project_id: person_project1.project_id)

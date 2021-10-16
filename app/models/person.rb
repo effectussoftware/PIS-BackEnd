@@ -9,12 +9,16 @@
 #  working_hours :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  rol_id        :bigint
+#  roles         :text             default([]), is an Array
 #
 # Indexes
 #
-#  index_people_on_email  (email) UNIQUE
+#  index_people_on_email   (email) UNIQUE
+#  index_people_on_rol_id  (rol_id)
 #
 class Person < ApplicationRecord
+  ROL_TYPES = %w[developer pm tester architect analyst designer].freeze
   has_many :person_technologies, dependent: :destroy
   has_many :technologies, through: :person_technologies
   has_many :person_project, dependent: :destroy
@@ -22,6 +26,8 @@ class Person < ApplicationRecord
 
   validates :first_name, :last_name, :working_hours, presence: true
   validates :email, presence: true, uniqueness: true
+  validates :roles, presence: true
+  validate :check_roles_array, if: -> { roles.any? }
 
   def add_person_technologies(technologies)
     return if technologies.blank? || !technologies.is_a?(Array)
@@ -34,5 +40,11 @@ class Person < ApplicationRecord
   def rebuild_person_technologies(technologies)
     person_technologies.destroy_all
     add_person_technologies(technologies)
+  end
+
+  def check_roles_array
+    return if roles.all? { |role| ROL_TYPES.include?(role) }
+
+    errors.add(:roles, I18n.t('api.errors.person.roles_in_list'))
   end
 end

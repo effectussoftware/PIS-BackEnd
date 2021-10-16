@@ -1,1 +1,1 @@
-json.extract! date, :id, :rol, :start_date, :end_date
+json.extract! date, :id, :role, :start_date, :end_date

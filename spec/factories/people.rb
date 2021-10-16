@@ -9,10 +9,13 @@
 #  working_hours :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  rol_id        :bigint
+#  roles         :text             default([]), is an Array
 #
 # Indexes
 #
-#  index_people_on_email  (email) UNIQUE
+#  index_people_on_email   (email) UNIQUE
+#  index_people_on_rol_id  (rol_id)
 #
 FactoryBot.define do
   factory :person do
@@ -20,5 +23,6 @@ FactoryBot.define do
     last_name { Faker::Name.unique.last_name }
     email { Faker::Internet.unique.email }
     working_hours { 36 }
+    roles { %w[developer pm] }
   end
 end

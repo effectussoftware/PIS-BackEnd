@@ -15,7 +15,7 @@ describe 'GET api/v1/person_project/:id', type: :request do
   it 'should respond proper project as JSON' do
     subject
     expect(json[:person_project][:id]).to eq(PersonProject.maximum(:id))
-    expect(json[:person_project][:rol]).to eq(person_project.rol)
+    expect(json[:person_project][:role]).to eq(person_project.role)
     expect(json[:person_project][:working_hours]).to eq(person_project.working_hours)
     expect(json[:person_project][:working_hours_type]).to eq(person_project.working_hours_type)
     expect(json[:person_project][:start_date]).to eq(person_project.start_date.strftime('%F'))
