@@ -17,12 +17,14 @@ en:
         roles_in_list: Invalid role
       person_project:
         not_found: Couldn't find the person on the project
+        person_without_rol: Person does not have the role
+        already_added: The role with those dates already exists for the person on this project
       project:
         missing_param: The value '%{value}' is required
         not_found: Couldn't find the project
     success:
       person_project:
-        record_delete: The '%{rol}' rol was deleted for '%{person_name}' on the '%{project_name}' project
+        record_delete: The '%{role}' role was deleted for '%{person_name}' on the '%{project_name}' project
       project:
         record_delete: The project '%{name}' was deleted
       record_delete: The person '%{name}' was deleted

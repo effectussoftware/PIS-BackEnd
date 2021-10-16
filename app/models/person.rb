@@ -9,11 +9,13 @@
 #  working_hours :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  rol_id        :bigint
 #  roles         :text             default([]), is an Array
 #
 # Indexes
 #
-#  index_people_on_email  (email) UNIQUE
+#  index_people_on_email   (email) UNIQUE
+#  index_people_on_rol_id  (rol_id)
 #
 class Person < ApplicationRecord
   ROL_TYPES = %w[developer pm tester architect analyst designer].freeze
@@ -41,7 +43,7 @@ class Person < ApplicationRecord
   end
 
   def check_roles_array
-    return if roles.all? { |rol| ROL_TYPES.include?(rol) }
+    return if roles.all? { |role| ROL_TYPES.include?(role) }
 
     errors.add(:roles, I18n.t('api.errors.person.roles_in_list'))
   end

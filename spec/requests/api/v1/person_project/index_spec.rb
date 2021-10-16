@@ -5,7 +5,7 @@ describe 'GET api/v1/person_project', type: :request do
   let!(:project) { create(:project) }
   let!(:person_project1) { create(:person_project, person: person, project: project) }
   let!(:person_project2) do
-    create(:person_project, person: person, project: project, rol: 'tester')
+    create(:person_project, person: person, project: project, role: 'pm')
   end
 
   subject do
@@ -32,12 +32,12 @@ describe 'GET api/v1/person_project', type: :request do
     expect(dates.length).to eq(2)
     date0 = dates[0]
     expect(date0[:id]).to eq(person_project1.id)
-    expect(date0[:rol]).to eq(person_project1.rol)
+    expect(date0[:role]).to eq(person_project1.role)
     expect(date0[:start_date]).to eq(person_project1.start_date.strftime('%F'))
     expect(date0[:end_date]).to eq(person_project1.end_date.strftime('%F'))
     date1 = dates[1]
     expect(date1[:id]).to eq(person_project2.id)
-    expect(date1[:rol]).to eq(person_project2.rol)
+    expect(date1[:role]).to eq(person_project2.role)
     expect(date1[:start_date]).to eq(person_project2.start_date.strftime('%F'))
     expect(date1[:end_date]).to eq(person_project2.end_date.strftime('%F'))
   end

@@ -26,7 +26,7 @@ module Api
       def destroy
         person_project = PersonProject.find(params[:id]).destroy!
         render json: { message: I18n.t('api.success.person_project.record_delete',
-                                       { rol: person_project.rol,
+                                       { role: person_project.role,
                                          person_name: person_project.person_first_name,
                                          project_name: person_project.project_name }) }
       rescue ActiveRecord::RecordNotFound
@@ -36,12 +36,12 @@ module Api
       private
 
       def person_project_params
-        params.require(:person_project).permit(:project_id, :rol, :working_hours,
+        params.require(:person_project).permit(:project_id, :role, :working_hours,
                                                :working_hours_type, :start_date, :end_date)
       end
 
       def update_person_project_params
-        params.require(:person_project).permit(:rol, :working_hours,
+        params.require(:person_project).permit(:role, :working_hours,
                                                :working_hours_type, :start_date, :end_date)
       end
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_16_200518) do
+ActiveRecord::Schema.define(version: 2021_10_16_213447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -110,14 +110,14 @@ ActiveRecord::Schema.define(version: 2021_10_16_200518) do
   create_table "person_projects", force: :cascade do |t|
     t.bigint "person_id", null: false
     t.bigint "project_id", null: false
-    t.string "rol"
+    t.string "role"
     t.integer "working_hours"
     t.string "working_hours_type"
     t.date "start_date"
     t.date "end_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["person_id", "project_id", "rol", "start_date", "end_date"], name: "index_person_project", unique: true
+    t.index ["person_id", "project_id", "role", "start_date", "end_date"], name: "index_person_project", unique: true
     t.index ["person_id"], name: "index_person_projects_on_person_id"
     t.index ["project_id"], name: "index_person_projects_on_project_id"
   end
