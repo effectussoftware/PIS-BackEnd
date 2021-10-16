@@ -1,0 +1,46 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "a1da9d5bbfba0cd88981b9653238d197c45a39ac6b6a964c3e1cd9bc2b152b3b",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/api/v1/person_project_controller.rb",
+      "line": 44,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:person_project).permit(:role, :working_hours, :working_hours_type, :start_date, :end_date)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Api::V1::PersonProjectController",
+        "method": "update_person_project_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "note": "This is disabled due this role is the role of the person in the project"
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "bd737997a4af345d0b15874898f5d1ced393cb17e378eccc49e9e511776dad8e",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/api/v1/person_project_controller.rb",
+      "line": 39,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:person_project).permit(:project_id, :role, :working_hours, :working_hours_type, :start_date, :end_date)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Api::V1::PersonProjectController",
+        "method": "person_project_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "note": "This is disabled due this role is the role of the person in the project"
+    }
+  ],
+  "updated": "2021-10-16 19:30:10 -0300",
+  "brakeman_version": "4.8.2"
+}
