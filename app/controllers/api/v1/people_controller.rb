@@ -29,7 +29,8 @@ module Api
       def destroy
         user = Person.find(params[:id])
         user.destroy!
-        render json: { message: I18n.t('api.success.person.record_delete', { name: user.first_name }) }
+        render json: { message: I18n.t('api.success.person.record_delete',
+                                       { name: user.first_name }) }
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.person.not_found') }, status: :not_found
       end
