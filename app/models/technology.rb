@@ -22,7 +22,7 @@ class Technology < ApplicationRecord
   def name_is_downcase_and_stripped
     return if name == name.downcase.strip
 
-    errors.add(:name, 'has to be downcase and stripped')
+    errors.add(:name, I18n.t('api.errors.technology.error_name'))
   end
 
   # Es importante usar una de las dos find_or_create en vez del create

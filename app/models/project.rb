@@ -64,7 +64,7 @@ class Project < ApplicationRecord
 
     return unless budget.negative?
 
-    errors.add(:budget, 'cannot be a negative value')
+    errors.add(:budget, I18n.t('api.errors.project.invalid_budget'))
   end
 
   def end_date_is_after_start_date
@@ -72,6 +72,6 @@ class Project < ApplicationRecord
 
     return unless end_date < start_date
 
-    errors.add(:end_date, I18n.t('api.errors.end_date_before_start_date'))
+    errors.add(:end_date, I18n.t('api.errors.project.end_date_before_start_date'))
   end
 end

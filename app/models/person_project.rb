@@ -51,7 +51,7 @@ class PersonProject < ApplicationRecord
 
     return unless end_date < start_date
 
-    errors.add(:end_date, I18n.t('api.errors.end_date_before_start_date'))
+    errors.add(:end_date, I18n.t('api.errors.project.end_date_before_start_date'))
   end
 
   def set_end_date
