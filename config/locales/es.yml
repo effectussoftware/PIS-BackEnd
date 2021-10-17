@@ -19,16 +19,16 @@ es:
         not_found: No se pudo encontrar la persona en el proyecto
         person_without_rol: La persona no tiene el rol
       project:
-        missing_param: El parámetro '%{value}' es requerido
-        not_found: No se pudo encontrar el proyecto
         end_date_before_start_date: La fecha de fin no puede ser anterior a la fecha de inicio
         invalid_budget: El budget no puede tener un valor negativo
+        missing_param: El parámetro '%{value}' es requerido
+        not_found: No se pudo encontrar el proyecto
       technology:
         error_name: El nombre debe estar en minusculas y sin espacios
     success:
+      person:
+        record_delete: La persona '%{name}' fue borrada
       person_project:
         record_delete: El rol '%{role}' fue borrado de la persona '%{person_name}' en el proyecto '%{project_name}'
       project:
         record_delete: El proyecto '%{name}' fue borrado
-      person:  
-        record_delete: La persona '%{name}' fue borrada
