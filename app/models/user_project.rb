@@ -17,7 +17,8 @@ class UserProject < Alert
     {id: project.id,name: project.name,end_date: project.end_date, type: 'project'}
   end
 
-  def update_notification(val1, val2)
-    UserProject.update(notification_update: val1, not_seen: val2)
+  def cron_alert
+    return unless self.not_seen
+    self.update(notification_active: true)
   end
 end

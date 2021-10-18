@@ -75,8 +75,8 @@ class User < ApplicationRecord
   def update_notification(alert_id,alert_type)
     if alert_type == 'project'
       #alert = UserProject.where(project_id: id).where(user_id: self.id)
-      byebug
-      alert = alerts.find_by(id: alert_id, alert_type: alert_type)
+
+      alert = UserProject.find_by(id: alert_id)
 
       alert.see_notification
     end

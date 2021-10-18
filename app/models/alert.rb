@@ -12,7 +12,6 @@ class Alert < ApplicationRecord
 
   # Metodo que se llama cuando se actualiza el objeto que alerta
   def update_alert(notifies)
-    #byebug
     if notification_active != notifies
       self.update(notification_active: notifies, not_seen: true)
     end
@@ -28,5 +27,14 @@ class Alert < ApplicationRecord
     self.update(not_seen: false)
   end
 
+  def get_alert(id, alert_type)
+    if alert_type == "project"
+      up = UserProject.find(id)
+      up.get_notification
+    elsif alert_type == "person"
+      up = UserProject.find(id)
+      up.get_notification
+    end
+  end
 
 end

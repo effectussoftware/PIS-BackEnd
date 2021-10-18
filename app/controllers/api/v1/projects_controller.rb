@@ -20,6 +20,7 @@ module Api
         @project = Project.find(params[:id])
         # -> ProjectObserver.before_update(params[:id],params[:end_date])
         @project.update!(project_params)
+        @project.update_alerts
         render :show
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.project.not_found') }, status: :not_found
