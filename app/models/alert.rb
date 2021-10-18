@@ -34,17 +34,6 @@ class Alert < ApplicationRecord
     update(not_seen: false)
   end
 
-  # Get alert
-  def self.alert(id, alert_type)
-    case alert_type
-    when 'project'
-      UserProject.find(id)
-      # up = UserProject.find(id)
-      # up.obtain_notifications TODO ver si mover
-    when 'person'
-      # type code here
-    end
-  end
 
   def obtain_notification
     raise NoMethodError 'Unimplemented method' # TODO: Mover mensaje a locale
