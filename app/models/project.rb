@@ -195,14 +195,13 @@ has_many :project_technologies, dependent: :destroy
     Si faltan 7 dias o mas se debe verificar que la alerta este en estado correcto, se ejecuta actualizar_estado
 =end
   def check_alerts
-    actual_date = DateTime.new.to_date
+    #actual_date = DateTime.new.to_date
     return if end_date.blank?
-    days_difference = (end_date - actual_date)
+    #days_difference = (end_date - actual_date)
     user_projects.each do |up|
-      if days_difference < 7
+      if notifies?
+        up.cron_alert
         up.check_alert
-      else
-        up.update_alert(notifies?)
       end
     end
   end
@@ -214,7 +213,7 @@ has_many :project_technologies, dependent: :destroy
 
   def notifies?
     return false if end_date.blank?
-    (end_date - DateTime.now.to_date < 7.days)
+    (end_date - DateTime.now.to_date).to_i < 7
   end
   
   private
