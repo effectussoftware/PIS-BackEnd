@@ -47,7 +47,7 @@ module App
     config.middleware.use ActionDispatch::Flash
     config.middleware.use Rack::MethodOverride
 
-    # Change language of devise
-    config.i18n.default_locale = :es
+    # Set default locale
+    config.i18n.default_locale = :en
   end
 end
