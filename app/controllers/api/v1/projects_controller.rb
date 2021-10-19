@@ -8,11 +8,11 @@ module Api
       end
 
       def index
-        @projects = Project.all
+        @projects = Project.includes(:people, :person_project).all
       end
 
       def show
-        @project = Project.find(params[:id])
+        @project = Project.includes(:people, :person_project).find(params[:id])
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.project.not_found') }, status: :not_found
       end

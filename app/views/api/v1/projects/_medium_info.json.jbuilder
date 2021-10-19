@@ -8,6 +8,3 @@ json.extract! project,
               :project_type,
               :budget,
               :organization
-json.people do
-  json.array! project.people, partial: 'api/v1/people/short_info', as: :person
-end

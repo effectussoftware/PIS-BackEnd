@@ -5,6 +5,6 @@ json.person_project do
   end
   json.partial! 'info', person_project: @person_project
   json.project do
-    json.partial! 'api/v1/projects/info', project: @person_project.project
+    json.partial! 'api/v1/projects/medium_info', project: @person_project.project
   end
 end
