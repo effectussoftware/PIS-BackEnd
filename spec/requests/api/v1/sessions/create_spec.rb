@@ -64,10 +64,6 @@ describe 'POST api/v1/users/sign_in', type: :request do
       post new_user_session_path, params: params, as: :json
 
       expect(response).to be_unauthorized
-      expected_response = {
-        error: 'Invalid login credentials. Please try again.'
-      }.with_indifferent_access
-      expect(json).to eq(expected_response)
     end
   end
 end

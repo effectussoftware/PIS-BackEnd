@@ -50,7 +50,6 @@ RSpec.describe Project, type: :model do
         expect(project1).to be_valid
         project2 = build(:project, name: project1.name)
         expect(project2).not_to be_valid
-        expect(project2.errors[:name]).to include('has already been taken')
       end
     end
 
