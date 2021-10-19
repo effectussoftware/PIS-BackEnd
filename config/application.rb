@@ -48,6 +48,6 @@ module App
     config.middleware.use Rack::MethodOverride
 
     # Set default locale
-    config.i18n.default_locale = :en
+    config.i18n.default_locale = :es
   end
 end
