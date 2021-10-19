@@ -9,13 +9,11 @@
 #  working_hours :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  rol_id        :bigint
 #  roles         :text             default([]), is an Array
 #
 # Indexes
 #
-#  index_people_on_email   (email) UNIQUE
-#  index_people_on_rol_id  (rol_id)
+#  index_people_on_email  (email) UNIQUE
 #
 require 'rails_helper'
 
