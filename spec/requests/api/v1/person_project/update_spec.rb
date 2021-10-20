@@ -23,7 +23,8 @@ describe 'PUT api/v1/person_project', type: :request do
 
   it 'should respond proper person as JSON' do
     # remove created_at, updated_at
-    person_reduced = person.slice(:id, :first_name, :last_name, :email, :working_hours, :roles)
+    person_reduced = person.slice(:id, :first_name, :last_name, :email, :working_hours,
+                                  :roles, :technologies)
     # remove created_at, updated_at
     project_reduced = project.slice(:id, :name, :organization, :description, :start_date, :end_date,
                                     :budget, :project_state, :project_type)
