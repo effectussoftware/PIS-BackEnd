@@ -1,4 +1,3 @@
-
 class WebChannel < ApplicationCable::Channel
   # Nota: Aca se pueden implementar metodos o "actions" los cuales
   #   un usuario conectado puede invocar a traves de la conexion, enviando
@@ -16,9 +15,9 @@ class WebChannel < ApplicationCable::Channel
     stream_for current_user
   end
 
-    # Al conectarme verifico no tener notificaciones pendientes
-    # puts "Por enviar mensaje desde connection"
-    # current_user.check_alerts
+  # Al conectarme verifico no tener notificaciones pendientes
+  # puts "Por enviar mensaje desde connection"
+  # current_user.check_alerts
   def unsubscribed
     stop_all_streams
   end
@@ -29,6 +28,4 @@ class WebChannel < ApplicationCable::Channel
       data: message
     )
   end
-end
-
 end

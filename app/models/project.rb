@@ -85,27 +85,7 @@ has_many :project_technologies, dependent: :destroy
     add_project_technologies(technologies)
   end
 
-  #     Para cada alerta hago lo siguiente:
-  #
-  #     Si ya falta menos de 7 dias, la alerta ya esta activa y no
-  #     se actualiza (solo se notifica si corresponde)
-  #
-  #     Si faltan 7 dias o mas se debe verificar que la alerta este
-  #     en estado correcto, se ejecuta actualizar_estado
-
-  def check_alerts
-    # actual_date = DateTime.new.to_date
-    return if end_date.blank?
-
-    # days_difference = (end_date - actual_date)
-    user_projects.each do |up|
-      if notifies?
-        up.cron_alert
-        up.check_alert
-      end
-    end
-  end
-
+  #TODO
   def update_alerts
     user_projects.each do |up|
       up.update_alert(notifies?)
@@ -152,10 +132,19 @@ has_many :project_technologies, dependent: :destroy
     Si ya falta menos de 7 dias, la alerta ya esta activa y no se actualiza (solo se notifica si corresponde)
     Si faltan 7 dias o mas se debe verificar que la alerta este en estado correcto, se ejecuta actualizar_estado
 =end
+  #     Para cada alerta hago lo siguiente:
+  #
+  #     Si ya falta menos de 7 dias, la alerta ya esta activa y no
+  #     se actualiza (solo se notifica si corresponde)
+  #
+  #     Si faltan 7 dias o mas se debe verificar que la alerta este
+  #     en estado correcto, se ejecuta actualizar_estado
+
   def check_alerts
-    #actual_date = DateTime.new.to_date
+    # actual_date = DateTime.new.to_date
     return if end_date.blank?
-    #days_difference = (end_date - actual_date)
+
+    # days_difference = (end_date - actual_date)
     user_projects.each do |up|
       if notifies?
         up.cron_alert
@@ -166,14 +155,9 @@ has_many :project_technologies, dependent: :destroy
 
   def add_alert(user)
     up = UserProject.create!(project_id: id, user_id: user.id)
-    up.update_alert(self.notifies?)
+    up.update_alert(notifies?)
   end
 
-  def notifies?
-    return false if end_date.blank?
-    (end_date - DateTime.now.to_date).to_i < 7
-  end
-  
   private
 
   def budget_is_valid

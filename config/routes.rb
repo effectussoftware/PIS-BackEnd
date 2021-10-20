@@ -34,6 +34,4 @@ Rails.application.routes.draw do
       resources :notifications, only: %i[index update show]
     end
   end
-
-
 end
