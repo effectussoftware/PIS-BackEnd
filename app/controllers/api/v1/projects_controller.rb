@@ -32,7 +32,7 @@ module Api
         project.destroy!
 
         render json: { message: I18n.t('api.success.project.record_delete',
-        { name: project.name }) }
+                                       { name: project.name }) }
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.project.not_found') }, status: :not_found
       end

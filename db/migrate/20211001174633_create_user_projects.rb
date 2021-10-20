@@ -1,4 +1,3 @@
-
 class CreateUserProjects < ActiveRecord::Migration[6.0]
   def change
     create_table :user_projects do |t|
@@ -9,7 +8,6 @@ class CreateUserProjects < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    #user_person
-
+    # user_person
   end
 end
