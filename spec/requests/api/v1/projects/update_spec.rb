@@ -25,7 +25,7 @@ describe 'PUT api/v1/projects', type: :request do
   end
 
   context 'when updating technologies' do
-    it 'correctly adds technologies' do
+    it 'correctly removes then adds technologies' do
       former_technologies = %w[java ruby react psql]
       put api_v1_project_path(project.id),
           params: { project: { technologies: former_technologies } },
@@ -42,7 +42,7 @@ describe 'PUT api/v1/projects', type: :request do
           headers: auth_headers, as: :json
       expect(@response).to have_http_status :success
 
-      expect(json[:project][:technologies].size).to eq 5
+      expect(json[:project][:technologies].size).to eq 1
       expect('rails'.in?(json[:project][:technologies])).to be_truthy
     end
   end

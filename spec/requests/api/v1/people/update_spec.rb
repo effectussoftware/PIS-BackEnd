@@ -33,7 +33,7 @@ describe 'PUT api/v1/people', type: :request do
            senior], %w[ruby junior], %w[react semi-senior], %w[psql junior]
       ]
     end
-    it 'correctly adds technologies' do
+    it 'correctly removes then adds technologies' do
       put api_v1_person_path(person.id),
           params: { person: { technologies: former_technologies } },
           headers: auth_headers, as: :json
@@ -50,7 +50,7 @@ describe 'PUT api/v1/people', type: :request do
           headers: auth_headers, as: :json
       expect(@response).to have_http_status :success
 
-      expect(json[:person][:technologies].size).to eq 5
+      expect(json[:person][:technologies].size).to eq 1
       expect(%w[rails senior].in?(json[:person][:technologies])).to be_truthy
     end
   end
