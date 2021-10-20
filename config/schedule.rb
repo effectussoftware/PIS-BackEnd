@@ -22,10 +22,10 @@
 #   rake "some:great:rake:task"
 # end
 #
-every 1.minute do
+every 1.day do
   runner 'AlertJob.perform', environment: 'development'
 end
-every 1.minute do
+every 1.day do
   runner 'AlertJob.perform', environment: 'production'
 end
 # Learn more: http://github.com/javan/whenever
