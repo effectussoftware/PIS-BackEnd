@@ -6,7 +6,7 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.action_cable.mount_path = '/cable'
   config.action_cable.url = 'ws://localhost:3000/cable'
-  config.action_cable.allowed_request_origins = [ /http:\/\/localhost:*/ ]
+  config.action_cable.allowed_request_origins = [%r{http://localhost:*}]
   config.action_cable.disable_request_forgery_protection = true
   config.cache_classes = false
 
