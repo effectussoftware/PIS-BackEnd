@@ -13,12 +13,13 @@
 class UserProject < Alert
   belongs_to :project
 
-  def get_notification
-    {id: project.id,name: project.name,end_date: project.end_date, type: 'project'}
+  def obtain_notification
+    { id: project.id, name: project.name, end_date: project.end_date, type: 'project' }
   end
 
   def cron_alert
-    return unless self.not_seen
-    self.update(notification_active: true)
+    return unless not_seen
+
+    update!(notification_active: true)
   end
 end

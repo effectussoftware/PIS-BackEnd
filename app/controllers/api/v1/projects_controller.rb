@@ -20,7 +20,6 @@ module Api
         @project = Project.find(params[:id])
         # -> ProjectObserver.before_update(params[:id],params[:end_date])
         @project.update!(project_params)
-        @project.update_alerts
         render :show
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.project.not_found') }, status: :not_found
@@ -31,8 +30,7 @@ module Api
         project.destroy!
 
         render json: { message: I18n.t('api.success.project.record_delete',
-        { name: project.name }) }
-
+                                       { name: project.name }) }
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.project.not_found') }, status: :not_found
       end

@@ -30,8 +30,8 @@
 #
 
 class User < ApplicationRecord
-  has_many :alerts
-  # has_many :projects , :through => :user_projects
+  has_many :alerts, dependent: :destroy
+  has_many :projects, through: :user_projects
   # has_many :people , :through => :user_people
 
   # Include default devise modules. Others available are:
@@ -63,7 +63,7 @@ class User < ApplicationRecord
     end
   end
 
-  def get_notifications
+  def obtain_notifications
     res = []
     alerts.each do |a|
       res.push(a.get_notification) if a.notifies?
@@ -72,13 +72,16 @@ class User < ApplicationRecord
     # return User.joins(:user_projects).find_by(email: uid)
   end
 
-  def update_notification(alert_id,alert_type)
-    if alert_type == 'project'
-      #alert = UserProject.where(project_id: id).where(user_id: self.id)
+  def update_notification(alert_id, alert_type)
+    case alert_type
+    when 'project'
+      # alert = UserProject.where(project_id: id).where(user_id: self.id)
 
       alert = UserProject.find_by(id: alert_id)
 
       alert.see_notification
+    when 'person'
+      # somethig
     end
   end
 

@@ -12,29 +12,32 @@ class Alert < ApplicationRecord
 
   # Metodo que se llama cuando se actualiza el objeto que alerta
   def update_alert(notifies)
-    if notification_active != notifies
-      self.update(notification_active: notifies, not_seen: true)
-    end
+    update!(notification_active: notifies, not_seen: true) if notification_active != notifies
+    check_alert
+  end
+
+  def reset_alert(notifies)
+    update!(notification_active: notifies, not_seen: true)
     check_alert
   end
 
   def check_alert
     return unless notifies?
+
     WebChannel.send_message(user, "Alerta:  id=#{id}")
   end
 
   def see_notification
-    self.update(not_seen: false)
+    update(not_seen: false)
   end
 
   def get_alert(id, alert_type)
-    if alert_type == "project"
+    case alert_type
+    when 'project'
       up = UserProject.find(id)
-      up.get_notification
-    elsif alert_type == "person"
-      up = UserProject.find(id)
-      up.get_notification
+      up.obtain_notifications
+    when 'person'
+      # type code here
     end
   end
-
 end

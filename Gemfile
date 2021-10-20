@@ -26,11 +26,11 @@ gem 'redis'
 gem 'redis-rails'
 gem 'sendgrid', '~> 1.2.4'
 gem 'sidekiq'
-gem "sidekiq-cron"
+gem 'sidekiq-cron'
 gem 'sidekiq-scheduler'
 gem 'sprockets', '~> 3.7.2'
 gem 'webpacker', '~> 5.1', '>= 5.1.1'
-#gem 'whenever', require: false
+# gem 'whenever', require: false
 gem 'yaaf', '~> 0.1'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 6.0.2'
