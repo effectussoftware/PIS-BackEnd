@@ -20,7 +20,7 @@
 #
 class Project < ApplicationRecord
   has_many :user_projects, dependent: :destroy
-  has_many :users, :through => :user_projects
+  has_many :users, through: :user_projects
 
   has_many :project_technologies, dependent: :destroy
   has_many :technologies, through: :project_technologies
@@ -136,9 +136,10 @@ class Project < ApplicationRecord
     Si faltan 7 dias o mas se debe verificar que la alerta este en estado correcto, se ejecuta actualizar_estado
 =end
   def check_alerts
-    actual_date = DateTime.new.to_date
+     actual_date = DateTime.new.to_date
     return if end_date.blank?
-    days_difference = (end_date - actual_date)
+
+     days_difference = (end_date - actual_date)
     user_projects.each do |up|
       if days_difference < 7
         up.check_alert
@@ -148,16 +149,23 @@ class Project < ApplicationRecord
     end
   end
 
+  def update_alerts
+    user_projects.each do |up|
+      up.update_alert(notifies?)
+    end
+  end
+
   def add_alert(user)
     up = UserProject.create!(project_id: id, user_id: user.id)
-    up.update_alert(self.notifies?)
+    up.update_alert(notifies?)
   end
 
   def notifies?
     return false if end_date.blank?
+
     (end_date - DateTime.now.to_date < 7.days)
   end
-  
+
   private
 
   def budget_is_valid

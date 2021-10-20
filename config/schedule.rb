@@ -5,7 +5,7 @@
 # Este para volver a production
 # crontab -r
 # whenever --set environment=production --write-crontab
-# 
+#
 # Use this file to easily define all of your cron jobs.
 #
 #
@@ -22,10 +22,10 @@
 #   rake "some:great:rake:task"
 # end
 #
-every 1.minutes do
-  runner "AlertJob.perform", :environment => 'development'
+every 1.minute do
+  runner 'AlertJob.perform', environment: 'development'
 end
-every 1.minutes do
-  runner "AlertJob.perform", :environment => 'production'
+every 1.minute do
+  runner 'AlertJob.perform', environment: 'production'
 end
 # Learn more: http://github.com/javan/whenever

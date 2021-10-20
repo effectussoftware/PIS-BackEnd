@@ -1,10 +1,8 @@
 Rails.application.routes.draw do
-
   mount ActionCable.server => '/cable'
   resources :users
   resources :channels
   resources :web
-
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
@@ -36,6 +34,4 @@ Rails.application.routes.draw do
       resources :notifications, only: %i[index update]
     end
   end
-
-
 end
