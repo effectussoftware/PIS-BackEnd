@@ -14,8 +14,7 @@ class UserProject < Alert
   belongs_to :project
 
   def obtain_notification
-    { id: id, type: 'project', project_id: project.id, name: project.name,
-      end_date: project.end_date }
+    { id: id, type: 'project', project_id:project.id, name: project.name, end_date: project.end_date }
   end
 
   def cron_alert

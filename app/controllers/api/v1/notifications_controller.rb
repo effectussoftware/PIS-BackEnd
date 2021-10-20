@@ -3,12 +3,10 @@ module Api
     class NotificationsController < Api::V1::ApiController
       def index
         uid = request.headers[:uid]
-        user = User.find_by(email: uid) #
-        @notifications = user.get_notifications
+        user = User.find_by(email: uid)
+        @notifications = user.obtain_notifications
         render :index
       end
-
-
 
       def update
         id = params_alerts[:id]
@@ -18,7 +16,7 @@ module Api
         @notifications = user.update_notification(id, alert_type)
         render json: { message: 'Alerta modificada con exito.' }
       rescue ActiveRecord::RecordNotFound
-        render json: { error: 'Error, alerta no encontrada.'}
+        render json: { error: 'Error, alerta no encontrada.' }
       end
 
       private
