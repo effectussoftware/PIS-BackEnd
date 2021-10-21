@@ -20,7 +20,7 @@ module Api
       def update
         @person = Person.find(params[:id])
         @person.update!(person_params)
-        update_technologies
+        @person.rebuild_person_technologies(technologies_params)
         render :show
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.person.not_found') }, status: :not_found
@@ -36,15 +36,6 @@ module Api
       end
 
       private
-
-      def update_technologies
-        # Creada para rubocop
-        if request.put?
-          @person.add_person_technologies(technologies_params)
-        elsif request.patch? # El segundo metodo borra las que tenia
-          @person.rebuild_person_technologies(technologies_params)
-        end
-      end
 
       def person_params
         params.require(:person).permit(:first_name, :last_name, :email,

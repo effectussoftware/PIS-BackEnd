@@ -11,3 +11,6 @@ json.extract! project,
 json.people do
   json.array! project.people, partial: 'api/v1/people/short_info', as: :person
 end
+json.technologies do
+  json.array! project.technologies.map(&:name)
+end

@@ -37,6 +37,7 @@ describe 'POST api/v1/projects', type: :request do
            headers: auth_headers, as: :json
 
       expect(@response).to have_http_status :success
+
       expect(json[:project][:technologies].size).to eq 4
     end
   end
