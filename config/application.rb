@@ -47,7 +47,10 @@ module App
     config.middleware.use ActionDispatch::Flash
     config.middleware.use Rack::MethodOverride
 
+    config.i18n.available_locales = %i[en es]
+
     # Set default locale
+    # FIXME: Cambiar para en como default
     config.i18n.default_locale = :es
   end
 end

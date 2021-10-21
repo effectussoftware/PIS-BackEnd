@@ -6,6 +6,7 @@ module Api
       include DeviseTokenAuth::Concerns::SetUserByToken
 
       before_action :authenticate_user!, except: :status
+      before_action :set_locale
 
       respond_to :json
 
@@ -18,6 +19,15 @@ module Api
       end
 
       private
+
+      def set_locale
+        I18n.locale = extract_locale || I18n.default_locale
+      end
+
+      def extract_locale
+        parsed_locale = request.headers['locale']
+        I18n.available_locales.map(&:to_s).include?(parsed_locale) ? parsed_locale : nil
+      end
 
       def render_not_found(exception)
         logger.info { exception } # for logging
