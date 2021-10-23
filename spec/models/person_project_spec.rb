@@ -91,5 +91,11 @@ RSpec.describe PersonProject, type: :model do
         expect(person_project1[:end_date]).to eq(project.end_date)
       end
     end
+
+    it 'add role if is missing' do
+      role = 'tester'
+      create(:person_project, person: person, project: project, role: role)
+      expect(Person.find(person.id).roles).to include role
+    end
   end
 end

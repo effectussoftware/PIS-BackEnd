@@ -33,17 +33,18 @@ class PersonProject < ApplicationRecord
                                       message: I18n.t('api.errors.person_project.already_added') }
   validates :role, inclusion: { in: Person::ROL_TYPES }
   validate :end_date_is_after_start_date
-  validate :person_have_the_rol
 
   before_validation :set_end_date
+  before_save :update_person_roles
 
   private
 
-  def person_have_the_rol
-    person_roles = Person.find(person_id).roles
-    return if person_roles.include?(role)
+  def update_person_roles
+    person = Person.find(person_id)
+    return if person.roles.include?(role)
 
-    errors.add(:role, I18n.t('api.errors.person_project.person_without_rol'))
+    person.roles << role
+    person.save!
   end
 
   def end_date_is_after_start_date
