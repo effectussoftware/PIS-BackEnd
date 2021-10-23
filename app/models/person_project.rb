@@ -41,9 +41,10 @@ class PersonProject < ApplicationRecord
 
   def update_person_roles
     person = Person.find(person_id)
-    return if person.roles.include?(role)
+    person_roles = person.roles
+    return if person_roles.include?(role)
 
-    person.roles << role
+    person_roles << role
     person.save!
   end
 
