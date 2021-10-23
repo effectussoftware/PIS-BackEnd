@@ -32,3 +32,40 @@ en:
         record_delete: The '%{role}' role was deleted for '%{person_name}' on the '%{project_name}' project
       project:
         record_delete: The project '%{name}' was deleted
+  errors:
+    messages:
+      accepted: Must be accepted
+      blank: Can't be blank
+      confirmation: Doesn't match %{attribute}
+      empty: Can't be empty
+      equal_to: Must be equal to %{count}
+      even: Must be even
+      exclusion: Is reserved
+      greater_than: Must be greater than %{count}
+      greater_than_or_equal_to: Must be greater than or equal to %{count}
+      inclusion: Is not included in the list
+      invalid: Is invalid
+      less_than: Must be less than %{count}
+      less_than_or_equal_to: Must be less than or equal to %{count}
+      model_invalid: 'Validation failed: %{errors}'
+      not_a_number: Is not a number
+      not_an_integer: Must be an integer
+      odd: Must be odd
+      other_than: Must be other than %{count}
+      present: Must be blank
+      required: Must exist
+      taken: Has already been taken
+      too_long:
+        one: Is too long (maximum is 1 character)
+        other: Is too long (maximum is %{count} characters)
+      too_short:
+        one: Is too short (minimum is 1 character)
+        other: Is too short (minimum is %{count} characters)
+      wrong_length:
+        one: Is the wrong length (should be 1 character)
+        other: Is the wrong length (should be %{count} characters)
+    support:
+      array:
+        last_word_connector: ", and "
+        two_words_connector: " and "
+        words_connector: ", "

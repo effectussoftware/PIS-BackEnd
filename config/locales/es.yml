@@ -32,3 +32,40 @@ es:
         record_delete: El rol '%{role}' fue borrado de la persona '%{person_name}' en el proyecto '%{project_name}'
       project:
         record_delete: El proyecto '%{name}' fue borrado
+  errors:
+    messages:
+      accepted: Debe ser aceptado
+      blank: No puede estar en blanco
+      confirmation: No coincide con %{attribute}
+      empty: No puede estar vacío
+      equal_to: Debe ser igual a %{count}
+      even: Debe ser par
+      exclusion: Está reservado
+      greater_than: Debe ser mayor que %{count}
+      greater_than_or_equal_to: Debe ser mayor que o igual a %{count}
+      inclusion: No está incluido en la lista
+      invalid: No es válido
+      less_than: Debe ser menor que %{count}
+      less_than_or_equal_to: Debe ser menor que o igual a %{count}
+      model_invalid: 'La validación falló: %{errors}'
+      not_a_number: No es un número
+      not_an_integer: Debe ser un entero
+      odd: Debe ser impar
+      other_than: Debe ser distinto de %{count}
+      present: Debe estar en blanco
+      required: Debe existir
+      taken: Ya está en uso
+      too_long:
+        one: Es demasiado largo (1 carácter máximo)
+        other: Es demasiado largo (%{count} caracteres máximo)
+      too_short:
+        one: Es demasiado corto (1 carácter mínimo)
+        other: Es demasiado corto (%{count} caracteres mínimo)
+      wrong_length:
+        one: No tiene la longitud correcta (1 carácter exactos)
+        other: No tiene la longitud correcta (%{count} caracteres exactos)
+    support:
+      array:
+        last_word_connector: " y "
+        two_words_connector: " y "
+        words_connector: ", "
