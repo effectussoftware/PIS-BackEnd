@@ -68,16 +68,16 @@ class User < ApplicationRecord
 
   def obtain_notifications
     res = []
-    alerts.each do |a|
-      res.push(a.obtain_notification) if a.notifies?
+    alerts.each do |an_alert|
+      res.push(an_alert.obtain_notification) if an_alert.notifies?
     end
     res
     # return User.joins(:user_projects).find_by(email: uid)
   end
 
   def update_notification(alert_id, alert_type)
-    a = alert alert_id, alert_type
-    a.see_notification
+    an_alert = alert alert_id, alert_type
+    an_alert.see_notification
   end
 
   def alerts
@@ -91,7 +91,7 @@ class User < ApplicationRecord
   # Metodo que corre al conectarse un usuario al channel
   def check_alerts?
     active_notification = false
-    alerts.each { |a| active_notification |= a.notifies? }
+    alerts.each { |an_alert| active_notification |= an_alert.notifies? }
     active_notification
   end
 
