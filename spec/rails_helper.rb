@@ -2,6 +2,7 @@
 ENV['RAILS_ENV'] ||= 'test'
 require 'simplecov'
 
+
 SimpleCov.start 'rails' do
   add_group 'Forms', 'app/forms'
   add_group 'Policies', 'app/policies'
@@ -12,6 +13,7 @@ SimpleCov.start 'rails' do
 end
 
 require File.expand_path('../../config/environment', __FILE__)
+require "action_cable/testing/rspec"
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/core'
@@ -35,6 +37,9 @@ RSpec.configure do |config|
 
   config.include Shoulda::Matchers::ActiveModel, type: :form
   config.include Shoulda::Matchers::ActiveRecord, type: :form
+  config.include ActionCable::TestHelper
+  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::Test::IntegrationHelpers, type: :request
 end
 
 Shoulda::Matchers.configure do |config|
@@ -42,4 +47,5 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
+
 end

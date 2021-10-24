@@ -30,9 +30,12 @@
 #
 
 class User < ApplicationRecord
-  has_many :alerts, dependent: :destroy
+  has_many :user_projects, dependent: :destroy
   has_many :projects, through: :user_projects
-  # has_many :people , :through => :user_people
+
+  #TODO:
+  #has_many :user_people, dependent: :destroy
+  #has_many :people, through: :user_people
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -66,27 +69,27 @@ class User < ApplicationRecord
   def obtain_notifications
     res = []
     alerts.each do |a|
-      res.push(a.get_notification) if a.notifies?
+      res.push(a.obtain_notification) if a.notifies?
     end
     res
     # return User.joins(:user_projects).find_by(email: uid)
   end
 
   def update_notification(alert_id, alert_type)
-    case alert_type
-    when 'project'
-      # alert = UserProject.where(project_id: id).where(user_id: self.id)
+    a = alert alert_id, alert_type
+    a.see_notification
+  end
 
-      alert = UserProject.find_by(id: alert_id)
+  def alerts
+    user_projects # + user_people
+  end
 
-      alert.see_notification
-    when 'person'
-      # somethig
-    end
+  def alert(id, alert_type)
+    Alert.alert id, alert_type
   end
 
   # Metodo que corre al conectarse un usuario al channel
-  def check_alerts
+  def check_alerts?
     active_notification = false
     alerts.each { |a| active_notification |= a.notifies? }
     active_notification
