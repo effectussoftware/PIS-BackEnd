@@ -2,6 +2,7 @@
 ENV['RAILS_ENV'] ||= 'test'
 require 'simplecov'
 
+
 SimpleCov.start 'rails' do
   add_group 'Forms', 'app/forms'
   add_group 'Policies', 'app/policies'
@@ -46,4 +47,5 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
+
 end

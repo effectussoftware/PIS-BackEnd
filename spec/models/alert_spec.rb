@@ -17,3 +17,4 @@ RSpec.describe Alert, type: :model do
   #
   #   end
 end
+
