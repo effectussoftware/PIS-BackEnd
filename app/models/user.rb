@@ -33,9 +33,9 @@ class User < ApplicationRecord
   has_many :user_projects, dependent: :destroy
   has_many :projects, through: :user_projects
 
-  #TODO:
-  #has_many :user_people, dependent: :destroy
-  #has_many :people, through: :user_people
+  # TODO: user people
+  # has_many :user_people, dependent: :destroy
+  # has_many :people, through: :user_people
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
