@@ -44,6 +44,26 @@ class Project < ApplicationRecord
   validate :budget_is_valid
   validate :end_date_is_after_start_date
 
+  after_update :update_person_projects
+
+  def update_person_projects
+    person_projects = PersonProject.where('project_id = :project_id
+        AND start_date < :start_date', { project_id: id, start_date: start_date })
+    update_person_project_date(person_projects, :start_date, start_date)
+
+    person_projects = PersonProject.where('project_id = :project_id
+      AND end_date > :end_date', { project_id: id, end_date: end_date })
+
+    update_person_project_date(person_projects, :end_date, end_date)
+  end
+
+  def update_person_project_date(person_projects, date, update)
+    person_projects.each do |p_p|
+      p_p[date] = update
+      p_p.save!
+    end
+  end
+
   def add_project_technologies(technologies)
     return if technologies.blank? || !technologies.is_a?(Array)
 

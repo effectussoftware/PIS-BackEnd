@@ -26,9 +26,7 @@ FactoryBot.define do
     role { 'developer' }
     working_hours { 3 }
     working_hours_type { 'daily' }
-    start_date do
-      Time.now.in_time_zone('America/Montevideo').to_date
-    end
-    end_date { 1.year.after.to_date }
+    start_date { '2025-09-23' }
+    end_date { '2030-10-25' }
   end
 end

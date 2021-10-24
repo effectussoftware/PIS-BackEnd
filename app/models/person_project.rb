@@ -33,11 +33,35 @@ class PersonProject < ApplicationRecord
                                       message: I18n.t('api.errors.person_project.already_added') }
   validates :role, inclusion: { in: Person::ROL_TYPES }
   validate :end_date_is_after_start_date
+  validate :dates_between_project_dates
 
   before_validation :set_end_date
   before_save :update_person_roles
 
   private
+
+  def dates_between_project_dates
+    project = Project.find(project_id)
+    check_with_project_start_date(project.start_date)
+    check_with_project_end_date(project.end_date)
+  end
+
+  def check_with_project_end_date(p_end_date)
+    return if p_end_date.blank?
+    return if end_date.present? && p_end_date >= end_date
+
+    errors.add(:end_date,
+               I18n.t('api.errors.person_project.end_date_after_project',
+                      { project_end_date: p_end_date }))
+  end
+
+  def check_with_project_start_date(p_start_date)
+    return if start_date.present? && (p_start_date <= start_date)
+
+    errors.add(:start_date,
+               I18n.t('api.errors.person_project.start_date_before_project',
+                      { project_start_date: p_start_date }))
+  end
 
   def update_person_roles
     person = Person.find(person_id)
