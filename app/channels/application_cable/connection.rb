@@ -7,8 +7,13 @@ module ApplicationCable
       uid = request.params[:uid]
       token = request.params[:token]
 
+
       user = find_verified_user token, uid, client
       self.current_user = user
+      #params[:current_user] = user
+
+      # TODO: Pasar el mensaje que se envia al i18t
+      WebChannel.send_message(user, "test") if user.check_alerts?
     end
 
     private
@@ -21,6 +26,13 @@ module ApplicationCable
       else
         reject_unauthorized_connection
       end
+    end
+
+    def self.send_message(user, message)
+      broadcast_to(
+        user,
+        data: message
+      )
     end
   end
 end
