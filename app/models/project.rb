@@ -48,7 +48,7 @@ class Project < ApplicationRecord
 
   after_update :update_person_projects_date
   after_update :update_person_projects_date_null
-
+  #TODO agregar al observer
   def update_person_projects_date
     person_projects = PersonProject.where('project_id = :project_id
       AND start_date < :start_date', { project_id: id, start_date: start_date })
@@ -136,15 +136,14 @@ class Project < ApplicationRecord
     Si faltan 7 dias o mas se debe verificar que la alerta este en estado correcto, se ejecuta actualizar_estado
 =end
   def check_alerts
-     actual_date = DateTime.new.to_date
+    # actual_date = DateTime.new.to_date
     return if end_date.blank?
 
-     days_difference = (end_date - actual_date)
+    # days_difference = (end_date - actual_date)
     user_projects.each do |up|
-      if days_difference < 7
+      if notifies?
+        up.cron_alert
         up.check_alert
-      else
-        up.update_alert(notifies?)
       end
     end
   end
@@ -163,7 +162,31 @@ class Project < ApplicationRecord
   def notifies?
     return false if end_date.blank?
 
-    (end_date - DateTime.now.to_date < 7.days)
+    (end_date - DateTime.now.to_date).to_i < 7
+  end
+
+  def update_person_projects
+    person_projects = PersonProject.where('project_id = :project_id
+        AND start_date < :start_date', { project_id: id, start_date: start_date })
+    update_person_project_date(person_projects, :start_date, start_date)
+
+    person_projects = PersonProject.where('project_id = :project_id
+      AND end_date > :end_date', { project_id: id, end_date: end_date })
+
+    update_person_project_date(person_projects, :end_date, end_date)
+  end
+
+  def update_person_project_date(person_projects, date, update)
+    person_projects.each do |p_p|
+      p_p[date] = update
+      p_p.save!
+    end
+  end
+
+  def update_alerts(notifies)
+    user_projects.each do |up|
+      up.update_alert(notifies)
+    end
   end
 
   private
