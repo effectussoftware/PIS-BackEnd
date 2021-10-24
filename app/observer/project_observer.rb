@@ -5,8 +5,7 @@ class ProjectObserver < ActiveRecord::Observer
     return if old_date == new_date
 
     updated_project.user_projects.each do |up|
-      up.reset_alert(notifies(new_date))
-      up.check_alert
+      up.update_alert(notifies(new_date))
     end
   end
 
