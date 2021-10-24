@@ -16,7 +16,9 @@ en:
         roles_in_list: Invalid role
       person_project:
         already_added: The role with those dates already exists for the person on this project
+        end_date_after_project: Cannot be after the Project end date (%{project_end_date})
         not_found: Couldn't find the person on the project
+        start_date_before_project: Cannot be before the Project start date (%{project_start_date})
       project:
         end_date_before_start_date: Cannot be before the start time
         invalid_budget: The budget cannot have a negative value

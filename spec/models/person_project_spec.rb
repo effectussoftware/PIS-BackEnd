@@ -77,12 +77,19 @@ RSpec.describe PersonProject, type: :model do
                                                  end_date: person_project1.end_date)
         expect(person_project2).not_to be_valid
       end
+
+      it 'dates out of project ranges' do
+        person_project.start_date = '2025-09-22'
+        expect(person_project).not_to be_valid
+        person_project.end_date = '2030-10-26'
+        expect(person_project).not_to be_valid
+      end
     end
 
     context 'when fields are valid' do
       it 'has valid dates' do
-        person_project.start_date = '2021-09-10'
-        person_project.end_date = '2021-09-11'
+        person_project.start_date = '2025-09-23'
+        person_project.end_date = '2030-10-25'
         expect(person_project).to be_valid
       end
 
