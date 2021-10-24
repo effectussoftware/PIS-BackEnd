@@ -22,7 +22,7 @@ module Helpers
     auth_headers['client']
   end
 
-  def auth_headers_user user
-      user.create_new_auth_token
+  def auth_headers_user(user)
+    user.create_new_auth_token
   end
 end

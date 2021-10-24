@@ -12,13 +12,13 @@ class Alert < ApplicationRecord
 
   # Metodo que se llama cuando se actualiza el objeto que alerta
   def update_alert(notifies)
-    #FIXME: Si los valores quedarian iguales no hacer update
+    # FIXME: Si los valores quedarian iguales no hacer update
     # if (notification_active != notifies || !not_seen)
-    update(notification_active: notifies, not_seen: true)
+    update!(notification_active: notifies, not_seen: true)
     check_alert
   end
 
-  #TODO Borrar si funciona update proyect con update alert
+  # TODO: Borrar si funciona update proyect con update alert
   def reset_alert(notifies)
     update!(notification_active: notifies, not_seen: true)
     check_alert
@@ -34,11 +34,12 @@ class Alert < ApplicationRecord
     update(not_seen: false)
   end
 
-  #Get alert
+  # Get alert
   def self.alert(id, alert_type)
     case alert_type
     when 'project'
-      up = UserProject.find(id)
+      UserProject.find(id)
+      # up = UserProject.find(id)
       # up.obtain_notifications TODO ver si mover
     when 'person'
       # type code here
@@ -46,6 +47,6 @@ class Alert < ApplicationRecord
   end
 
   def obtain_notification
-    raise NoMethodError "Unimplemented method" #TODO Mover mensaje a locale
+    raise NoMethodError 'Unimplemented method' # TODO: Mover mensaje a locale
   end
 end
