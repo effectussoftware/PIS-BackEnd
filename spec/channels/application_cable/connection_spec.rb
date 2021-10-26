@@ -94,8 +94,20 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
   def connect_user(user)
     headers = auth_headers_user user
 
-    connect "cable?uid=#{headers['uid']}" \
-            "&client=#{headers['client']}" \
-            "&token=#{headers['access-token']}"
+    connect "cable?uid=#{uid(headers)}" \
+            "&client=#{client(headers)}" \
+            "&token=#{token(headers)}"
+  end
+
+  def uid(headers)
+    headers['uid']
+  end
+
+  def client(headers)
+    headers['client']
+  end
+
+  def token(headers)
+    headers['access-token']
   end
 end

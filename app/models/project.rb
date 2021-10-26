@@ -83,9 +83,19 @@ class Project < ApplicationRecord
     end
   end
 
+  # def update_alerts
+  #   user_projects.each do |up|
+  #     up.update_alert(notifies?)
+  #   end
+  # end
+
   def update_alerts
+    old_date = Project.find(id).end_date
+    new_date = end_date
+    return if old_date == new_date
+
     user_projects.each do |up|
-      up.update_alert(notifies?)
+      up.update_alert(notifies(new_date))
     end
   end
 
@@ -95,6 +105,12 @@ class Project < ApplicationRecord
   end
 
   def notifies?
+    return false if end_date.blank?
+
+    (end_date - DateTime.now.to_date).to_i < 7
+  end
+
+  def notifies(end_date)
     return false if end_date.blank?
 
     (end_date - DateTime.now.to_date).to_i < 7
@@ -115,12 +131,6 @@ class Project < ApplicationRecord
     person_projects.each do |p_p|
       p_p[date] = update
       p_p.save!
-    end
-  end
-
-  def update_alerts(notifies)
-    user_projects.each do |up|
-      up.update_alert(notifies)
     end
   end
 

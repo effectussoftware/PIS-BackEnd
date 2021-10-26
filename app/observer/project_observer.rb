@@ -1,10 +1,10 @@
 class ProjectObserver < ActiveRecord::Observer
   def before_update(updated_project)
-    old_date = Project.find(updated_project.id).end_date
-    new_date = updated_project.end_date
-    return if old_date == new_date
+    # old_date = Project.find(updated_project.id).end_date
+    # new_date = updated_project.end_date
+    # return if old_date == new_date
 
-    updated_project.update_alerts(notifies new_date)
+    updated_project.update_alerts
   end
 
   def after_update(project)
