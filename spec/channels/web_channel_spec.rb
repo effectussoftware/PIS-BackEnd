@@ -32,6 +32,7 @@ class TestConnection
     end
   end
 
+  # :reek:UnusedParameters
   def transmit(data)
     # Mock
     # puts data

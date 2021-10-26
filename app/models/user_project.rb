@@ -10,6 +10,11 @@
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #
+# Indexes
+#
+#  index_user_projects_on_project_id  (project_id)
+#  index_user_projects_on_user_id     (user_id)
+#
 class UserProject < Alert
   belongs_to :project
 
