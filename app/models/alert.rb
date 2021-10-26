@@ -38,4 +38,8 @@ class Alert < ApplicationRecord
   def obtain_notification
     raise NoMethodError 'Unimplemented method' # TODO: Mover mensaje a locale
   end
+
+  def add_notification(res)
+    res.push(obtain_notification) if notifies?
+  end
 end

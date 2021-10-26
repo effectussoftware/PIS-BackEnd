@@ -69,7 +69,7 @@ class User < ApplicationRecord
   def obtain_notifications
     res = []
     alerts.each do |an_alert|
-      res.push(an_alert.obtain_notification) if an_alert.notifies?
+      an_alert.add_notification(res)
     end
     res
     # return User.joins(:user_projects).find_by(email: uid)
@@ -84,8 +84,9 @@ class User < ApplicationRecord
     user_projects # + user_people
   end
 
+  # :reek:ControlParameter
   def alert(id, alert_type)
-    Alert.alert id, alert_type
+    user_projects.find(id) if alert_type == 'project'
   end
 
   # Metodo que corre al conectarse un usuario al channel

@@ -149,8 +149,12 @@ has_many :project_technologies, dependent: :destroy
   end
 
   def update_alerts
+    old_date = Project.find(id).end_date
+    new_date = end_date
+    return if old_date == new_date
+
     user_projects.each do |up|
-      up.update_alert(notifies?)
+      up.update_alert(notifies(new_date))
     end
   end
 
@@ -160,6 +164,12 @@ has_many :project_technologies, dependent: :destroy
   end
 
   def notifies?
+    return false if end_date.blank?
+
+    (end_date - DateTime.now.to_date).to_i < 7
+  end
+
+  def notifies(end_date)
     return false if end_date.blank?
 
     (end_date - DateTime.now.to_date).to_i < 7
@@ -187,37 +197,6 @@ has_many :project_technologies, dependent: :destroy
     user_projects.each do |up|
       up.update_alert(notifies)
     end
-  end
-
-=begin
-    Para cada alerta hago lo siguiente:
-    Si ya falta menos de 7 dias, la alerta ya esta activa y no se actualiza (solo se notifica si corresponde)
-    Si faltan 7 dias o mas se debe verificar que la alerta este en estado correcto, se ejecuta actualizar_estado
-=end
-  #     Para cada alerta hago lo siguiente:
-  #
-  #     Si ya falta menos de 7 dias, la alerta ya esta activa y no
-  #     se actualiza (solo se notifica si corresponde)
-  #
-  #     Si faltan 7 dias o mas se debe verificar que la alerta este
-  #     en estado correcto, se ejecuta actualizar_estado
-
-  def check_alerts
-    # actual_date = DateTime.new.to_date
-    return if end_date.blank?
-
-    # days_difference = (end_date - actual_date)
-    user_projects.each do |up|
-      if notifies?
-        up.cron_alert
-        up.check_alert
-      end
-    end
-  end
-
-  def add_alert(user)
-    up = UserProject.create!(project_id: id, user_id: user.id)
-    up.update_alert(notifies?)
   end
 
   private
