@@ -59,6 +59,7 @@ class User < ApplicationRecord
     end
   end
 
+
   private
 
   def init_uid
