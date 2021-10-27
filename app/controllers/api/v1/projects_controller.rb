@@ -19,6 +19,7 @@ module Api
 
       def update
         @project = Project.find(params[:id])
+        # -> ProjectObserver.before_update(params[:id],params[:end_date])
         @project.update!(project_params)
         @project.rebuild_project_technologies(technologies_params)
         render :show
@@ -29,6 +30,7 @@ module Api
       def destroy
         project = Project.find(params[:id])
         project.destroy!
+
         render json: { message: I18n.t('api.success.project.record_delete',
                                        { name: project.name }) }
       rescue ActiveRecord::RecordNotFound

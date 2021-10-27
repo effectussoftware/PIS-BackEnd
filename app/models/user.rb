@@ -30,6 +30,13 @@
 #
 
 class User < ApplicationRecord
+  has_many :user_projects, dependent: :destroy
+  has_many :projects, through: :user_projects
+
+  # TODO: user people
+  # has_many :user_people, dependent: :destroy
+  # has_many :people, through: :user_people
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -57,6 +64,36 @@ class User < ApplicationRecord
       user.password = Devise.friendly_token[0, 20]
       user.assign_attributes user_params.except('id')
     end
+  end
+
+  def obtain_notifications
+    res = []
+    alerts.each do |an_alert|
+      an_alert.add_notification(res)
+    end
+    res
+    # return User.joins(:user_projects).find_by(email: uid)
+  end
+
+  def update_notification(alert_id, alert_type)
+    an_alert = alert alert_id, alert_type
+    an_alert.see_notification
+  end
+
+  def alerts
+    user_projects # + user_people
+  end
+
+  # :reek:ControlParameter
+  def alert(id, alert_type)
+    user_projects.find(id) if alert_type == 'project'
+  end
+
+  # Metodo que corre al conectarse un usuario al channel
+  def check_alerts?
+    active_notification = false
+    alerts.each { |an_alert| active_notification |= an_alert.notifies? }
+    active_notification
   end
 
   private

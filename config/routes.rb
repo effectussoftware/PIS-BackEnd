@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
+  resources :users
+  resources :channels
+  resources :web
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   ExceptionHunter.routes(self)
@@ -24,6 +29,7 @@ Rails.application.routes.draw do
       resources :person_project, only: %i[index show update destroy]
       resources :projects, only: %i[create index show update destroy]
       resources :technologies, only: %i[index show]
+      resources :notifications, only: %i[index update]
     end
   end
 end

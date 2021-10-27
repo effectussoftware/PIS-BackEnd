@@ -19,13 +19,18 @@
 #  index_projects_on_name  (name) UNIQUE
 #
 class Project < ApplicationRecord
+  has_many :user_projects, dependent: :destroy
+  has_many :users, through: :user_projects
+
   has_many :project_technologies, dependent: :destroy
   has_many :technologies, through: :project_technologies
+
   has_many :person_project, dependent: :destroy
   has_many :people, through: :person_project
 
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
+
   validates :name, presence: { message: I18n.t('api.errors.project.missing_param',
                                                { value: :name }) }
   validates :description,
@@ -44,7 +49,72 @@ class Project < ApplicationRecord
   validate :budget_is_valid
   validate :end_date_is_after_start_date
 
-  after_update :update_person_projects
+  def add_project_technologies(technologies)
+    return if technologies.blank? || !technologies.is_a?(Array)
+
+    res = ProjectTechnology.add_project_technologies(id, technologies)
+    res.each { |p_t| project_technologies << p_t }
+    res
+  end
+
+  def rebuild_project_technologies(technologies)
+    project_technologies.destroy_all
+    add_project_technologies(technologies)
+  end
+
+  #     Para cada alerta hago lo siguiente:
+  #
+  #     Si ya falta menos de 7 dias, la alerta ya esta activa y no
+  #     se actualiza (solo se notifica si corresponde)
+  #
+  #     Si faltan 7 dias o mas se debe verificar que la alerta este
+  #     en estado correcto, se ejecuta actualizar_estado
+
+  def check_alerts
+    # actual_date = DateTime.new.to_date
+    return if end_date.blank?
+
+    # days_difference = (end_date - actual_date)
+    user_projects.each do |up|
+      if notifies?
+        up.cron_alert
+        up.check_alert
+      end
+    end
+  end
+
+  # def update_alerts
+  #   user_projects.each do |up|
+  #     up.update_alert(notifies?)
+  #   end
+  # end
+
+  def update_alerts
+    old_date = Project.find(id).end_date
+    new_date = end_date
+    return if old_date == new_date
+
+    user_projects.each do |up|
+      up.update_alert(notifies(new_date))
+    end
+  end
+
+  def add_alert(user)
+    up = UserProject.create!(project_id: id, user_id: user.id)
+    up.update_alert(notifies?)
+  end
+
+  def notifies?
+    return false if end_date.blank?
+
+    (end_date - DateTime.now.to_date).to_i < 7
+  end
+
+  def notifies(end_date)
+    return false if end_date.blank?
+
+    (end_date - DateTime.now.to_date).to_i < 7
+  end
 
   def update_person_projects
     person_projects = PersonProject.where('project_id = :project_id
@@ -62,19 +132,6 @@ class Project < ApplicationRecord
       p_p[date] = update
       p_p.save!
     end
-  end
-
-  def add_project_technologies(technologies)
-    return if technologies.blank? || !technologies.is_a?(Array)
-
-    res = ProjectTechnology.add_project_technologies(id, technologies)
-    res.each { |p_t| project_technologies << p_t }
-    res
-  end
-
-  def rebuild_project_technologies(technologies)
-    project_technologies.destroy_all
-    add_project_technologies(technologies)
   end
 
   private

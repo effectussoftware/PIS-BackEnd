@@ -13,6 +13,9 @@ module Api
       end
 
       def render_create_success
+        user = User.find_by(email: sign_up_params[:email])
+        Project.all.each { |proyect| proyect.add_alert(user) }
+
         render :create
       end
     end

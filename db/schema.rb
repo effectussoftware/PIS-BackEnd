@@ -170,6 +170,17 @@ ActiveRecord::Schema.define(version: 2021_10_16_213447) do
     t.index ["name"], name: "index_technologies_on_name", unique: true
   end
 
+  create_table "user_projects", force: :cascade do |t|
+    t.boolean "notification_active", default: false
+    t.boolean "not_seen", default: true
+    t.integer "user_id"
+    t.integer "project_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_user_projects_on_project_id"
+    t.index ["user_id"], name: "index_user_projects_on_user_id"
+  end
+
   create_table "users", id: :serial, force: :cascade do |t|
     t.string "email"
     t.string "encrypted_password", default: "", null: false
