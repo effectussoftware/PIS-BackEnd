@@ -81,7 +81,7 @@ class User < ApplicationRecord
   end
 
   def alerts
-    user_projects # + user_people ##para revertir
+    user_projects # + user_people
   end
 
   # :reek:ControlParameter
