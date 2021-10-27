@@ -27,7 +27,6 @@ class Project < ApplicationRecord
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado hibrido].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcoming].freeze
   FILTER_PARAMS = %w[project_state technologies project_type organization].freeze
-
   validates :name, presence: { message: I18n.t('api.errors.project.missing_param',
                                                { value: :name }) }
   validates :description,
