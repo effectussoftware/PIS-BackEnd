@@ -24,7 +24,7 @@ class Project < ApplicationRecord
   has_many :person_project, dependent: :destroy
   has_many :people, through: :person_project
 
-  PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado].freeze
+  PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado hibrido].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
   validates :name, presence: { message: I18n.t('api.errors.project.missing_param',
                                                { value: :name }) }
