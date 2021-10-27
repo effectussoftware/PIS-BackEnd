@@ -1,13 +1,18 @@
 module Api
   module V1
     class UsersController < Api::V1::ApiController
-      before_action :auth_user
+      before_action :auth_user, except: :index
 
       def show; end
 
       def update
         current_user.update!(user_params)
         render :show
+      end
+
+      def index
+        @admins = User.all
+        render :index
       end
 
       private
