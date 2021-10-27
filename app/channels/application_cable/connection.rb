@@ -16,7 +16,7 @@ module ApplicationCable
       # params[:current_user] = user
 
       # TODO: Pasar el mensaje que se envia al i18t
-      # WebChannel.send_message(user, 'test') if user.check_alerts?
+      WebChannel.send_message(user, 'test') if user.check_alerts?
     end
   end
 end
