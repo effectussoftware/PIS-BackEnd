@@ -28,10 +28,12 @@ class PersonProject < ApplicationRecord
 
   validates :person_id, :project_id, :role, :working_hours, :working_hours_type,
             :start_date, presence: true
-
+  
   validates :person_id, uniqueness: { scope: %i[project_id role start_date end_date],
-                                      message: I18n.t('api.errors.person_project.already_added') }
+                                      message: I18n.t('api.errors.person_project.already_added',
+                                        { role: :role, person: :person_id } )  }
   validates :role, inclusion: { in: Person::ROL_TYPES }
+  
   validate :end_date_is_after_start_date
   validate :dates_between_project_dates
 
