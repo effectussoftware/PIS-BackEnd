@@ -3,7 +3,7 @@ describe 'GET api/v1/users/', type: :request do
   let!(:user) { create(:user) }
 
   subject do
-    delete api_v1_users_path(User.id), headers: auth_headers, as: :json
+    delete api_v1_users_path(user.id), headers: auth_headers, as: :json
   end
 
   it 'should return success' do
