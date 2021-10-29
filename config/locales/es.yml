@@ -33,6 +33,8 @@ es:
         record_delete: El rol '%{role}' fue borrado de la persona '%{person_name}' en el proyecto '%{project_name}'
       project:
         record_delete: El proyecto '%{name}' fue borrado
+      user:
+        record_delete: El usuario '%{name}' fue borrado
   errors:
     messages:
       accepted: Debe ser aceptado

@@ -33,6 +33,8 @@ en:
         record_delete: The '%{role}' role was deleted for '%{person_name}' on the '%{project_name}' project
       project:
         record_delete: The project '%{name}' was deleted
+      user:
+        record_delete: The project '%{name}' was deleted
   errors:
     messages:
       accepted: Must be accepted
