@@ -1,8 +1,6 @@
 module Api
   module V1
     class UsersController < Api::V1::ApiController
-      before_action :auth_user, except: :index
-
       def show; end
 
       def update
@@ -17,22 +15,20 @@ module Api
 
       def destroy
         user = User.find(params[:id])
-        if current_user.id == user.id
+        if current_user?(user)
           render json: { message: I18n.t('api.errors.user.invalid_delete') }
         else
-          name = user.first_name + ' ' + user.last_name
+          full_name = user.full_name
           user.destroy!
           render json: { message: I18n.t('api.success.user.record_delete',
-            { name: name }) }
+                                         { name: full_name }) }
         end
-      rescue ActiveRecord::RecordNotFound
-        render json: { error: I18n.t('api.errors.user.not_found') }, status: :not_found
       end
 
       private
 
-      def auth_user
-        authorize current_user
+      def current_user?(user)
+        current_user.id == user.id
       end
 
       def user_params

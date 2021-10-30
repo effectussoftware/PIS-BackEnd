@@ -32,6 +32,5 @@ describe 'GET api/v1/users', type: :request do
       subject
       expect(response).to have_http_status(:unauthorized)
     end
-
   end
 end

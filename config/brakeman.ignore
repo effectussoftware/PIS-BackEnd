@@ -39,8 +39,24 @@
       "user_input": ":role",
       "confidence": "Medium",
       "note": "This is disabled due this role is the role of the person in the project"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 106,
+      "fingerprint": "c8adc1c0caf2c9251d1d8de588fb949070212d0eed5e1580aee88bab2287b772",
+      "check_name": "SanitizeMethods",
+      "message": "loofah gem 2.12.0 is vulnerable (CVE-2018-8048). Upgrade to 2.2.1",
+      "file": "Gemfile.lock",
+      "line": 226,
+      "link": "https://github.com/flavorjones/loofah/issues/144",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "Medium",
+      "note": "https://github.com/flavorjones/loofah/issues/209"
     }
   ],
-  "updated": "2021-10-16 19:30:10 -0300",
-  "brakeman_version": "4.8.2"
+  "updated": "2021-10-30 01:48:56 -0300",
+  "brakeman_version": "4.10.1"
 }
