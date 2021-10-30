@@ -26,6 +26,8 @@ es:
         not_found: No se pudo encontrar el proyecto
       technology:
         error_name: El nombre debe estar en minusculas y sin espacios
+      user:
+        invalid_delete: No se puede eliminar al usuario logueado
     success:
       person:
         record_delete: La persona '%{name}' fue borrada
@@ -33,6 +35,8 @@ es:
         record_delete: El rol '%{role}' fue borrado de la persona '%{person_name}' en el proyecto '%{project_name}'
       project:
         record_delete: El proyecto '%{name}' fue borrado
+      user:
+        record_delete: El usuario '%{name}' fue borrado
   errors:
     messages:
       accepted: Debe ser aceptado
