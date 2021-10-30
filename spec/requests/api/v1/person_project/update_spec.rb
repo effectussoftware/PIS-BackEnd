@@ -36,6 +36,9 @@ describe 'PUT api/v1/person_project', type: :request do
     full_name = "#{person.first_name} #{person.last_name}"
     person_reduced[:full_name] = full_name
 
+    # add role
+    person_reduced[:roles] = ['developer']
+
     # add person and project
     response_body = person_project_update.attributes.merge(person: person_reduced,
                                                            project: project_reduced)

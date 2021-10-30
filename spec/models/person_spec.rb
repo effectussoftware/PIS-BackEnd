@@ -46,16 +46,6 @@ RSpec.describe Person, type: :model do
         expect(person).not_to be_valid
       end
 
-      it 'has empty roles' do
-        person.roles = []
-        expect(person).not_to be_valid
-      end
-
-      it 'has invalid roles' do
-        person.roles = ['pepe']
-        expect(person).not_to be_valid
-      end
-
       it 'validate the uniqueness of email' do
         person1 = create(:person)
         expect(person1).to be_valid

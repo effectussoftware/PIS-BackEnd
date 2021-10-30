@@ -39,20 +39,12 @@ module Api
 
       def person_params
         params.require(:person).permit(:first_name, :last_name, :email,
-                                       :working_hours, roles: [])
+                                       :working_hours)
       end
 
       def technologies_params
         params.require(:person)[:technologies]
       end
-      #         person: {
-      #           ...
-      #             "technologies":[
-      #                             [Java", "senior"],
-      #                             ["ruby", "junior"]
-      #             ]
-      #           ...
-      #         }
     end
   end
 end

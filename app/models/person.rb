@@ -24,7 +24,6 @@ class Person < ApplicationRecord
 
   validates :first_name, :last_name, :working_hours, presence: true
   validates :email, presence: true, uniqueness: true
-  validates :roles, presence: true
   validate :check_roles_array, if: -> { roles.any? }
 
   def add_person_technologies(technologies)
