@@ -26,6 +26,8 @@ es:
         not_found: No se pudo encontrar el proyecto
       technology:
         error_name: El nombre debe estar en minusculas y sin espacios
+      user:
+        invalid_delete: No se puede eliminar al usuario logueado
     success:
       person:
         record_delete: La persona '%{name}' fue borrada

@@ -26,6 +26,8 @@ en:
         not_found: Couldn't find the project
       technology:
         error_name: The name must be in lowercase and without spaces
+      user:
+        invalid_delete: Cannot delete the logged in user
     success:
       person:
         record_delete: The person '%{name}' was deleted

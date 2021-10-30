@@ -17,10 +17,14 @@ module Api
 
       def destroy
         user = User.find(params[:id])
-        name = user.first_name + ' ' + user.last_name
-        user.destroy!
-        render json: { message: I18n.t('api.success.user.record_delete',
-                                       { name: name }) }
+        if current_user.id == user.id
+          render json: { message: I18n.t('api.errors.user.invalid_delete') }
+        else
+          name = user.first_name + ' ' + user.last_name
+          user.destroy!
+          render json: { message: I18n.t('api.success.user.record_delete',
+            { name: name }) }
+        end
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.user.not_found') }, status: :not_found
       end
