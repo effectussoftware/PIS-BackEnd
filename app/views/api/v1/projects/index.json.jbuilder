@@ -1,4 +1,4 @@
 json.projects do
-  json.array! @projects.includes([:project_technologies]).includes([:technologies]),
+  json.array! @projects,
               partial: 'info', as: :project
 end

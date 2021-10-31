@@ -10,7 +10,8 @@ module Api
       end
 
       def index
-        @projects = filter!(Project)
+        @projects = filter!(Project).includes(:person_project, :people, :project_technologies,
+                                              :technologies)
       end
 
       def show
