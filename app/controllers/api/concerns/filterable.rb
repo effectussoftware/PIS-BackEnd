@@ -7,18 +7,20 @@ module Filterable
   private
 
   def store_filters(resource)
-    unless session.key?("#{resource.to_s.underscore}_filters")
-      session["#{resource.to_s.underscore}_filters"] =
+    filter_name = "#{resource.to_s.underscore}_filters"
+    unless session.key?(filter_name)
+      session[filter_name] =
         {}
     end
 
-    session["#{resource.to_s.underscore}_filters"].merge!(filter_params_for(resource))
+    session[filter_name].merge!(filter_params_for(resource))
   end
 
   def filter_params_for(resource)
     params.permit(resource::FILTER_PARAMS)
   end
 
+  # :reek:FeatureEnvy
   def apply_filters(resource)
     resource.filter(session["#{resource.to_s.underscore}_filters"])
   end
