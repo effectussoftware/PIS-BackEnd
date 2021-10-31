@@ -122,5 +122,105 @@ RSpec.describe Project, type: :model do
         expect(ProjectTechnology.find_by(project_id: project_id)).to be_nil
       end
     end
+
+    context 'when filtering projects' do
+      organization = 'org'
+      p_state = 'amarillo'
+      p_type = 'end_to_end'
+      technologies = %w[java ruby]
+
+      # Les agrego as json para que ponga las keys como strings y
+      # no como symbols. Desde el front van a venir por string por
+      # default.
+      let(:partial_filter) { { project_state: p_state }.as_json }
+      let(:full_filter) do
+        { project_state: p_state,
+          project_type: p_type,
+          technologies: technologies,
+          organization: organization }.as_json
+      end
+      let(:filter_technologies) { { technologies: technologies }.as_json }
+
+      context 'when tables are empty' do
+        it 'works with full filter' do
+          expect(Project.filter(full_filter)).to eq []
+        end
+
+        it 'works with a partial filter' do
+          expect(Project.filter(partial_filter)).to eq []
+        end
+
+        it 'works with a technologies filter' do
+          expect(Project.filter(filter_technologies)).to eq []
+        end
+      end
+
+      context 'when tables have projects' do
+        let!(:load_projects) do
+          # Los params que pongo aca tienen que ser los que no se usan
+          params = { project_state: 'verde', project_type: 'tercerizado', organization: 'no_usada' }
+          create_list(:project, 5, params)
+        end
+
+        it 'returns all when filters are empty' do
+          expect(Project.filter({}).length).to eq 5
+        end
+
+        it 'works with a technologies filter' do
+          project = Project.first
+          project.add_project_technologies(technologies)
+          filtered = Project.filter(filter_technologies)
+          expect(filtered.length).to eq 1
+          expect(filtered.first ).to eq project
+        end
+
+        it 'works with a partial filter' do
+          project = Project.first
+          project.update!(project_state: p_state)
+          filtered = Project.filter(partial_filter)
+          expect(filtered.length).to eq 1
+          expect(filtered.first ).to eq project
+
+        end
+
+        it 'works with full filters' do
+          project = Project.first
+          project.update(project_state: p_state,
+                         project_type: p_type,
+                         organization: organization)
+          project.add_project_technologies(technologies)
+          filtered = Project.filter(full_filter)
+
+          expect(filtered.length).to eq 1
+          expect(filtered.first ).to eq project
+        end
+
+        it 'wont alter the current table' do
+          Project.first.update(project_state: p_state)
+
+          init = Project.all.order(:id)
+          expect(init.length).to eq 5
+
+          filtered = Project.filter(partial_filter).order(:id)
+
+          filtered.each { |one| expect(init.include? one).to be_truthy }
+          expect(Project.all.order(:id)).to eq init
+        end
+      end
+
+      context 'when some projects dont have technologies' do
+        let!(:load_projects) {
+          params = { project_state: 'verde', project_type: 'tercerizado', organization: 'no_usada' }
+          create_list(:project, 4, params)
+        }
+        it 'returns right amount of projects' do
+          Project.first(2).each { |project|
+            project.add_project_technologies(technologies)
+          }
+
+          expect(Project.filter(filter_technologies).length).to eq 2
+        end
+      end
+    end
   end
 end
