@@ -8,7 +8,7 @@ module Api
       end
 
       def index
-        @people = Person.all
+        @people = Person.all.includes(:person_technologies)
       end
 
       def show

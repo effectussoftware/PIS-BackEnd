@@ -171,7 +171,7 @@ RSpec.describe Project, type: :model do
           project.add_project_technologies(technologies)
           filtered = Project.filter(filter_technologies)
           expect(filtered.length).to eq 1
-          expect(filtered.first ).to eq project
+          expect(filtered.first).to eq project
         end
 
         it 'works with a partial filter' do
@@ -179,44 +179,43 @@ RSpec.describe Project, type: :model do
           project.update!(project_state: p_state)
           filtered = Project.filter(partial_filter)
           expect(filtered.length).to eq 1
-          expect(filtered.first ).to eq project
-
+          expect(filtered.first).to eq project
         end
 
         it 'works with full filters' do
           project = Project.first
-          project.update(project_state: p_state,
-                         project_type: p_type,
-                         organization: organization)
+          project.update!(project_state: p_state,
+                          project_type: p_type,
+                          organization: organization)
           project.add_project_technologies(technologies)
           filtered = Project.filter(full_filter)
 
           expect(filtered.length).to eq 1
-          expect(filtered.first ).to eq project
+          expect(filtered.first).to eq project
         end
 
         it 'wont alter the current table' do
-          Project.first.update(project_state: p_state)
+          Project.first.update!(project_state: p_state)
 
           init = Project.all.order(:id)
           expect(init.length).to eq 5
 
           filtered = Project.filter(partial_filter).order(:id)
 
-          filtered.each { |one| expect(init.include? one).to be_truthy }
+          filtered.each { |one| expect(init.include?(one)).to be_truthy }
           expect(Project.all.order(:id)).to eq init
         end
       end
 
       context 'when some projects dont have technologies' do
-        let!(:load_projects) {
+        let!(:load_projects) do
           params = { project_state: 'verde', project_type: 'tercerizado', organization: 'no_usada' }
           create_list(:project, 4, params)
-        }
+        end
         it 'returns right amount of projects' do
-          Project.first(2).each { |project|
+          Project.first(2).each do |project|
             project.add_project_technologies(technologies)
-          }
+          end
 
           expect(Project.filter(filter_technologies).length).to eq 2
         end
