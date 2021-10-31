@@ -25,8 +25,11 @@ class Project < ApplicationRecord
   has_many :people, through: :person_project
 
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado hibrido].freeze
-  PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
-  validates :name, presence: { message: I18n.t('api.errors.missing_param') }
+  PROJECT_STATES = %w[rojo amarillo verde upcoming].freeze
+  FILTER_PARAMS = %w[project_state technologies project_type organization].freeze
+
+  validates :name, presence: { message: I18n.t('api.errors.project.missing_param',
+                                               { value: :name }) }
   validates :description,
             presence: { message: I18n.t('api.errors.missing_param') }
   validates :start_date,
@@ -78,6 +81,49 @@ class Project < ApplicationRecord
   def rebuild_project_technologies(technologies)
     project_technologies.destroy_all
     add_project_technologies(technologies)
+  end
+
+  scope :by_technologies, lambda { |techs|
+    if techs.blank?
+      itself
+    else
+      joins(:technologies).where(
+        techs.map { 'technologies.name = ?' }
+             .reduce { |recursive, elem| "#{recursive} or #{elem}" },
+        *techs
+      ).includes(:technologies)
+      # Este includes hace que no se repitan proyectos en el join
+    end
+  }
+  scope :by_project_state, lambda { |project_state|
+                             if project_state.blank?
+                               itself
+                             else
+                               where('projects.project_state = ?', project_state)
+                             end
+                           }
+  scope :by_project_type, lambda { |project_type|
+                            if project_type.blank?
+                              itself
+                            else
+                              where('projects.project_type = ?', project_type)
+                            end
+                          }
+  scope :by_organization, lambda { |organization|
+                            if organization.blank?
+                              itself
+                            else
+                              where('projects.organization = ?', organization)
+                            end
+                          }
+
+  def self.filter(filters)
+    Project.by_technologies(filters['technologies'])
+           .by_project_state(filters['project_state'])
+           .by_project_type(filters['project_type'])
+           .by_organization(filters['organization'])
+
+    # .order("#{filters['column']} #{filters['direction']}")
   end
 
   private

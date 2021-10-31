@@ -1,6 +1,7 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../../app/controllers/api/concerns/filterable', __FILE__)
 
 require 'factory_bot_rails'
 require 'helpers'
