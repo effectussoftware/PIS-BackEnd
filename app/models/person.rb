@@ -22,7 +22,8 @@ class Person < ApplicationRecord
   has_many :person_project, dependent: :destroy
   has_many :projects, through: :person_project
 
-  validates :first_name, :last_name, :working_hours, presence: { message: I18n.t('api.errors.missing_param') }
+  validates :first_name, :last_name, :working_hours,
+            presence: { message: I18n.t('api.errors.missing_param') }
   validates :email, uniqueness: true, presence: { message: I18n.t('api.errors.missing_param') }
   validate :check_roles_array, if: -> { roles.any? }
 
