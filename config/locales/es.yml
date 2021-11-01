@@ -8,7 +8,7 @@ es:
   api:
     errors:
       invalid_content_type: Tipo de contenido inválido
-      missing_param: Falta un parámetro obligatorio
+      missing_param: El campo es requerido
       needs_password_reset: Necesita restablecer su contraseña antes de continuar
       not_found: No se pudo encontrar el registro
       person:
@@ -22,7 +22,6 @@ es:
       project:
         end_date_before_start_date: La fecha de fin no puede ser anterior a la fecha de inicio
         invalid_budget: El budget no puede tener un valor negativo
-        missing_param: El parámetro '%{value}' es requerido
         not_found: No se pudo encontrar el proyecto
       technology:
         error_name: El nombre debe estar en minusculas y sin espacios
