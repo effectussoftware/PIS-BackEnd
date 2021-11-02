@@ -48,8 +48,13 @@ class Project < ApplicationRecord
 
     person_projects = PersonProject.where('project_id = :project_id
       AND end_date > :end_date', { project_id: id, end_date: end_date })
-
     update_person_project_date(person_projects, :end_date, end_date)
+    
+    if (!end_date.blank?)
+      person_projects = PersonProject.where('project_id = :project_id
+        AND end_date is null', { project_id: id, end_date: end_date })
+      update_person_project_date(person_projects, :end_date, end_date)
+    end
   end
 
   def update_person_project_date(person_projects, date, update)
