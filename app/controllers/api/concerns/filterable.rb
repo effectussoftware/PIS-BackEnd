@@ -7,13 +7,16 @@ module Filterable
   private
 
   def store_filters(resource)
+    # Originalmente usaba las keys en la session
+    # Para que los filtros se reinicien se usa una variable
+    @filters = {} if @filters.blank?
     filter_name = "#{resource.to_s.underscore}_filters"
-    unless session.key?(filter_name)
-      session[filter_name] =
+    unless @filters.key?(filter_name)
+      @filters[filter_name] =
         {}
     end
 
-    session[filter_name].merge!(filter_params_for(resource))
+    @filters[filter_name].merge!(filter_params_for(resource))
   end
 
   def filter_params_for(resource)
@@ -24,6 +27,6 @@ module Filterable
 
   # :reek:FeatureEnvy
   def apply_filters(resource)
-    resource.filter(session["#{resource.to_s.underscore}_filters"])
+    resource.filter(@filters["#{resource.to_s.underscore}_filters"])
   end
 end

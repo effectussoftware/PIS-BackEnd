@@ -99,5 +99,15 @@ describe 'GET api/v1/projects', type: :request do
       get api_v1_projects_path, params: filter_technologies, headers: auth_headers, as: :json
       expect(json[:projects].length).to eq 5
     end
+
+    it 'resets filters after response' do
+      load_used_projects
+
+      get api_v1_projects_path, params: partial_filter, headers: auth_headers, as: :json
+      expect(json[:projects].length).to eq 5
+
+      get api_v1_projects_path, headers: auth_headers, as: :json
+      expect(json[:projects].length).to eq 15
+    end
   end
 end
