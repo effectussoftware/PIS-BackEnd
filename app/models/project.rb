@@ -29,8 +29,7 @@ class Project < ApplicationRecord
 
   FILTER_PARAMS = %w[project_state project_type organization].freeze
   ARRAY_FILTER_PARAMS = %w[technologies].freeze
-  validates :name, presence: { message: I18n.t('api.errors.project.missing_param',
-                                               { value: :name }) }
+  validates :name, presence: { message: I18n.t('api.errors.missing_param') }
   validates :description,
             presence: { message: I18n.t('api.errors.missing_param') }
   validates :start_date,
