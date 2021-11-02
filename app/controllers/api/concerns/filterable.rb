@@ -17,7 +17,9 @@ module Filterable
   end
 
   def filter_params_for(resource)
-    params.permit(resource::FILTER_PARAMS)
+    new_params = params.permit(resource::FILTER_PARAMS)
+    resource::ARRAY_FILTER_PARAMS.each { |filter| new_params.merge! params.permit(filter => []) }
+    new_params
   end
 
   # :reek:FeatureEnvy

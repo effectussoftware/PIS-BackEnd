@@ -26,7 +26,9 @@ class Project < ApplicationRecord
 
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado hibrido].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcoming].freeze
-  FILTER_PARAMS = %w[project_state technologies project_type organization].freeze
+
+  FILTER_PARAMS = %w[project_state project_type organization].freeze
+  ARRAY_FILTER_PARAMS = %w[technologies].freeze
   validates :name, presence: { message: I18n.t('api.errors.project.missing_param',
                                                { value: :name }) }
   validates :description,
@@ -98,21 +100,21 @@ class Project < ApplicationRecord
                              if project_state.blank?
                                itself
                              else
-                               where('projects.project_state = ?', project_state)
+                               where(projects: { project_state: project_state })
                              end
                            }
   scope :by_project_type, lambda { |project_type|
                             if project_type.blank?
                               itself
                             else
-                              where('projects.project_type = ?', project_type)
+                              where(projects: { project_type: project_type })
                             end
                           }
   scope :by_organization, lambda { |organization|
                             if organization.blank?
                               itself
                             else
-                              where('projects.organization = ?', organization)
+                              where(projects: { organization: organization })
                             end
                           }
 
