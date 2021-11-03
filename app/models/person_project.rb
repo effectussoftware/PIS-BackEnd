@@ -22,6 +22,8 @@
 class PersonProject < ApplicationRecord
   belongs_to :person
   belongs_to :project
+  FILTER_PARAMS = Project::FILTER_PARAMS
+  ARRAY_FILTER_PARAMS = Project::ARRAY_FILTER_PARAMS
 
   delegate :first_name, to: :person, prefix: true
   delegate :name, to: :project, prefix: true

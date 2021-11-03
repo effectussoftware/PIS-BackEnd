@@ -33,9 +33,6 @@ describe 'GET api/v1/projects', type: :request do
         project_type: 'tercerizado',
         organization: nil }
     end
-    # Les agrego as json para que ponga las keys como strings y
-    # no como symbols. Desde el front van a venir por string por
-    # default.
     let(:partial_filter) { { project_state: p_state } }
     let(:full_filter) do
       { project_state: p_state,
