@@ -1,6 +1,7 @@
 module Api
   module V1
     class PersonProjectController < Api::V1::ApiController
+      include Filterable
       def create
         @person_project = Person.find(params[:person_id])
                                 .person_project.create!(person_project_params)
@@ -8,7 +9,11 @@ module Api
       end
 
       def index
-        @people = Person.includes(:projects).references(:project).uniq
+        projects = filter!(Project).select('projects.id as project_id')
+        @people = Person.joins(:projects, "INNER JOIN (#{projects.to_sql}) AS project_filter" \
+          ' ON projects.id = project_filter.project_id')
+                        .includes(:person_project, :projects)
+                        .references(:project).uniq
       end
 
       def show
