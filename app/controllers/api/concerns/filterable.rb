@@ -23,7 +23,9 @@ module Api
 
       def filter_params_for(resource)
         new_params = params.permit(resource::FILTER_PARAMS)
-        resource::ARRAY_FILTER_PARAMS.each { |filter| new_params.merge! params.permit(filter => []) }
+        resource::ARRAY_FILTER_PARAMS.each do |filter|
+          new_params.merge! params.permit(filter => [])
+        end
         new_params
       end
 
