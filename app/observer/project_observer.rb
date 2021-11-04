@@ -8,7 +8,7 @@ class ProjectObserver < ActiveRecord::Observer
   end
 
   def after_update(project)
-    project.update_person_projects
+    project.update_all_person_projects
   end
 
   def after_create(project)

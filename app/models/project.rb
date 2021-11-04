@@ -57,12 +57,30 @@ has_many :project_technologies, dependent: :destroy
     update_person_projects(person_projects, :end_date, end_date)
   end
 
+  def check_alerts
+    # actual_date = DateTime.new.to_date
+    return if end_date.blank?
+
+    # days_difference = (end_date - actual_date)
+    user_projects.each do |up|
+      if notifies?
+        up.cron_alert
+        up.check_alert
+      end
+    end
+  end
+
   def update_person_projects_date_null
     return if end_date.blank?
 
     person_projects = PersonProject.where('project_id = :project_id
       AND end_date is null', { project_id: id, end_date: end_date })
     update_person_projects(person_projects, :end_date, end_date)
+  end
+
+  def update_all_person_projects
+    update_person_projects_date
+    update_person_projects_date_null
   end
 
   def update_person_projects(person_projects, date, update)
@@ -85,6 +103,32 @@ has_many :project_technologies, dependent: :destroy
     add_project_technologies(technologies)
   end
 
+
+  def add_alert(user)
+    up = UserProject.create!(project_id: id, user_id: user.id)
+    up.update_alert(notifies?)
+  end
+
+  def notifies?
+    return false if end_date.blank?
+    byebug
+    (end_date - DateTime.now.to_date).to_i < 7
+  end
+
+  def notifies(end_date)
+    return false if end_date.blank?
+
+    (end_date - DateTime.now.to_date).to_i < 7
+  end
+
+
+  def update_person_project_date(person_projects, date, update)
+    person_projects.each do |p_p|
+      p_p[date] = update
+      p_p.save!
+    end
+  end
+
   #TODO
   def update_alerts
     old_date = Project.find(id).end_date
@@ -96,46 +140,6 @@ has_many :project_technologies, dependent: :destroy
     end
   end
 
-  def add_alert(user)
-    up = UserProject.create!(project_id: id, user_id: user.id)
-    up.update_alert(notifies?)
-  end
-
-  def notifies?
-    return false if end_date.blank?
-
-    (end_date - DateTime.now.to_date).to_i < 7
-  end
-
-  def notifies(end_date)
-    return false if end_date.blank?
-
-    (end_date - DateTime.now.to_date).to_i < 7
-  end
-
-  def update_person_projects
-    person_projects = PersonProject.where('project_id = :project_id
-        AND start_date < :start_date', { project_id: id, start_date: start_date })
-    update_person_project_date(person_projects, :start_date, start_date)
-
-    person_projects = PersonProject.where('project_id = :project_id
-      AND end_date > :end_date', { project_id: id, end_date: end_date })
-
-    update_person_project_date(person_projects, :end_date, end_date)
-  end
-
-  def update_person_project_date(person_projects, date, update)
-    person_projects.each do |p_p|
-      p_p[date] = update
-      p_p.save!
-    end
-  end
-
-  def update_alerts(notifies)
-    user_projects.each do |up|
-      up.update_alert(notifies)
-    end
-  end
 
   private
 
