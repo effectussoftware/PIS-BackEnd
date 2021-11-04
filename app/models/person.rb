@@ -20,7 +20,7 @@ class Person < ApplicationRecord
   has_many :person_technologies, dependent: :destroy
   has_many :technologies, through: :person_technologies
   has_many :person_project, dependent: :destroy
-  has_many :projects, through: :person_project
+  has_many :projects, -> { distinct }, through: :person_project
 
   validates :first_name, :last_name, :working_hours,
             presence: { message: I18n.t('api.errors.missing_param') }
