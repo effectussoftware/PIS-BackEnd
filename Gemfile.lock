@@ -1,6 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    action-cable-testing (0.6.1)
+      actioncable (>= 5.0)
     actioncable (6.0.3.7)
       actionpack (= 6.0.3.7)
       nio4r (~> 2.0)
@@ -85,8 +87,8 @@ GEM
       jquery-rails
     ast (2.4.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.521.0)
-    aws-sdk-core (3.121.5)
+    aws-partitions (1.524.0)
+    aws-sdk-core (3.121.6)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.520.1)
       aws-sigv4 (~> 1.1)
@@ -120,6 +122,7 @@ GEM
     codeclimate-engine-rb (0.4.2)
     coderay (1.1.3)
     concurrent-ruby (1.1.9)
+    connection_pool (2.2.5)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -152,8 +155,11 @@ GEM
       activesupport (>= 5.0)
       request_store (>= 1.0)
       ruby2_keywords
+    e2mmap (0.1.0)
     erubi (1.10.0)
     erubis (2.7.0)
+    et-orbi (1.2.6)
+      tzinfo
     exception_hunter (1.1.0)
       pagy (~> 3)
       slack-notifier (~> 2.3)
@@ -171,6 +177,9 @@ GEM
     formtastic (4.0.0)
       actionpack (>= 5.2.0)
     formtastic_i18n (0.7.0)
+    fugit (1.5.2)
+      et-orbi (~> 1.1, >= 1.1.8)
+      raabro (~> 1.4)
     globalid (0.5.2)
       activesupport (>= 5.0)
     has_scope (0.8.0)
@@ -178,7 +187,7 @@ GEM
       activesupport (>= 5.2)
     hashdiff (1.0.1)
     highline (2.0.3)
-    i18n (1.8.10)
+    i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     i18n-tasks (0.9.34)
       activesupport (>= 4.0.2)
@@ -231,13 +240,11 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.6.1)
     minitest (5.14.4)
     msgpack (1.4.2)
     mustache (1.1.1)
     nio4r (2.5.8)
-    nokogiri (1.12.5)
-      mini_portile2 (~> 2.6.1)
+    nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
     oj (3.13.9)
     orm_adapter (0.5.0)
@@ -260,6 +267,7 @@ GEM
       nio4r (~> 2.0)
     pundit (2.1.1)
       activesupport (>= 3.0.0)
+    raabro (1.4.0)
     racc (1.6.0)
     rack (2.2.3)
     rack-cors (1.1.1)
@@ -291,6 +299,8 @@ GEM
     rails-i18n (6.0.0)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 7)
+    rails-observers (0.1.5)
+      activemodel (>= 4.0)
     rails_best_practices (1.22.1)
       activesupport
       code_analyzer (>= 0.5.2)
@@ -314,6 +324,23 @@ GEM
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    redis (4.5.1)
+    redis-actionpack (5.2.0)
+      actionpack (>= 5, < 7)
+      redis-rack (>= 2.1.0, < 3)
+      redis-store (>= 1.1.0, < 2)
+    redis-activesupport (5.2.1)
+      activesupport (>= 3, < 7)
+      redis-store (>= 1.3, < 2)
+    redis-rack (2.1.3)
+      rack (>= 2.0.8, < 3)
+      redis-store (>= 1.2, < 2)
+    redis-rails (5.0.2)
+      redis-actionpack (>= 5.0, < 6)
+      redis-activesupport (>= 5.0, < 6)
+      redis-store (>= 1.2, < 2)
+    redis-store (1.9.0)
+      redis (>= 4, < 5)
     reek (5.6.0)
       codeclimate-engine-rb (~> 0.4.0)
       kwalify (~> 0.7.0)
@@ -373,6 +400,8 @@ GEM
       rubocop-ast (>= 1.1.0)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
+    rufus-scheduler (3.8.0)
+      fugit (~> 1.1, >= 1.1.6)
     sassc (2.4.0)
       ffi (~> 1.9)
     semantic_range (3.0.0)
@@ -381,6 +410,20 @@ GEM
     sexp_processor (4.16.0)
     shoulda-matchers (4.5.1)
       activesupport (>= 4.2.0)
+    sidekiq (6.2.2)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
+    sidekiq-cron (1.2.0)
+      fugit (~> 1.1)
+      sidekiq (>= 4.2.1)
+    sidekiq-scheduler (3.1.0)
+      e2mmap
+      redis (>= 3, < 5)
+      rufus-scheduler (~> 3.2)
+      sidekiq (>= 3)
+      thwait
+      tilt (>= 1.4.0)
     simplecov (0.13.0)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -402,6 +445,9 @@ GEM
       unicode-display_width (>= 1.1.1, < 3)
     thor (1.1.0)
     thread_safe (0.3.6)
+    thwait (0.2.0)
+      e2mmap
+    tilt (2.0.10)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
     uglifier (4.2.0)
@@ -428,9 +474,10 @@ GEM
     zeitwerk (2.5.1)
 
 PLATFORMS
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
+  action-cable-testing
   active_storage_base64 (~> 1.0.0)
   activeadmin (~> 2.8)
   annotate (~> 3.0, >= 3.0.3)
@@ -462,7 +509,10 @@ DEPENDENCIES
   pundit (~> 2.1)
   rack-cors (~> 1.0, >= 1.0.6)
   rails (~> 6.0.3.5)
+  rails-observers
   rails_best_practices (~> 1.20)
+  redis
+  redis-rails
   reek (~> 5.5)
   rspec-rails (~> 3.9)
   rspec_api_documentation (~> 6.1.0)
@@ -470,6 +520,9 @@ DEPENDENCIES
   rubocop-rspec
   sendgrid (~> 1.2.4)
   shoulda-matchers (~> 4.1, >= 4.1.2)
+  sidekiq
+  sidekiq-cron
+  sidekiq-scheduler
   simplecov (~> 0.13.0)
   spring (~> 2.1)
   spring-watcher-listen (~> 2.0.1)
@@ -484,4 +537,4 @@ RUBY VERSION
    ruby 2.7.2p137
 
 BUNDLED WITH
-   2.1.4
+   2.2.28
