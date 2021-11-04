@@ -20,7 +20,8 @@ require 'rails_helper'
 RSpec.describe UserProject, type: :model do
   describe 'alerts' do
     let!(:user) { create :user }
-    let(:project) { create(:project, end_date: (Date.today + 1.days).strftime("%Y-%m-%d") )}
+    day = Date.today + 1.days
+    let(:project) { create(:project, end_date:  day)}
 
     context 'creates user_projects with corrects bools' do
       it 'create user_project in true-true' do

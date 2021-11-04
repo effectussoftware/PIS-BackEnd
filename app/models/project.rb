@@ -183,7 +183,6 @@ has_many :project_technologies, dependent: :destroy
 
   def notifies?
     return false if end_date.blank?
-    byebug
     (end_date - DateTime.now.to_date).to_i < 7
   end
 
