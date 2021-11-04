@@ -1,6 +1,8 @@
 module Api
   module V1
     class ProjectsController < Api::V1::ApiController
+      include Filterable
+
       def create
         @project = Project.create!(project_params)
         @project.add_project_technologies(technologies_params)
@@ -8,7 +10,8 @@ module Api
       end
 
       def index
-        @projects = Project.includes(:people, :person_project).all
+        @projects = filter!(Project).includes(:person_project, :people, :project_technologies,
+                                              :technologies)
       end
 
       def show
