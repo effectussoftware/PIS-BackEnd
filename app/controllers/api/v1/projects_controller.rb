@@ -1,7 +1,7 @@
 module Api
   module V1
     class ProjectsController < Api::V1::ApiController
-      include Filterable
+      include Api::Concerns::Filterable
 
       def create
         @project = Project.create!(project_params)

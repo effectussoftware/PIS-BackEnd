@@ -1,7 +1,7 @@
 module Api
   module V1
     class PersonProjectController < Api::V1::ApiController
-      include Filterable
+      include Api::Concerns::Filterable
       def create
         @person_project = Person.find(params[:person_id])
                                 .person_project.create!(person_project_params)
