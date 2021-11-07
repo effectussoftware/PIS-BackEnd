@@ -20,7 +20,7 @@ es:
         not_found: No se pudo encontrar la persona en el proyecto
         start_date_before_project: No puede ser anterior a fecha inicio del proyecto (%{project_start_date})
       project:
-        end_date_before_start_date: La fecha de fin no puede ser anterior a la fecha de inicio
+        end_date_before_start_date: La fecha de fin no puede ser anterior a la fecha de inicio del proyecto
         invalid_budget: No puede tener un valor negativo
         not_found: No se pudo encontrar el proyecto
       technology:

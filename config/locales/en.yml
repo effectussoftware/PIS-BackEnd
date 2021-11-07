@@ -20,7 +20,7 @@ en:
         not_found: Couldn't find the person on the project
         start_date_before_project: Cannot be before the Project start date (%{project_start_date})
       project:
-        end_date_before_start_date: Cannot be before the start time
+        end_date_before_start_date: The end date cannot be earlier than the project start date
         invalid_budget: Cannot have a negative value
         not_found: Couldn't find the project
       technology:
