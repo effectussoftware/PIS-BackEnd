@@ -16,8 +16,8 @@
 #  index_people_on_email  (email) UNIQUE
 #
 class Person < ApplicationRecord
-  # has_many :user_person
-  # has_many :people, through: :user_people
+  has_many :user_people, dependent: :destroy
+  has_many :users, through: :user_people
 
   ROL_TYPES = %w[developer pm tester architect analyst designer].freeze
 
@@ -30,6 +30,10 @@ class Person < ApplicationRecord
             presence: { message: I18n.t('api.errors.missing_param') }
   validates :email, uniqueness: true, presence: { message: I18n.t('api.errors.missing_param') }
   validate :check_roles_array, if: -> { roles.any? }
+
+  after_create do
+    User.all.find_each { |user| add_alert(user) }
+  end
 
   def add_person_technologies(technologies)
     return if technologies.blank? || !technologies.is_a?(Array)
@@ -48,5 +52,39 @@ class Person < ApplicationRecord
     return if roles.all? { |role| ROL_TYPES.include?(role) }
 
     errors.add(:roles, I18n.t('api.errors.person.roles_in_list'))
+  end
+
+  def add_alert(user)
+    end_date = obtain_last_end_date
+    up = UserPerson.create!(person_id: id, user_id: user.id)
+    up.update_alert(notifies(end_date), end_date.blank? || end_date > DateTime.now)
+  end
+
+  def update_alerts
+    end_date = obtain_last_end_date
+
+    user_people.each do |up|
+      up.update_alert(notifies(end_date), end_date.blank? || end_date > DateTime.now)
+    end
+  end
+
+  def notifies?
+    end_date = obtain_last_end_date
+    notifies(end_date)
+  end
+
+  def notifies(date)
+    today = DateTime.now
+    return false if date.blank? || date < today
+
+    (date - today.to_date).to_i < 7
+  end
+
+  def obtain_last_end_date
+    p_p = person_project
+    return if p_p.count.zero?
+    return if p_p.where(end_date: nil).count != 0
+
+    p_p.maximum('end_date')
   end
 end

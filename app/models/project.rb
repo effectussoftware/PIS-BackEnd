@@ -22,7 +22,7 @@ class Project < ApplicationRecord
   has_many :user_projects, dependent: :destroy
   has_many :users, through: :user_projects
 
-has_many :project_technologies, dependent: :destroy
+  has_many :project_technologies, dependent: :destroy
   has_many :technologies, through: :project_technologies
 
   has_many :person_project, dependent: :destroy
@@ -46,30 +46,15 @@ has_many :project_technologies, dependent: :destroy
   validate :budget_is_valid
   validate :end_date_is_after_start_date
 
-  after_update :update_person_projects_date
-  after_update :update_person_projects_date_null
-  #TODO agregar al observer
   def update_person_projects_date
     person_projects = PersonProject.where('project_id = :project_id
       AND start_date < :start_date', { project_id: id, start_date: start_date })
     update_person_projects(person_projects, :start_date, start_date)
 
+    # person_projects = person_project.where('end_date > :end_date', { end_date: end_date })
     person_projects = PersonProject.where('project_id = :project_id
       AND end_date > :end_date', { project_id: id, end_date: end_date })
     update_person_projects(person_projects, :end_date, end_date)
-  end
-
-  def check_alerts
-    # actual_date = DateTime.new.to_date
-    return if end_date.blank?
-
-    # days_difference = (end_date - actual_date)
-    user_projects.each do |up|
-      if notifies?
-        up.cron_alert
-        up.check_alert
-      end
-    end
   end
 
   def update_person_projects_date_null
@@ -78,11 +63,6 @@ has_many :project_technologies, dependent: :destroy
     person_projects = PersonProject.where('project_id = :project_id
       AND end_date is null', { project_id: id, end_date: end_date })
     update_person_projects(person_projects, :end_date, end_date)
-  end
-
-  def update_all_person_projects
-    update_person_projects_date
-    update_person_projects_date_null
   end
 
   def update_person_projects(person_projects, date, update)
@@ -178,20 +158,19 @@ has_many :project_technologies, dependent: :destroy
 
   def add_alert(user)
     up = UserProject.create!(project_id: id, user_id: user.id)
-    up.update_alert(notifies?)
+    up.update_alert(notifies?, end_date.blank? || end_date > DateTime.now)
   end
 
   def notifies?
-    return false if end_date.blank?
-    (end_date - DateTime.now.to_date).to_i < 7
+    notifies(end_date)
   end
 
   def notifies(end_date)
-    return false if end_date.blank?
+    today = DateTime.now
+    return false if end_date.blank? || end_date < today
 
-    (end_date - DateTime.now.to_date).to_i < 7
+    (end_date - today.to_date).to_i < 7
   end
-
 
   def update_person_project_date(person_projects, date, update)
     person_projects.each do |p_p|
@@ -200,17 +179,15 @@ has_many :project_technologies, dependent: :destroy
     end
   end
 
-  #TODO
   def update_alerts
     old_date = Project.find(id).end_date
     new_date = end_date
     return if old_date == new_date
 
     user_projects.each do |up|
-      up.update_alert(notifies(new_date))
+      up.update_alert(notifies(new_date), new_date.blank? || new_date > DateTime.now)
     end
   end
-
 
   private
 

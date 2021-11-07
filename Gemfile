@@ -60,6 +60,7 @@ group :development do
   gem 'letter_opener', '~> 1.7'
   gem 'listen', '~> 3.2'
   gem 'rails_best_practices', '~> 1.20'
+  gem 'rails-i18n'
   gem 'reek', '~> 5.5'
   gem 'rubocop-rails', '~> 2.3', '>= 2.3.2', require: false
   gem 'rubocop-rspec', require: false

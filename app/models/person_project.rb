@@ -40,10 +40,25 @@ class PersonProject < ApplicationRecord
   before_validation :set_end_date
   before_save :update_person_roles
 
+  after_create do
+    person.update_alerts
+  end
+  after_update do
+    person.update_alerts
+  end
+
   private
+
+  def notifies(end_date)
+    today = DateTime.now
+    return false if end_date.blank? || end_date < today
+
+    (end_date - today.to_date).to_i < 7
+  end
 
   def dates_between_project_dates
     project = Project.find(project_id)
+
     check_with_project_start_date(project.start_date)
     check_with_project_end_date(project.end_date)
   end

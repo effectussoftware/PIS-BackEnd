@@ -3,8 +3,17 @@ module Api
     class NotificationsController < Api::V1::ApiController
       def index
         uid = request.headers[:uid]
-        user = User.find_by(email: uid)
-        @notifications = user.obtain_notifications
+        # byebug
+        # User.find(uid).obtain_notifications
+        # user = User.includes(:user_projects, :user_people).find_by(email: uid)
+                 # .includes(:user_projects, :user_people, user_projects: :project, user_people: :person)
+                 #   .references(user_projects: :project, user_people: :person)
+
+
+        @notifications = User#.includes(:user_projects, :user_people)
+                             .includes(:user_projects)
+                             .find_by(email: uid).obtain_notifications
+
         render :index
       end
 
