@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationCable::Connection, type: :channel do
-  today = DateTime.now
+  today = DateTime.now.to_date
   context 'when tokens are correct' do
     let!(:user) { create(:user) }
 
@@ -12,7 +12,7 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
 
     it 'checks user alerts' do
       # creo un porject a menos de 7 dias de la fecha
-      today = DateTime.now
+      today = DateTime.now.to_date
       create(:project, start_date: today, end_date: today + 1)
 
       expect { connect_user user }
@@ -51,7 +51,7 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
     it 'notifies seen notif on update' do
       project = create(:project, start_date: today, end_date: today + 1)
       connect_user user
-
+      # byebug
       notifications = user.obtain_notifications
       expect(notifications).not_to be_empty
 

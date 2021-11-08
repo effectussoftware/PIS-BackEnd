@@ -29,7 +29,9 @@ class Alert < ApplicationRecord
   end
 
   def see_notification
-    update(not_seen: false)
+    return if blank?
+
+    update!(not_seen: false)
   end
 
   def obtain_notification

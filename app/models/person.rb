@@ -57,15 +57,19 @@ class Person < ApplicationRecord
   def add_alert(user)
     end_date = obtain_last_end_date
     up = UserPerson.create!(person_id: id, user_id: user.id)
-    up.update_alert(notifies(end_date), end_date.blank? || end_date > DateTime.now)
+    up.update_alert(notifies(end_date), end_date.blank? || end_date > DateTime.now.to_date)
   end
 
   def update_alerts
     end_date = obtain_last_end_date
 
     user_people.each do |up|
-      up.update_alert(notifies(end_date), end_date.blank? || end_date > DateTime.now)
+      up.update_alert(notifies(end_date), end_date.blank? || end_date > DateTime.now.to_date)
     end
+  end
+
+  def check_alerts
+    update_alerts
   end
 
   def notifies?
@@ -74,7 +78,7 @@ class Person < ApplicationRecord
   end
 
   def notifies(date)
-    today = DateTime.now
+    today = DateTime.now.to_date
     return false if date.blank? || date < today
 
     (date - today.to_date).to_i < 7
@@ -85,10 +89,9 @@ class Person < ApplicationRecord
   end
 
   def obtain_last_end_date
-    p_p = person_project
-    return if p_p.count.zero?
-    return if p_p.where(end_date: nil).count != 0
+    return if person_project.count.zero?
+    return if person_project.where(end_date: nil).count != 0
 
-    p_p.maximum('end_date')
+    person_project.maximum('end_date')
   end
 end

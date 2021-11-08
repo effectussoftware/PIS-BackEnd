@@ -11,11 +11,6 @@ module Api
       def update
         id = params_alerts[:id]
         alert_type = params_alerts[:alert_type]
-        unless alert_type.in? %w[project person]
-          raise ActiveRecord::RecordInvalid(I18n.t('errors.messages.invalid_param',
-                                                   {param:  params_alerts[:alert_type]}))
-        end
-
         user = User.find_by(email: request.headers[:uid])
         @notifications = user.update_notification(id, alert_type)
         render json: { message: I18n.t('api.success.alerts.record_update') }
@@ -26,7 +21,14 @@ module Api
       private
 
       def params_alerts
-        params.permit(:alert_type, :id)
+        permitted = params.permit(:alert_type, :id)
+        alert_type = permitted[:alert_type]
+
+        unless alert_type.blank? || alert_type.in?(%w[project person])
+          raise ActiveRecord::RecordInvalid(I18n.t('errors.messages.invalid_param',
+                                                   { param: params_alerts[:alert_type] }))
+        end
+        permitted
       end
     end
   end

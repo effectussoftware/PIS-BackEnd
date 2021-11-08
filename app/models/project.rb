@@ -134,15 +134,11 @@ class Project < ApplicationRecord
     Si faltan 7 dias o mas se debe verificar que la alerta este en estado correcto, se ejecuta actualizar_estado
 =end
   def check_alerts
-    actual_date = DateTime.now.to_date
     return if end_date.blank?
 
-    days_difference = end_date - actual_date
-    modifies_alert = days_difference >= 7.days
     user_projects.each do |up|
-      if modifies_alert
-        up.update_alert(days_difference == 7.days, true)
-      else
+      if notifies?
+        up.cron_alert
         up.check_alert
       end
     end
@@ -159,8 +155,9 @@ class Project < ApplicationRecord
   end
 
   def add_alert(user)
-    up = UserProject.create!(project_id: id, user_id: user.id)
-    up.update_alert(notifies?, end_date.blank? || end_date > DateTime.now)
+    # byebug
+    u_p = UserProject.create!(project_id: id, user_id: user.id)
+    u_p.update_alert(notifies?, end_date.blank? || DateTime.now.to_date < end_date)
   end
 
   def notifies?
@@ -168,10 +165,11 @@ class Project < ApplicationRecord
   end
 
   def notifies(end_date)
-    today = DateTime.now
+    today = DateTime.now.to_date
     return false if end_date.blank? || end_date < today
 
-    (end_date - today.to_date).to_i < 7
+    # byebug
+    (end_date - today).to_i < 7
   end
 
   def update_person_project_date(person_projects, date, update)
@@ -187,7 +185,7 @@ class Project < ApplicationRecord
     return if old_date == new_date
 
     user_projects.each do |up|
-      up.update_alert(notifies(new_date), new_date.blank? || new_date > DateTime.now)
+      up.update_alert(notifies(new_date), new_date.blank? || new_date > DateTime.now.to_date)
     end
   end
 

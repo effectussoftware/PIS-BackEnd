@@ -3,49 +3,53 @@ describe 'GET api/v1/notifications', type: :request do
   let!(:user) { create(:user) }
   let!(:unassigned_people) { create_list(:person, 2) }
 
-  let(:project_notify) { create_list(:project, 5, start_date: DateTime.now.to_date - 2.days,
-                                      end_date: DateTime.now.to_date + 2.days) }
-  let!(:project_not_notify) { create_list(:project, 5, start_date: DateTime.now.to_date + 1.days,
-                                          end_date: DateTime.now.to_date + 10.days) }
+  let(:project_notify) do
+    create_list(:project, 5, start_date: DateTime.now.to_date - 2.days,
+                             end_date: DateTime.now.to_date + 2.days)
+  end
+  let!(:project_not_notify) do
+    create_list(:project, 5, start_date: DateTime.now.to_date + 1.day,
+                             end_date: DateTime.now.to_date + 10.days)
+  end
 
-  let(:assign_noti) {
+  let(:assign_noti) do
     people = create_list(:person, 5)
-    project_notify.each { |project|
-      people.each { |person|
+    project_notify.each do |project|
+      people.each do |person|
         create(:person_project, person: person, project: project,
-               start_date: project.start_date, end_date: project.end_date)
-      }
-    }
+                                start_date: project.start_date, end_date: project.end_date)
+      end
+    end
     people
-  }
-  let(:assign_not_noti) {
+  end
+  let(:assign_not_noti) do
     people = create_list(:person, 5)
-    project_notify.each{ |project|
-      people.each{|person|
+    project_notify.each do |project|
+      people.each do |person|
         create(:person_project, person: person, project: project,
-               start_date: project.start_date, end_date: project.end_date)
-      }
+                                start_date: project.start_date, end_date: project.end_date)
+      end
+    end
+    project_not_notify.each do |project|
+      people.each do |person|
+        create(:person_project, person: person, project: project,
+                                start_date: project.start_date, end_date: project.end_date)
+      end
+    end
+    people
+  end
 
-    }
-    project_not_notify.each{ |project|
-      people.each{|person|
-        create(:person_project, person: person, project: project,
-               start_date: project.start_date, end_date: project.end_date)
-      }
-    }
-    people
-  }
-
-  let(:only_people){
+  let(:only_people) do
     people = create_list(:person, 5)
-    project_not_notify.each { |project|
-      people.each { |person|
+    project_not_notify.each do |project|
+      people.each do |person|
         create(:person_project, person: person, project: project,
-               start_date: project.start_date, end_date: DateTime.now.to_date + 5.days)
-      }
-    }
+                                start_date: project.start_date, end_date: DateTime.now.to_date +
+            5.days)
+      end
+    end
     people
-  }
+  end
 
   subject { get api_v1_notifications_path, headers: auth_headers, as: :json }
 
@@ -56,7 +60,7 @@ describe 'GET api/v1/notifications', type: :request do
       expect(json[:notifications].length).to eq 0
     end
   end
-  
+
   context 'when some projects notify' do
     it 'returns 5 notifications' do
       project_notify

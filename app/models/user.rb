@@ -31,7 +31,7 @@
 
 class User < ApplicationRecord
   has_many :user_projects, dependent: :destroy
-  has_many :projects,-> { distinct }, through: :user_projects
+  has_many :projects, -> { distinct }, through: :user_projects
 
   has_many :user_people, dependent: :destroy
   has_many :people, -> { distinct }, through: :user_people
@@ -80,7 +80,7 @@ class User < ApplicationRecord
 
   def update_notification(alert_id, alert_type)
     an_alert = alert alert_id, alert_type
-    an_alert.see_notification unless an_alert.blank?
+    an_alert.see_notification
   end
 
   def alerts
@@ -91,6 +91,7 @@ class User < ApplicationRecord
   def alert(id, alert_type)
     return user_projects.find(id) if alert_type == 'project'
     return user_people.find(id) if alert_type == 'person'
+
     nil
   end
 
