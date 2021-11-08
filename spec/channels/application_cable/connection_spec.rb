@@ -55,7 +55,7 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
       notifications = user.obtain_notifications
       expect(notifications).not_to be_empty
 
-      user.update_notification(notifications[0][:id], notifications[0][:type])
+      user.update_notification(notifications[0][:alert_id], notifications[0][:alert_type])
 
       # Lo que haria el Job AlertJob
       expect { project.check_alerts }.not_to have_broadcasted_to(user).from_channel(WebChannel)

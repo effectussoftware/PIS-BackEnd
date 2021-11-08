@@ -36,6 +36,10 @@ es:
         record_delete: El proyecto '%{name}' fue borrado
       user:
         record_delete: El usuario '%{name}' fue borrado
+      alerts:
+        record_update: La alerta fue modificado con exito
+    alerts:
+      message: Tiene nuevas alertas
   errors:
     messages:
       accepted: Debe ser aceptado
@@ -49,6 +53,7 @@ es:
       greater_than_or_equal_to: Debe ser mayor que o igual a %{count}
       inclusion: No está incluido en la lista
       invalid: No es válido
+      invalid_param: El parametro %{param} es invalido
       less_than: Debe ser menor que %{count}
       less_than_or_equal_to: Debe ser menor que o igual a %{count}
       model_invalid: 'La validación falló: %{errors}'
@@ -65,6 +70,7 @@ es:
       too_short:
         one: Campo demasiado corto (1 carácter mínimo)
         other: Campo demasiado corto (%{count} caracteres mínimo)
+      unimplemented: Metodo no implementado
       wrong_length:
         one: No tiene la longitud correcta (1 carácter exactos)
         other: No tiene la longitud correcta (%{count} caracteres exactos)

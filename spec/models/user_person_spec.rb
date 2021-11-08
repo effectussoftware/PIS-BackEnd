@@ -119,9 +119,9 @@ RSpec.describe UserPerson, type: :model do
 
         alert = UserPerson.find_by(person_id: person.id, user_id: user.id)
         expect(alert).not_to be_nil
-        expect(alert.notification_active).not_to be_truthy
+        expect(alert.notification_active).to be_truthy
         expect(alert.not_seen).to be_truthy
-        expect(alert.notifies?).not_to be_truthy
+        expect(alert.notifies?).to be_truthy
       end
 
       it 'returns false true' do

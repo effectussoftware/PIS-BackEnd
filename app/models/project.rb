@@ -134,13 +134,15 @@ class Project < ApplicationRecord
     Si faltan 7 dias o mas se debe verificar que la alerta este en estado correcto, se ejecuta actualizar_estado
 =end
   def check_alerts
-    # actual_date = DateTime.new.to_date
+    actual_date = DateTime.now.to_date
     return if end_date.blank?
 
-    # days_difference = (end_date - actual_date)
+    days_difference = end_date - actual_date
+    modifies_alert = days_difference >= 7.days
     user_projects.each do |up|
-      if notifies?
-        up.cron_alert
+      if modifies_alert
+        up.update_alert(days_difference == 7.days, true)
+      else
         up.check_alert
       end
     end

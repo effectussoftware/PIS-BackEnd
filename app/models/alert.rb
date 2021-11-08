@@ -12,8 +12,6 @@ class Alert < ApplicationRecord
 
   # Metodo que se llama cuando se actualiza el objeto que alerta
   def update_alert(notifies, not_seen)
-    # FIXME: Si los valores quedarian iguales no hacer update
-    # if (notification_active != notifies || !not_seen)
     update!(notification_active: notifies, not_seen: not_seen)
     check_alert
   end
@@ -21,7 +19,13 @@ class Alert < ApplicationRecord
   def check_alert
     return unless notifies?
 
-    WebChannel.send_message(user, "Alerta:  id=#{id}")
+    WebChannel.send_message(user, I18n.t('api.alerts.message'))
+  end
+
+  def cron_alert
+    return unless not_seen
+
+    update!(notification_active: true)
   end
 
   def see_notification
@@ -29,7 +33,7 @@ class Alert < ApplicationRecord
   end
 
   def obtain_notification
-    raise NoMethodError 'Unimplemented method' # TODO: Mover mensaje a locale
+    raise NoMethodError I18n.t('errors.messages.unimplemented')
   end
 
   def add_notification(res)

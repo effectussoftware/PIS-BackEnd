@@ -3,29 +3,24 @@ module Api
     class NotificationsController < Api::V1::ApiController
       def index
         uid = request.headers[:uid]
-        # byebug
-        # User.find(uid).obtain_notifications
-        # user = User.includes(:user_projects, :user_people).find_by(email: uid)
-                 # .includes(:user_projects, :user_people, user_projects: :project, user_people: :person)
-                 #   .references(user_projects: :project, user_people: :person)
 
-
-        @notifications = User#.includes(:user_projects, :user_people)
-                             .includes(:user_projects)
-                             .find_by(email: uid).obtain_notifications
-
+        @notifications = User.find_by(email: uid).obtain_notifications
         render :index
       end
 
       def update
         id = params_alerts[:id]
         alert_type = params_alerts[:alert_type]
+        unless alert_type.in? %w[project person]
+          raise ActiveRecord::RecordInvalid(I18n.t('errors.messages.invalid_param',
+                                                   {param:  params_alerts[:alert_type]}))
+        end
 
         user = User.find_by(email: request.headers[:uid])
         @notifications = user.update_notification(id, alert_type)
-        render json: { message: 'Alerta modificada con exito.' }
+        render json: { message: I18n.t('api.success.alerts.record_update') }
       rescue ActiveRecord::RecordNotFound
-        render json: { error: 'Error, alerta no encontrada.' }
+        render json: { error: I18n.t('api.errors.not_found') }
       end
 
       private

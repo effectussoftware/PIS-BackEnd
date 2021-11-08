@@ -69,6 +69,7 @@ describe 'GET api/v1/notifications', type: :request do
     context 'when the projects have assignations' do
       it 'returns 10 notifications' do
         assign_not_noti
+        assign_noti
         subject
 
         expect(response).to have_http_status(:success)

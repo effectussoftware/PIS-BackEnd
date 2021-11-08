@@ -36,6 +36,10 @@ en:
         record_delete: The project '%{name}' was deleted
       user:
         record_delete: The project '%{name}' was deleted
+      alerts:
+        record_update: The alert was modified succesfully
+    alerts:
+      message: You have new alerts
   errors:
     messages:
       accepted: Must be accepted
@@ -49,6 +53,7 @@ en:
       greater_than_or_equal_to: Must be greater than or equal to %{count}
       inclusion: Is not included in the list
       invalid: Is invalid
+      invalid_param: The parameter %{param} is invalid
       less_than: Must be less than %{count}
       less_than_or_equal_to: Must be less than or equal to %{count}
       model_invalid: 'Validation failed: %{errors}'
@@ -65,6 +70,7 @@ en:
       too_short:
         one: Field too short (minimum is 1 character)
         other: Field too short (minimum is %{count} characters)
+      unimplemented: Unimplemneted method
       wrong_length:
         one: Is the wrong length (should be 1 character)
         other: Is the wrong length (should be %{count} characters)

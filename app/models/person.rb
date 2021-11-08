@@ -80,6 +80,10 @@ class Person < ApplicationRecord
     (date - today.to_date).to_i < 7
   end
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   def obtain_last_end_date
     p_p = person_project
     return if p_p.count.zero?

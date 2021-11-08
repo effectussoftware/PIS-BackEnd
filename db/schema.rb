@@ -188,8 +188,6 @@ ActiveRecord::Schema.define(version: 2021_11_07_133642) do
     t.integer "project_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["project_id"], name: "index_user_projects_on_project_id"
-    t.index ["user_id"], name: "index_user_projects_on_user_id"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|

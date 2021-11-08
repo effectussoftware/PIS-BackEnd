@@ -20,13 +20,7 @@ class UserPerson < Alert
 
   def obtain_notification
     end_date = person.obtain_last_end_date
-    { id: id, type: 'person', person_id: person.id, name: "#{person.first_name} #{person.last_name}",
+    { alert_id: id, alert_type: 'person', id: person.id, name: person.full_name,
       end_date: end_date }
-  end
-
-  def cron_alert
-    return unless not_seen
-
-    update!(notification_active: true)
   end
 end

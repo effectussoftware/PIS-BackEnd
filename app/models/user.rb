@@ -84,7 +84,7 @@ class User < ApplicationRecord
   end
 
   def alerts
-    user_people # + user_projects
+    user_people + user_projects
   end
 
   # :reek:ControlParameter
