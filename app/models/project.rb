@@ -113,7 +113,7 @@ class Project < ApplicationRecord
                             if organization.blank?
                               itself
                             else
-                              where(projects: { organization: organization })
+                              where('lower(organization) like ?', "#{organization.downcase}%")
                             end
                           }
 
