@@ -44,7 +44,7 @@ describe 'GET api/v1/person_project', type: :request do
   end
 
   context 'on filter tests' do
-    organization = 'org'
+    organization = 'ORG'
     p_state = 'amarillo'
     p_type = 'end_to_end'
     technologies = %w[java ruby]
@@ -67,6 +67,7 @@ describe 'GET api/v1/person_project', type: :request do
         organization: organization }
     end
     let(:filter_technologies) { { technologies: technologies } }
+    let(:filter_organization) { { organization: organization.downcase } }
 
     # Antes de cada test cargo 10 proyectos con parametros que no voy a usar en el filtrado
     let!(:load_unused_projects) do
@@ -111,13 +112,7 @@ describe 'GET api/v1/person_project', type: :request do
       expect(response).to have_http_status(:success)
       expect(json[:person_project].length).to eq 6
       # Me gustaria cambiar esto por 9 pero no logre hacerlo
-      person_project_count = 0
-      json[:person_project].each do |person|
-        person[:person][:projects].each do |project|
-          person_project_count += project[:dates].length
-        end
-      end
-      expect(person_project_count).to eq 39
+      expect(count_person_projects(json)).to eq 39
     end
 
     it 'works with partial filters' do
@@ -125,13 +120,7 @@ describe 'GET api/v1/person_project', type: :request do
       expect(response).to have_http_status(:success)
 
       expect(json[:person_project].length).to eq 6
-      person_project_count = 0
-      json[:person_project].each do |person|
-        person[:person][:projects].each do |project|
-          person_project_count += project[:dates].length
-        end
-      end
-      expect(person_project_count).to eq 33
+      expect(count_person_projects(json)).to eq 33
     end
 
     it 'works with technologies filters' do
@@ -140,13 +129,7 @@ describe 'GET api/v1/person_project', type: :request do
       expect(response).to have_http_status(:success)
 
       expect(json[:person_project].length).to eq 6
-      person_project_count = 0
-      json[:person_project].each do |person|
-        person[:person][:projects].each do |project|
-          person_project_count += project[:dates].length
-        end
-      end
-      expect(person_project_count).to eq 33
+      expect(count_person_projects(json)).to eq 33
     end
 
     it 'works with full filters' do
@@ -154,13 +137,26 @@ describe 'GET api/v1/person_project', type: :request do
       expect(response).to have_http_status(:success)
 
       expect(json[:person_project].length).to eq 6
-      person_project_count = 0
-      json[:person_project].each do |person|
-        person[:person][:projects].each do |project|
-          person_project_count += project[:dates].length
-        end
-      end
-      expect(person_project_count).to eq 33
+      expect(count_person_projects(json)).to eq 33
+    end
+
+    it 'works with organization filter' do
+      Project.first.update!(organization: 'ORGANIZATION COMPLETA')
+
+      get api_v1_person_project_index_path, params: filter_organization, headers: auth_headers,
+                                            as: :json
+
+      expect(count_person_projects(json)).to eq 33
     end
   end
+end
+
+def count_person_projects(json)
+  person_project_count = 0
+  json[:person_project].each do |person|
+    person[:person][:projects].each do |project|
+      person_project_count += project[:dates].length
+    end
+  end
+  person_project_count
 end

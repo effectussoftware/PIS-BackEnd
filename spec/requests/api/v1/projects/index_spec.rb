@@ -97,6 +97,21 @@ describe 'GET api/v1/projects', type: :request do
       expect(json[:projects].length).to eq 5
     end
 
+    # por correctly me refiero a buscar 'fin' devuelve todas dentro de
+    # {'FING', 'fin', 'Finlandia', 'fInG' etc } -> fin%
+    it 'filters organizations correctly' do
+      create(:project, organization: 'FING')
+      create(:project, organization: 'fin')
+      create(:project, organization: 'Finlandia')
+      create(:project, organization: 'fInG')
+      # estas no
+      create(:project, organization: 'not fing')
+      create(:project, organization: nil)
+
+      get api_v1_projects_path, params: { organization: 'fin' }, headers: auth_headers, as: :json
+      expect(json[:projects].length).to eq 4
+    end
+
     it 'resets filters after response' do
       load_used_projects
 
