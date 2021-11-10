@@ -80,7 +80,7 @@ class User < ApplicationRecord
 
   def update_notification(alert_id, alert_type)
     an_alert = alert alert_id, alert_type
-    an_alert.see_notification
+    an_alert.see_notification unless an_alert.blank?
   end
 
   def alerts
@@ -92,7 +92,7 @@ class User < ApplicationRecord
     return user_projects.find(id) if alert_type == 'project'
     return user_people.find(id) if alert_type == 'person'
 
-    nil
+    raise ActiveRecord::RecordNotFound
   end
 
   # Metodo que corre al conectarse un usuario al channel

@@ -16,7 +16,10 @@ module App
 
     config.add_autoload_paths_to_load_path = false
 
+    # Observers para los proyectos
     config.active_record.observers = :project_observer
+    # Queue adapter para encolar los jobs de las alertas
+    config.active_job.queue_adapter = :sidekiq
 
     ActionMailer::Base.smtp_settings = {
       address: 'smtp.sendgrid.net',

@@ -12,7 +12,7 @@ module Api
         id = params_alerts[:id]
         alert_type = params_alerts[:alert_type]
         user = User.find_by(email: request.headers[:uid])
-        @notifications = user.update_notification(id, alert_type)
+        user.update_notification(id, alert_type)
         render json: { message: I18n.t('api.success.alerts.record_update') }
       rescue ActiveRecord::RecordNotFound
         render json: { error: I18n.t('api.errors.not_found') }

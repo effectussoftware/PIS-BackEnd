@@ -1,82 +1,91 @@
-describe 'PUT api/v1/people', type: :request do
+describe 'PUT api/v1/notifications', type: :request do
+  today = DateTime.now.to_date
+
   # Needed to get auth_headers
   let!(:user) { create(:user) }
-  let!(:person) { create(:person) }
-  let!(:person_update) { build(:person) }
-  let!(:params) do
-    { person: person_update }
+  let!(:unassigned_people) { create_list(:person, 2) }
+
+  # 2 proyectos que si notifican. Terminan en 2 dias (< 7 dias)
+  let(:project_notify) do
+    create_list(:project, 2, start_date: today - 2.days,
+                             end_date: today + 2.days)
   end
-
-  subject { put api_v1_person_path(person.id), params: params, headers: auth_headers, as: :json }
-
-  it 'should return success' do
-    subject
-    expect(response).to have_http_status(:success)
+  # 3 proyectos que no notifican (fecha fin en 10 dias)
+  let!(:project_not_notify) do
+    create_list(:project, 3, start_date: today + 1.day,
+                             end_date: today + 10.days)
   end
-
-  it 'should respond proper person as JSON' do
-    subject
-
-    id = person[:id]
-    full_name = "#{person_update[:first_name]} #{person_update[:last_name]}"
-
-    person_update_reduced = person_update.slice(:first_name, :last_name,
-                                                :working_hours, :email, :technologies, :roles)
-    person_update_reduced.merge!(id: id, full_name: full_name)
-    expect(json[:person]).to eq(person_update_reduced)
-  end
-
-  context 'when updating technologies' do
-    let(:former_technologies) do
-      [
-        %w[java
-           senior], %w[ruby junior], %w[react semi-senior], %w[psql junior]
-      ]
+  # Crea 2 personas y las asigna a cada proyecto de assign_noti
+  # con una fecha tal que notifica
+  let(:assign_noti) do
+    people = create_list(:person, 2)
+    project_notify.each do |project|
+      people.each do |person|
+        create(:person_project, person: person, project: project,
+                                start_date: project.start_date, end_date: project.end_date)
+      end
     end
-    it 'correctly removes then adds technologies' do
-      put api_v1_person_path(person.id),
-          params: { person: { technologies: former_technologies } },
-          headers: auth_headers, as: :json
-
-      expect(@response).to have_http_status :success
-      expect(json[:person][:technologies].size).to eq 4
-      json[:person][:technologies].each do |tech|
-        expect(tech.in?(former_technologies)).to be_truthy
+    people
+  end
+  # Crea 3 personas y las asigna a cada proyecto en su fecha fin.
+  # No notifican porque cada persona tiene al menos un proyecto que termina en mas de 7 dias
+  # (No se libera en menos de 7 dias)
+  let(:assign_not_noti) do
+    people = create_list(:person, 3)
+    project_notify.each do |project|
+      people.each do |person|
+        create(:person_project, person: person, project: project,
+                                start_date: project.start_date, end_date: project.end_date)
       end
+    end
+    project_not_notify.each do |project|
+      people.each do |person|
+        create(:person_project, person: person, project: project,
+                                start_date: project.start_date, end_date: project.end_date)
+      end
+    end
+    people
+  end
 
-      new_tech = %w[rails senior]
-      put api_v1_person_path(person.id),
-          params: { person: { technologies: [new_tech] } },
+  # Crea 5 personas sin proyectos
+  let(:only_people) do
+    create_list(:person, 5)
+  end
+
+  subject { put api_v1_notifications_path(id), headers: auth_headers, as: :json }
+
+  context 'when the parameters are invalid' do
+    it 'fails with non existent id' do
+      get api_v1_notifications_path, headers: auth_headers, as: :json
+      expect(json[:notifications].length).to eq 0
+
+      put api_v1_notification_path(404), headers: auth_headers, as: :json
+      expect(json[:error]).not_to be_falsey
+    end
+
+    it 'fails if its not my notification' do
+      another_user = create(:user)
+      #dirty porque llamo una clase dentro de un spec de controller
+      dirty_alert = UserProject.where(user_id: another_user.id).first
+
+      put api_v1_notification_path(dirty_alert.id), params: {alert_type: 'project' },
           headers: auth_headers, as: :json
-      expect(@response).to have_http_status :success
 
-      expect(json[:person][:technologies].size).to eq 1
-      expect(%w[rails senior].in?(json[:person][:technologies])).to be_truthy
+      expect(json[:error]).not_to be_falsey
     end
   end
 
-  context 'when patching technologies' do
-    former_technologies = [%w[java senior], %w[ruby senior], %w[react senior], %w[psql senior]]
-    it 'will override older technologies' do
-      put api_v1_person_path(person.id),
-          params: { person: { technologies: former_technologies } },
-          headers: auth_headers, as: :json
-      expect(@response).to have_http_status :success
-      expect(json[:person][:technologies].size).to eq 4
-      json[:person][:technologies].each do |tech|
-        expect(tech.in?(former_technologies)).to be_truthy
-      end
+  context 'when parameters are valid' do
+    it 'wont show my notification again' do
 
-      latter_technologies = [%w[ruby junior], %w[react senior], %w[psql senior]]
-      patch api_v1_person_path(person.id),
-            params: { person: person_update.as_json.merge!(technologies: latter_technologies) },
-            headers: auth_headers, as: :json
+    end
 
-      expect(@response).to have_http_status :success
-      expect(json[:person][:technologies].size).to eq 3
-      json[:person][:technologies].each do |tech|
-        expect(tech.in?(latter_technologies)).to be_truthy
-      end
+    it 'works for project alerts' do
+
+    end
+
+    it 'works for people alerts' do
+
     end
   end
 end

@@ -1,2 +1,4 @@
-daily_alert_check:
+daily_alerts_job:
+  cron: "* * * * *"
   class: "AlertJob"
+  queue: default

@@ -16,8 +16,8 @@
 #  index_people_on_email  (email) UNIQUE
 #
 class Person < ApplicationRecord
-  has_many :user_people, dependent: :destroy
-  has_many :users, through: :user_people
+  has_many :user_person, dependent: :destroy
+  has_many :user, through: :user_person
 
   ROL_TYPES = %w[developer pm tester architect analyst designer].freeze
 
@@ -62,8 +62,7 @@ class Person < ApplicationRecord
 
   def update_alerts
     end_date = obtain_last_end_date
-
-    user_people.each do |up|
+    user_person.each do |up|
       up.update_alert(notifies(end_date), end_date.blank? || end_date > DateTime.now.to_date)
     end
   end
