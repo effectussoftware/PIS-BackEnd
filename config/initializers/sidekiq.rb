@@ -17,5 +17,6 @@ schedule_file = 'config/schedule.yml'
 # el servidor de sidekiq (No con rails s). Agrego esto porque
 # pensabamos que era un error
 if File.exist?(schedule_file) && Sidekiq.server?
+  Sidekiq.redis(&:flushdb)
   Sidekiq::Cron::Job.load_from_hash YAML.load_file(schedule_file)
 end

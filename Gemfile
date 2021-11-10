@@ -28,7 +28,6 @@ gem 'redis-rails'
 gem 'sendgrid', '~> 1.2.4'
 gem 'sidekiq'
 gem 'sidekiq-cron'
-gem 'sidekiq-scheduler'
 gem 'sprockets', '~> 3.7.2'
 gem 'webpacker', '~> 5.1', '>= 5.1.1'
 # gem 'whenever', require: false
