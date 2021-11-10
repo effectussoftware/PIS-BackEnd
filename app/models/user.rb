@@ -80,7 +80,7 @@ class User < ApplicationRecord
 
   def update_notification(alert_id, alert_type)
     an_alert = alert alert_id, alert_type
-    an_alert.see_notification unless an_alert.blank?
+    an_alert.see_notification
   end
 
   def alerts

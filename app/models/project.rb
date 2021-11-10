@@ -128,11 +128,11 @@ class Project < ApplicationRecord
     # .order("#{filters['column']} #{filters['direction']}")
   end
 
-=begin
-    Para cada alerta hago lo siguiente:
-    Si ya falta menos de 7 dias, la alerta ya esta activa y no se actualiza (solo se notifica si corresponde)
-    Si faltan 7 dias o mas se debe verificar que la alerta este en estado correcto, se ejecuta actualizar_estado
-=end
+  #     Para cada alerta hago lo siguiente:
+  #     Si ya falta menos de 7 dias, la alerta ya esta
+  #     activa y no se actualiza (solo se notifica si corresponde)
+  #     Si faltan 7 dias o mas se debe verificar que la
+  #     alerta este en estado correcto, se ejecuta actualizar_estado
   def check_alerts
     return if end_date.blank?
 
@@ -141,16 +141,6 @@ class Project < ApplicationRecord
         up.cron_alert
         up.check_alert
       end
-    end
-  end
-
-  def update_alerts
-    old_date = Project.find(id).end_date
-    new_date = end_date
-    return if old_date == new_date
-
-    user_projects.each do |up|
-      up.update_alert(notifies(new_date))
     end
   end
 

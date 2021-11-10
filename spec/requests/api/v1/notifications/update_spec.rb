@@ -65,27 +65,46 @@ describe 'PUT api/v1/notifications', type: :request do
 
     it 'fails if its not my notification' do
       another_user = create(:user)
-      #dirty porque llamo una clase dentro de un spec de controller
+      # dirty porque llamo una clase dentro de un spec de controller
       dirty_alert = UserProject.where(user_id: another_user.id).first
 
-      put api_v1_notification_path(dirty_alert.id), params: {alert_type: 'project' },
-          headers: auth_headers, as: :json
+      put api_v1_notification_path(dirty_alert.id), params: { alert_type: 'project' },
+                                                    headers: auth_headers, as: :json
 
       expect(json[:error]).not_to be_falsey
     end
   end
 
   context 'when parameters are valid' do
-    it 'wont show my notification again' do
+    it 'wont show my project notification again' do
+      assign_noti
+      get api_v1_notifications_path, headers: auth_headers, as: :json
+      expect(json[:notifications].length).to eq 4
+      first_noti_project = json[:notifications].select { |noti|
+        noti['alert_type'] == 'project'
+      }.first
 
+      put api_v1_notification_path(first_noti_project['alert_id']),
+          params: { alert_type: 'project' }, headers: auth_headers, as: :json
+      expect(json[:message]).not_to be_falsey
+      get api_v1_notifications_path, headers: auth_headers, as: :json
+      expect(json[:notifications].length).to eq 3
     end
 
-    it 'works for project alerts' do
+    it 'wont show my person notification again' do
+      assign_noti
+      get api_v1_notifications_path, headers: auth_headers, as: :json
+      expect(json[:notifications].length).to eq 4
+      first_noti_project = json[:notifications].select { |noti|
+        noti['alert_type'] == 'person'
+      }.first
 
-    end
-
-    it 'works for people alerts' do
-
+      put api_v1_notification_path(first_noti_project['alert_id']),
+          params: { alert_type: 'person' }, headers: auth_headers, as: :json
+      # byebug
+      expect(json[:message]).not_to be_falsey
+      get api_v1_notifications_path, headers: auth_headers, as: :json
+      expect(json[:notifications].length).to eq 3
     end
   end
 end
