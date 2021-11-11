@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationCable::Connection, type: :channel do
-  today = DateTime.now
+  today = DateTime.now.to_date
   context 'when tokens are correct' do
     let!(:user) { create(:user) }
 
@@ -12,7 +12,7 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
 
     it 'checks user alerts' do
       # creo un porject a menos de 7 dias de la fecha
-      today = DateTime.now
+      today = DateTime.now.to_date
       create(:project, start_date: today, end_date: today + 1)
 
       expect { connect_user user }
@@ -35,30 +35,34 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
 
     it 'notifies on create' do
       connect_user user
-      expect{
-        create(:project, start_date: today, end_date: today + 1 )
+      expect {
+        create(:project, start_date: today, end_date: today + 1)
       }.to have_broadcasted_to(user).from_channel(WebChannel).exactly(:once)
     end
 
     it 'notifies on update' do
       project = create(:project, start_date: today, end_date: today + 8)
       connect_user user
-      expect{project.update(end_date: today+1)}.to have_broadcasted_to(user).from_channel(WebChannel).exactly(:once)
+      expect {
+        project.update(end_date: today + 1)
+      }.to have_broadcasted_to(user).from_channel(WebChannel).exactly(:once)
     end
 
     it 'notifies seen notif on update' do
       project = create(:project, start_date: today, end_date: today + 1)
       connect_user user
-
+      # byebug
       notifications = user.obtain_notifications
       expect(notifications).not_to be_empty
 
-      user.update_notification( notifications[0][:id], notifications[0][:type] )
+      user.update_notification(notifications[0][:alert_id], notifications[0][:alert_type])
 
-      #Lo que haria el Job AlertJob
-      expect{ project.check_alerts }.not_to have_broadcasted_to(user).from_channel(WebChannel)
+      # Lo que haria el Job AlertJob
+      expect { project.check_alerts }.not_to have_broadcasted_to(user).from_channel(WebChannel)
 
-      expect{ project.update(end_date: today + 2) }.to have_broadcasted_to(user).from_channel(WebChannel).exactly(:once)
+      expect {
+        project.update(end_date: today + 2)
+      }.to have_broadcasted_to(user).from_channel(WebChannel).exactly(:once)
     end
 
     it 'stops notifying on update' do
@@ -66,10 +70,12 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
       connect_user user
       expect(user.obtain_notifications).not_to be_empty
 
-      expect{ project.update(end_date: today + 9) }.not_to have_broadcasted_to(user).from_channel(WebChannel)
+      expect {
+        project.update(end_date: today + 9)
+      }.not_to have_broadcasted_to(user).from_channel(WebChannel)
       expect(project.end_date).to eq(today.to_date + 9)
 
-      expect{ project.check_alerts }.not_to have_broadcasted_to(user).from_channel(WebChannel)
+      expect { project.check_alerts }.not_to have_broadcasted_to(user).from_channel(WebChannel)
 
       user.reload # Para que actualice sus user project
       expect(user.obtain_notifications).to be_empty
@@ -79,7 +85,9 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
   context 'tokens are incorrect' do
     let(:non_logged) { create(:user) }
     it 'rejects the connection' do
-      expect { connect "cable?uid=#{non_logged.email}&client=FakeToken&token=FakeToken" }.to have_rejected_connection
+      expect {
+        connect "cable?uid=#{non_logged.email}&client=FakeToken&token=FakeToken"
+      }.to have_rejected_connection
     end
   end
 

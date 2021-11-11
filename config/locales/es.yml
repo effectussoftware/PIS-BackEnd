@@ -20,8 +20,8 @@ es:
         not_found: No se pudo encontrar la persona en el proyecto
         start_date_before_project: No puede ser anterior a fecha inicio del proyecto (%{project_start_date})
       project:
-        end_date_before_start_date: La fecha de fin no puede ser anterior a la fecha de inicio
-        invalid_budget: El budget no puede tener un valor negativo
+        end_date_before_start_date: La fecha de fin no puede ser anterior a la fecha de inicio del proyecto
+        invalid_budget: No puede tener un valor negativo
         not_found: No se pudo encontrar el proyecto
       technology:
         error_name: El nombre debe estar en minusculas y sin espacios
@@ -36,6 +36,10 @@ es:
         record_delete: El proyecto '%{name}' fue borrado
       user:
         record_delete: El usuario '%{name}' fue borrado
+      alerts:
+        record_update: La alerta fue modificado con exito
+    alerts:
+      message: Tiene nuevas alertas
   errors:
     messages:
       accepted: Debe ser aceptado
@@ -49,6 +53,7 @@ es:
       greater_than_or_equal_to: Debe ser mayor que o igual a %{count}
       inclusion: No está incluido en la lista
       invalid: No es válido
+      invalid_param: El parametro %{param} es invalido
       less_than: Debe ser menor que %{count}
       less_than_or_equal_to: Debe ser menor que o igual a %{count}
       model_invalid: 'La validación falló: %{errors}'
@@ -60,11 +65,12 @@ es:
       required: Debe existir
       taken: Ya está en uso
       too_long:
-        one: Es demasiado largo (1 carácter máximo)
-        other: Es demasiado largo (%{count} caracteres máximo)
+        one: Campo demasiado largo (1 carácter máximo)
+        other: Campo demasiado largo (%{count} caracteres máximo)
       too_short:
-        one: Es demasiado corto (1 carácter mínimo)
-        other: Es demasiado corto (%{count} caracteres mínimo)
+        one: Campo demasiado corto (1 carácter mínimo)
+        other: Campo demasiado corto (%{count} caracteres mínimo)
+      unimplemented: Metodo no implementado
       wrong_length:
         one: No tiene la longitud correcta (1 carácter exactos)
         other: No tiene la longitud correcta (%{count} caracteres exactos)

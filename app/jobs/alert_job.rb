@@ -1,14 +1,9 @@
-class AlertJob
-  include Sidekiq::Worker
+class AlertJob < ApplicationJob
+  queue_as :default
 
   def perform(*)
-    # puts "Rutina cada 1 minuto (job) #{Time.now}"
-    # UserProject.create(notification_active: true, not_seen:false, project_id: 100)
-
+    puts("Executing")
     Project.all.each(&:check_alerts)
-    # ActionCable.server.broadcast "web_channel", content: "Mensaje un min #{Time.now}"
+    Person.all.each(&:check_alerts)
   end
 end
-
-Sidekiq::Cron::Job.create!(name: 'Check alerts (creado desde job) - every 1min', cron: '* * * * *',
-                           class: 'AlertJob')

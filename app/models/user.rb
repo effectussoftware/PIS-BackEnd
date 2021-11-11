@@ -31,11 +31,10 @@
 
 class User < ApplicationRecord
   has_many :user_projects, dependent: :destroy
-  has_many :projects, through: :user_projects
+  has_many :projects, -> { distinct }, through: :user_projects
 
-  #TODO:
-  #has_many :user_people, dependent: :destroy
-  #has_many :people, through: :user_people
+  has_many :user_people, dependent: :destroy
+  has_many :people, -> { distinct }, through: :user_people
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -46,6 +45,11 @@ class User < ApplicationRecord
   validates :uid, uniqueness: { scope: :provider }
 
   before_validation :init_uid
+
+  after_create do
+    Project.all.find_each { |proj| proj.add_alert(self) }
+    Person.all.find_each { |per| per.add_alert(self) }
+  end
 
   before_create do
     self.needs_password_reset = true
@@ -72,7 +76,6 @@ class User < ApplicationRecord
       an_alert.add_notification(res)
     end
     res
-    # return User.joins(:user_projects).find_by(email: uid)
   end
 
   def update_notification(alert_id, alert_type)
@@ -81,12 +84,15 @@ class User < ApplicationRecord
   end
 
   def alerts
-    user_projects # + user_people
+    user_people + user_projects
   end
 
   # :reek:ControlParameter
   def alert(id, alert_type)
-    user_projects.find(id) if alert_type == 'project'
+    return user_projects.find(id) if alert_type == 'project'
+    return user_people.find(id) if alert_type == 'person'
+
+    raise ActiveRecord::RecordNotFound
   end
 
   # Metodo que corre al conectarse un usuario al channel

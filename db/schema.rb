@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_16_213447) do
+ActiveRecord::Schema.define(version: 2021_11_07_133642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -168,6 +168,17 @@ ActiveRecord::Schema.define(version: 2021_10_16_213447) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_technologies_on_name", unique: true
+  end
+
+  create_table "user_people", force: :cascade do |t|
+    t.boolean "notification_active", default: false
+    t.boolean "not_seen", default: true
+    t.integer "user_id"
+    t.integer "person_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["person_id"], name: "index_user_people_on_person_id"
+    t.index ["user_id"], name: "index_user_people_on_user_id"
   end
 
   create_table "user_projects", force: :cascade do |t|

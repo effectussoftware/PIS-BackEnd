@@ -22,15 +22,17 @@ class Project < ApplicationRecord
   has_many :user_projects, dependent: :destroy
   has_many :users, through: :user_projects
 
-has_many :project_technologies, dependent: :destroy
+  has_many :project_technologies, dependent: :destroy
   has_many :technologies, through: :project_technologies
 
   has_many :person_project, dependent: :destroy
-  has_many :people, through: :person_project
+  has_many :people, -> { distinct }, through: :person_project
 
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado hibrido].freeze
-  PROJECT_STATES = %w[rojo amarillo verde upcomping].freeze
+  PROJECT_STATES = %w[rojo amarillo verde upcoming].freeze
 
+  FILTER_PARAMS = %w[project_state project_type organization].freeze
+  ARRAY_FILTER_PARAMS = %w[technologies].freeze
   validates :name, presence: { message: I18n.t('api.errors.missing_param') }
   validates :description,
             presence: { message: I18n.t('api.errors.missing_param') }
@@ -44,14 +46,12 @@ has_many :project_technologies, dependent: :destroy
   validate :budget_is_valid
   validate :end_date_is_after_start_date
 
-  after_update :update_person_projects_date
-  after_update :update_person_projects_date_null
-  #TODO agregar al observer
   def update_person_projects_date
     person_projects = PersonProject.where('project_id = :project_id
       AND start_date < :start_date', { project_id: id, start_date: start_date })
     update_person_projects(person_projects, :start_date, start_date)
 
+    # person_projects = person_project.where('end_date > :end_date', { end_date: end_date })
     person_projects = PersonProject.where('project_id = :project_id
       AND end_date > :end_date', { project_id: id, end_date: end_date })
     update_person_projects(person_projects, :end_date, end_date)
@@ -103,24 +103,82 @@ has_many :project_technologies, dependent: :destroy
     add_project_technologies(technologies)
   end
 
+  scope :by_technologies, lambda { |techs|
+    if techs.blank?
+      itself
+    else
+      joins(:technologies).where(
+        techs.map { 'technologies.name = ?' }
+             .reduce { |recursive, elem| "#{recursive} or #{elem}" },
+        *techs
+      ).includes(:technologies)
+      # Este includes hace que no se repitan proyectos en el join
+    end
+  }
+  scope :by_project_state, lambda { |project_state|
+                             if project_state.blank?
+                               itself
+                             else
+                               where(projects: { project_state: project_state })
+                             end
+                           }
+  scope :by_project_type, lambda { |project_type|
+                            if project_type.blank?
+                              itself
+                            else
+                              where(projects: { project_type: project_type })
+                            end
+                          }
+  scope :by_organization, lambda { |organization|
+                            if organization.blank?
+                              itself
+                            else
+                              where('lower(organization) like ?', "#{organization.downcase}%")
+                            end
+                          }
+
+  def self.filter(filters)
+    Project.by_technologies(filters['technologies'])
+           .by_project_state(filters['project_state'])
+           .by_project_type(filters['project_type'])
+           .by_organization(filters['organization'])
+
+    # .order("#{filters['column']} #{filters['direction']}")
+  end
+
+  #     Para cada alerta hago lo siguiente:
+  #     Si ya falta menos de 7 dias, la alerta ya esta
+  #     activa y no se actualiza (solo se notifica si corresponde)
+  #     Si faltan 7 dias o mas se debe verificar que la
+  #     alerta este en estado correcto, se ejecuta actualizar_estado
+  def check_alerts
+    return if end_date.blank?
+
+    user_projects.each do |up|
+      if notifies?
+        up.cron_alert
+        up.check_alert
+      end
+    end
+  end
 
   def add_alert(user)
-    up = UserProject.create!(project_id: id, user_id: user.id)
-    up.update_alert(notifies?)
+    # byebug
+    u_p = UserProject.create!(project_id: id, user_id: user.id)
+    u_p.update_alert(notifies?, end_date.blank? || DateTime.now.to_date < end_date)
   end
 
   def notifies?
-    return false if end_date.blank?
-    byebug
-    (end_date - DateTime.now.to_date).to_i < 7
+    notifies(end_date)
   end
 
   def notifies(end_date)
-    return false if end_date.blank?
+    today = DateTime.now.to_date
+    return false if end_date.blank? || end_date < today
 
-    (end_date - DateTime.now.to_date).to_i < 7
+    # byebug
+    (end_date - today).to_i < 7
   end
-
 
   def update_person_project_date(person_projects, date, update)
     person_projects.each do |p_p|
@@ -129,17 +187,15 @@ has_many :project_technologies, dependent: :destroy
     end
   end
 
-  #TODO
   def update_alerts
     old_date = Project.find(id).end_date
     new_date = end_date
     return if old_date == new_date
 
     user_projects.each do |up|
-      up.update_alert(notifies(new_date))
+      up.update_alert(notifies(new_date), new_date.blank? || new_date > DateTime.now.to_date)
     end
   end
-
 
   private
 
