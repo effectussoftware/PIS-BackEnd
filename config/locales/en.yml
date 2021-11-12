@@ -5,6 +5,10 @@ en:
     dashboard_welcome:
       call_to_action: Actions
       welcome: Welcome to your first admin
+  activerecord:
+    errors:
+      messages:
+        record_invalid: Invalid record
   api:
     errors:
       invalid_content_type: Invalid content type header
@@ -15,7 +19,7 @@ en:
         not_found: Couldn't find the person
         roles_in_list: Invalid role
       person_project:
-        already_added: Assignment %{person} - %{role} already exists in project with selected dates
+        already_added: "%{person} was already assigned with role %{role} within the selected dates"
         end_date_after_project: Cannot be after the Project end date (%{project_end_date})
         not_found: Couldn't find the person on the project
         start_date_before_project: Cannot be before the Project start date (%{project_start_date})

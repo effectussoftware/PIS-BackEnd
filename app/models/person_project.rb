@@ -28,14 +28,12 @@ class PersonProject < ApplicationRecord
   delegate :first_name, to: :person, prefix: true
   delegate :name, to: :project, prefix: true
 
+  validate :uniqueness_of_role_for_person
   validates :person_id, :project_id, :role, :working_hours, :working_hours_type,
             :start_date, presence: true
-  
-  validates :person_id, uniqueness: { scope: %i[project_id role start_date end_date],
-                                      message: I18n.t('api.errors.person_project.already_added',
-                                        { role: :role, person: :person_id } )  }
+
   validates :role, inclusion: { in: Person::ROL_TYPES }
-  
+
   validate :end_date_is_after_start_date
   validate :dates_between_project_dates
 
@@ -82,6 +80,14 @@ class PersonProject < ApplicationRecord
     return unless end_date < start_date
 
     errors.add(:end_date, I18n.t('api.errors.project.end_date_before_start_date'))
+  end
+
+  def uniqueness_of_role_for_person
+    return unless PersonProject.exists? person_id: person_id, project_id: project_id,
+                                    role: role, start_date: start_date, end_date: end_date
+
+    errors.add(:person_id, I18n.t('api.errors.person_project.already_added',
+                                  { role: role, person: person.full_name } ))
   end
 
   def set_end_date
