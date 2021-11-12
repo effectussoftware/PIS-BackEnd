@@ -5,10 +5,6 @@ en:
     dashboard_welcome:
       call_to_action: Actions
       welcome: Welcome to your first admin
-  activerecord:
-    errors:
-      messages:
-        record_invalid: Invalid record
   api:
     errors:
       invalid_content_type: Invalid content type header
