@@ -28,12 +28,19 @@ class PersonProject < ApplicationRecord
   delegate :first_name, to: :person, prefix: true
   delegate :name, to: :project, prefix: true
 
+  validates :person_id, uniqueness: {
+    scope: %i[project_id role start_date end_date],
+    message: lambda do |object, _ignored|
+      # El parametro ignorado trae el valor de person_id
+      I18n.t('api.errors.person_project.already_added',
+             { role: object.role, person: object.person.full_name })
+    end
+  }
   validates :person_id, :project_id, :role, :working_hours, :working_hours_type,
             :start_date, presence: true
 
-  validates :person_id, uniqueness: { scope: %i[project_id role start_date end_date],
-                                      message: I18n.t('api.errors.person_project.already_added') }
   validates :role, inclusion: { in: Person::ROL_TYPES }
+
   validate :end_date_is_after_start_date
   validate :dates_between_project_dates
 

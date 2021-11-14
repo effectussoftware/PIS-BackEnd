@@ -35,6 +35,10 @@ class Person < ApplicationRecord
     res
   end
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   def rebuild_person_technologies(technologies)
     person_technologies.destroy_all
     add_person_technologies(technologies)

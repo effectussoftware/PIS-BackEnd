@@ -15,7 +15,7 @@ en:
         not_found: Couldn't find the person
         roles_in_list: Invalid role
       person_project:
-        already_added: The role with those dates already exists for the person on this project
+        already_added: "%{person} was already assigned with role %{role} within the selected dates"
         end_date_after_project: Cannot be after the Project end date (%{project_end_date})
         not_found: Couldn't find the person on the project
         start_date_before_project: Cannot be before the Project start date (%{project_start_date})
