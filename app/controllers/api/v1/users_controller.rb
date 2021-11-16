@@ -16,7 +16,7 @@ module Api
       def destroy
         user = User.find(params[:id])
         if current_user?(user)
-          render json: { message: I18n.t('api.errors.user.invalid_delete') }
+          render json: { message: I18n.t('api.errors.user.invalid_delete') }, status: :unauthorized
         else
           full_name = user.full_name
           user.destroy!
