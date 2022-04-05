@@ -49,7 +49,6 @@ class PersonProject < ApplicationRecord
   after_commit :notify_creation_leader, on: :create
   after_commit :notify_deletion_leader, on: :destroy
 
-
   private
 
   def dates_between_project_dates
