@@ -18,7 +18,7 @@
 #  index_person_project                 (person_id,project_id,role,start_date,end_date) UNIQUE
 #  index_person_projects_on_person_id   (person_id)
 #  index_person_projects_on_project_id  (project_id)
-#
+#  
 class PersonProject < ApplicationRecord
   belongs_to :person
   belongs_to :project
@@ -46,6 +46,9 @@ class PersonProject < ApplicationRecord
 
   before_validation :set_end_date
   before_save :update_person_roles
+  after_commit :notify_creation_leader, on: :create
+  after_commit :notify_deletion_leader, on: :destroy
+
 
   private
 
@@ -70,6 +73,18 @@ class PersonProject < ApplicationRecord
     errors.add(:start_date,
                I18n.t('api.errors.person_project.start_date_before_project',
                       { project_start_date: p_start_date }))
+  end
+
+  def notify_creation_leader
+    person = Person.find(person_id)
+    project = Project.find(project_id)
+    SendSlackNotificationJob.perform_now(person.full_name + ' has started working on ' + project.name)
+  end
+
+  def notify_deletion_leader
+    person = Person.find(person_id)
+    project = Project.find(project_id)
+    SendSlackNotificationJob.perform_now(person.full_name + ' has stopped working on ' + project.name)
   end
 
   def update_person_roles

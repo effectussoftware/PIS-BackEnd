@@ -10,10 +10,13 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  roles         :text             default([]), is an Array
+#  is_leader     :boolean          default(FALSE)
+#  leader_id     :bigint
 #
 # Indexes
 #
-#  index_people_on_email  (email) UNIQUE
+#  index_people_on_email      (email) UNIQUE
+#  index_people_on_leader_id  (leader_id)
 #
 require 'rails_helper'
 
