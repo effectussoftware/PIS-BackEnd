@@ -5,7 +5,7 @@ module Api
       include Pundit
       include DeviseTokenAuth::Concerns::SetUserByToken
 
-      # before_action :authenticate_user!, except: :status
+      before_action :authenticate_user!, except: :status
       before_action :set_locale
 
       respond_to :json

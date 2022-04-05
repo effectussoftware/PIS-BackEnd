@@ -145,7 +145,6 @@ describe 'GET api/v1/person_project', type: :request do
 
       get api_v1_person_project_index_path, params: filter_organization, headers: auth_headers,
                                             as: :json
-
       expect(count_person_projects(json)).to eq 33
     end
   end
