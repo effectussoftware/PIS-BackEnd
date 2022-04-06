@@ -25,7 +25,6 @@ gem 'sendgrid', '~> 1.2.4'
 gem 'sprockets', '~> 3.7.2'
 gem 'webpacker', '~> 5.1', '>= 5.1.1'
 gem 'yaaf', '~> 0.1'
-gem 'httparty'
 gem 'httpx'
 
 # Use Redis adapter to run Action Cable in production
