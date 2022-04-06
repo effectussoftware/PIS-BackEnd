@@ -46,8 +46,8 @@ class PersonProject < ApplicationRecord
 
   before_validation :set_end_date
   before_save :update_person_roles
-  after_commit :notify_creation_leader, on: :create
-  after_commit :notify_deletion_leader, on: :destroy
+  after_create :notify_creation_leader
+  after_destroy :notify_deletion_leader
 
   private
 
