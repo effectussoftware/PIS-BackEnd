@@ -77,13 +77,12 @@ class PersonProject < ApplicationRecord
   def notify_creation_leader
     person = Person.find(person_id)
     project = Project.find(project_id)
-    SendSlackNotificationJob.perform_now(person.full_name + ' has started working on ' + project.name)
-  end
+    Notifications::Send.new(person.full_name + ' has started working on ' + project.name).send  end
 
   def notify_deletion_leader
     person = Person.find(person_id)
     project = Project.find(project_id)
-    SendSlackNotificationJob.perform_now(person.full_name + ' has stopped working on ' + project.name)
+    Notifications::Send.new(person.full_name + ' has stopped working on ' + project.name).send
   end
 
   def update_person_roles
