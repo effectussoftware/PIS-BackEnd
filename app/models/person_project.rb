@@ -77,7 +77,8 @@ class PersonProject < ApplicationRecord
   def notify_creation_leader
     person = Person.find(person_id)
     project = Project.find(project_id)
-    Notifications::Send.new(person.full_name + ' has started working on ' + project.name).send  end
+    Notifications::Send.new(person.full_name + ' has started working on ' + project.name).send 
+  end
 
   def notify_deletion_leader
     person = Person.find(person_id)
