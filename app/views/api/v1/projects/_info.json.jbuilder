@@ -14,3 +14,6 @@ end
 json.technologies do
   json.array! project.technologies.map(&:name)
 end
+json.notes do
+  json.array! project.notes.map(&:text)
+end
