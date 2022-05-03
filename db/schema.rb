@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 2022_03_31_192341) do
 
   # These are extensions that must be enabled in order to support this database
@@ -95,12 +96,11 @@ ActiveRecord::Schema.define(version: 2022_03_31_192341) do
   end
 
   create_table "notes", force: :cascade do |t|
-    t.string "title"
-    t.string "description"
-    t.integer "commented_on_id"
-    t.string "commented_on_type"
+    t.string "text", null: false
+    t.bigint "project_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_notes_on_project_id"
   end
 
   create_table "people", force: :cascade do |t|

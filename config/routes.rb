@@ -11,12 +11,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1, defaults: { format: :json } do
       get :status, to: 'api#status'
-
       devise_scope :user do
         resource :user, only: %i[update show]
       end
       resources :users, only: %i[index destroy]
-
       resources :settings, only: [] do
         get :must_update, on: :collection
       end
@@ -24,7 +22,11 @@ Rails.application.routes.draw do
         resources :person_project, shallow: true, only: :create
       end
       resources :person_project, only: %i[index show update destroy]
-      resources :projects, only: %i[create index show update destroy]
+      resources :projects, only: %i[create index show update destroy] do
+        scope module: :projects do
+          resources :notes, only: %i[create update destroy]
+        end
+      end
       resources :technologies, only: %i[index show]
     end
   end
