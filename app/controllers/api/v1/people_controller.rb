@@ -39,7 +39,7 @@ module Api
 
       def person_params
         params.require(:person).permit(:first_name, :last_name, :email,
-                                       :working_hours)
+                                       :working_hours, :leader_id)
       end
 
       def technologies_params
