@@ -12,6 +12,9 @@ module Api
       def index
         @projects = filter!(Project).includes(:person_project, :people, :project_technologies,
                                               :technologies, :notes)
+        if params[:active_project].present? && current_user.is_a?(User)
+          @projects = @projects.only_active
+        end
       end
 
       def show
