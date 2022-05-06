@@ -84,6 +84,8 @@ class Project < ApplicationRecord
     add_project_technologies(technologies)
   end
 
+  scope :only_active, -> { where('end_date > ?', Date.today).or(where(end_date: nil)) }
+
   scope :by_technologies, lambda { |techs|
     if techs.blank?
       itself
