@@ -23,6 +23,7 @@ class Project < ApplicationRecord
   has_many :technologies, through: :project_technologies
   has_many :person_project, dependent: :destroy
   has_many :people, -> { distinct }, through: :person_project
+  has_many :notes, dependent: :destroy
 
   PROJECT_TYPES = %w[staff_augmentation end_to_end tercerizado hibrido].freeze
   PROJECT_STATES = %w[rojo amarillo verde upcoming].freeze
@@ -82,6 +83,8 @@ class Project < ApplicationRecord
     project_technologies.destroy_all
     add_project_technologies(technologies)
   end
+
+  scope :only_active, -> { where('end_date > ?', Date.today).or(where(end_date: nil)) }
 
   scope :by_technologies, lambda { |techs|
     if techs.blank?

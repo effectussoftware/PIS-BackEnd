@@ -24,7 +24,7 @@ ActiveAdmin.register AdminUser do
     end
     f.actions
   end
-
+  
   show do
     attributes_table do
       row :id

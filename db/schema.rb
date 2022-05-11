@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_16_213447) do
+
+ActiveRecord::Schema.define(version: 2022_03_31_192341) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -94,6 +95,14 @@ ActiveRecord::Schema.define(version: 2021_10_16_213447) do
     t.index ["error_group_id"], name: "index_exception_hunter_errors_on_error_group_id"
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.string "text", null: false
+    t.bigint "project_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_notes_on_project_id"
+  end
+
   create_table "people", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "last_name", null: false
@@ -102,7 +111,10 @@ ActiveRecord::Schema.define(version: 2021_10_16_213447) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "roles", default: [], array: true
+    t.boolean "is_leader", default: false
+    t.bigint "leader_id"
     t.index ["email"], name: "index_people_on_email", unique: true
+    t.index ["leader_id"], name: "index_people_on_leader_id"
   end
 
   create_table "person_projects", force: :cascade do |t|

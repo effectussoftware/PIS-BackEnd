@@ -10,10 +10,13 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  roles         :text             default([]), is an Array
+#  is_leader     :boolean          default(FALSE)
+#  leader_id     :bigint
 #
 # Indexes
 #
-#  index_people_on_email  (email) UNIQUE
+#  index_people_on_email      (email) UNIQUE
+#  index_people_on_leader_id  (leader_id)
 #
 class Person < ApplicationRecord
   ROL_TYPES = %w[developer pm tester architect analyst designer].freeze
@@ -21,6 +24,8 @@ class Person < ApplicationRecord
   has_many :technologies, through: :person_technologies
   has_many :person_project, dependent: :destroy
   has_many :projects, -> { distinct }, through: :person_project
+  has_many :subordinates, class_name: 'Person', foreign_key: 'leader_id'
+  belongs_to :leader, class_name: 'Person', foreign_key: 'leader_id', optional: true
 
   validates :first_name, :last_name, :working_hours,
             presence: { message: I18n.t('api.errors.missing_param') }
