@@ -14,6 +14,7 @@ module Api
           ' ON projects.id = project_filter.project_id')
                         .includes(:person_project, :projects)
                         .references(:project).uniq
+        @only_active_projects = params[:active_project].present? && params[:active_project] == "true"
       end
 
       def show

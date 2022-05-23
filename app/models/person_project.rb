@@ -49,6 +49,8 @@ class PersonProject < ApplicationRecord
   after_create :notify_creation_leader
   after_destroy :notify_deletion_leader
 
+  scope :active_project,  -> { where('person_projects.end_date > ?', Date.today).or(where(end_date: nil)) }
+
   private
 
   def dates_between_project_dates
