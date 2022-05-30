@@ -6,6 +6,6 @@ class Notifications::Send
  end
 
  def send
-   HTTPX.post(ENV['SLACK_WEBHOOK_URL'].to_s, json: {message: message})
+   #HTTPX.post(ENV['SLACK_WEBHOOK_URL'].to_s, json: {message: message})
  end
 end
