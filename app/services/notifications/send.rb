@@ -6,7 +6,6 @@ class Notifications::Send
  end
 
  def send
-  byebug
   HTTPX.post(ENV['SLACK_WEBHOOK_URL'].to_s, json: {message: message})
  end
 end
